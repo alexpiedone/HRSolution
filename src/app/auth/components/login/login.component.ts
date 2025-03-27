@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../auth.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { Auth, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-login',
@@ -15,16 +16,24 @@ export class LoginComponent {
   username = '';
   password = '';
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router, private auth: Auth, ) { }
+  signInWithGoogle(): void {
+    signInWithPopup(this.auth, new GoogleAuthProvider())
+      .then(result => {
+        this.router.navigate(['/people']);
+      })
+      .catch(error => {
+        // Afișează un mesaj de eroare
+        console.error('Eroare de autentificare cu Google:', error);
+      });
+  }
 
   onSubmit() {
     this.authService.login(this.username, this.password).subscribe(
       response => {
-        // Autentificare reușită
-        this.router.navigate(['/people']); // Navighează către pagina principală
+        this.router.navigate(['/people']);
       },
       error => {
-        // Afișează un mesaj de eroare
         console.error('Eroare de autentificare:', error);
       }
     );
