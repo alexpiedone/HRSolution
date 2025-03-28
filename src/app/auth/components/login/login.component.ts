@@ -3,10 +3,21 @@ import { AuthService } from '../../auth.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Auth, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule],
+  imports: [FormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })

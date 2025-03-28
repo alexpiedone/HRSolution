@@ -1,12 +1,30 @@
-<form (ngSubmit)="onSubmit()">
-    <div>
-      <label for="username">Nume de utilizator:</label>
-      <input type="text" id="username" name="username" [(ngModel)]="username" required>
+
+<div class="container">
+    <div class="left">
+        <div class="security">
+            <div class="secure-icon">
+                <img src="security-icon.png" alt="Iconiță securitate">
+            </div>
+            <p>SECURE</p>
+        </div>
+        <div class="illustration">
+            <img src="illustration.png" alt="Ilustrație">
+        </div>
     </div>
-    <div>
-      <label for="password">Parolă:</label>
-      <input type="password" id="password" name="password" [(ngModel)]="password" required>
+    <div class="right">
+        <h1>Bun venit,</h1>
+        <p>te rugăm să te autorizezi</p>
+        <div class="social-login">
+            <a href="#" class="social-icon facebook"></a>
+            <a href="#" class="social-icon apple"></a>
+            <a href="#" class="social-icon google"></a>
+        </div>
+        <form class="login-form">
+            <input type="email" placeholder="Email" id="email">
+            <input type="password" placeholder="Parolă" id="password">
+            <a href="#" class="forgot-password">Ai uitat parola?</a>
+            <button type="submit" class="login-button">Login</button>
+            <button type="button" class="signup-button">Sign Up</button>
+        </form>
     </div>
-    <button type="submit">Autentificare</button>
-    <button (click)="signInWithGoogle()">Autentificare cu Google</button>
-</form>
+</div>
