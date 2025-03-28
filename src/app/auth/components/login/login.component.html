@@ -1,30 +1,28 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<div class="container">
-    <div class="left">
-        <div class="security">
-            <div class="secure-icon">
-                <img src="security-icon.png" alt="Iconiță securitate">
-            </div>
-            <p>SECURE</p>
-        </div>
-        <div class="illustration">
-            <img src="illustration.png" alt="Ilustrație">
-        </div>
-    </div>
-    <div class="right">
-        <h1>Bun venit,</h1>
-        <p>te rugăm să te autorizezi</p>
-        <div class="social-login">
-            <a href="#" class="social-icon facebook"></a>
-            <a href="#" class="social-icon apple"></a>
-            <a href="#" class="social-icon google"></a>
-        </div>
+<div class="login-page">
+    <div class="login-card">
+        <h1 class="login-title">HR Solution</h1>
+        <p class="login-subtitle">Please sign in</p>
         <form class="login-form">
-            <input type="email" placeholder="Email" id="email">
-            <input type="password" placeholder="Parolă" id="password">
-            <a href="#" class="forgot-password">Ai uitat parola?</a>
-            <button type="submit" class="login-button">Login</button>
-            <button type="button" class="signup-button">Sign Up</button>
+            <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" class="form-input" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" class="form-input" placeholder="Enter your password" required>
+            </div>
+            <div class="form-actions">
+                <a href="#" class="forgot-password">Forgot Password?</a>
+            </div>
+            <button type="submit" class="btn btn-primary">Sign In</button>
+            <button type="button" class="btn btn-google" (click)="signInWithGoogle()">
+                <i class="fab fa-google google-icon"></i> Autentificare cu Google
+            </button>
         </form>
+        <div class="signup-link">
+            <p>Don't have an account? <a href="#">Sign Up</a></p>
+        </div>
     </div>
 </div>

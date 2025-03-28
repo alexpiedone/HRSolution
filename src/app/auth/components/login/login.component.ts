@@ -31,10 +31,9 @@ export class LoginComponent {
   signInWithGoogle(): void {
     signInWithPopup(this.auth, new GoogleAuthProvider())
       .then(result => {
-        this.router.navigate(['/people']);
+        this.router.navigate(['/home']);
       })
       .catch(error => {
-        // Afișează un mesaj de eroare
         console.error('Eroare de autentificare cu Google:', error);
       });
   }
