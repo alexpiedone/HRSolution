@@ -8,6 +8,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import {MatGridList} from '@angular/material/grid-list';  
+import { MatGridTile } from '@angular/material/grid-list';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +19,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    MatGridList,
+    MatGridTile
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -26,6 +30,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class LoginComponent {
   username = '';
   password = '';
+  showPassword: boolean = false;
 
   constructor(private authService: AuthService, private router: Router, private auth: Auth, ) { }
   signInWithGoogle(): void {
@@ -48,4 +53,9 @@ export class LoginComponent {
       }
     );
   }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
+  
 }

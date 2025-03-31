@@ -1,28 +1,46 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<div class="login-page">
-    <div class="login-card">
-        <h1 class="login-title">HR Solution</h1>
-        <p class="login-subtitle">Please sign in</p>
-        <form class="login-form">
-            <div class="form-group">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" id="email" class="form-input" placeholder="Enter your email" required>
-            </div>
-            <div class="form-group">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" id="password" class="form-input" placeholder="Enter your password" required>
-            </div>
-            <div class="form-actions">
-                <a href="#" class="forgot-password">Forgot Password?</a>
-            </div>
-            <button type="submit" class="btn btn-primary">Sign In</button>
-            <button type="button" class="btn btn-google" (click)="signInWithGoogle()">
-                <i class="fab fa-google google-icon"></i> Autentificare cu Google
-            </button>
-        </form>
-        <div class="signup-link">
-            <p>Don't have an account? <a href="#">Sign Up</a></p>
-        </div>
+<mat-grid-list cols="2" rowHeight="100vh">
+  <mat-grid-tile>
+    <div class="left-side">
+      <img src="HLogo.png" alt="Background" class="background-image" />
     </div>
-</div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <div class="right-side">
+      <mat-card class="login-card">
+        <div class="welcome-text">
+          <h1>Hello Again!</h1>
+          <p>Welcome back you've been missed!</p>
+        </div>
+        <form (ngSubmit)="onSubmit()" class="login-form">
+          <mat-form-field appearance="outline" class="input-field">
+            <mat-label>Email</mat-label>
+            <input matInput [(ngModel)]="username" name="username" required />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="input-field">
+            <mat-label>Parolă</mat-label>
+            <input matInput [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" required />
+            <button mat-icon-button matSuffix (click)="togglePassword()" type="button">
+              <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+          </mat-form-field>
+          <a class="recover-password">Recover Password</a>
+          <button mat-raised-button class="login-button" type="submit">
+            Sign In
+          </button>
+          <div class="or-continue">Or continue with</div>
+          <div class="social-login">
+            <button mat-icon-button class="social-icon">
+              <img src="google-icon.png" alt="Google" />
+            </button>
+            <button mat-icon-button class="social-icon">
+              <img src="apple-icon.png" alt="Apple" />
+            </button>
+            <button mat-icon-button class="social-icon">
+              <img src="facebook-icon.png" alt="Facebook" />
+            </button>
+          </div>
+        </form>
+      </mat-card>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
