@@ -8,15 +8,14 @@
     <div class="right-side">
       <mat-card class="login-card">
         <div class="welcome-text">
-          <h1>Hello Again!</h1>
-          <p>Welcome back you've been missed!</p>
+          <h1>Helpie</h1>
         </div>
         <form (ngSubmit)="onSubmit()" class="login-form">
-          <mat-form-field appearance="outline" class="input-field">
+          <mat-form-field >
             <mat-label>Email</mat-label>
-            <input matInput [(ngModel)]="username" name="username" required />
+            <input matInput [(ngModel)]="username" name="username" required  />
           </mat-form-field>
-          <mat-form-field appearance="outline" class="input-field">
+          <mat-form-field class="input-field">
             <mat-label>Parolă</mat-label>
             <input matInput [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" required />
             <button mat-icon-button matSuffix (click)="togglePassword()" type="button">
@@ -30,13 +29,13 @@
           <div class="or-continue">Or continue with</div>
           <div class="social-login">
             <button mat-icon-button class="social-icon">
-              <img src="google-icon.png" alt="Google" />
+              <img src="googleIcon.png" alt="Google" />
             </button>
             <button mat-icon-button class="social-icon">
-              <img src="apple-icon.png" alt="Apple" />
+              <img src="appleIcon.jpg" alt="Apple" />
             </button>
             <button mat-icon-button class="social-icon">
-              <img src="facebook-icon.png" alt="Facebook" />
+              <img src="facebookIcon.jpg" alt="Facebook" />
             </button>
           </div>
         </form>
