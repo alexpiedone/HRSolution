@@ -1,45 +1,11 @@
-<mat-grid-list cols="2" rowHeight="100vh">
-  <mat-grid-tile>
-    <div class="left-side">
-      <img src="HLogo.png" alt="Background" class="background-image" />
-    </div>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <div class="right-side">
-      <mat-card class="login-card">
-        <div class="welcome-text">
-          <h1>Helpie</h1>
-        </div>
-        <form (ngSubmit)="onSubmit()" class="login-form">
-          <mat-form-field >
-            <mat-label>Email</mat-label>
-            <input matInput [(ngModel)]="username" name="username" required  />
-          </mat-form-field>
-          <mat-form-field class="input-field">
-            <mat-label>Parolă</mat-label>
-            <input matInput [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" required />
-            <button mat-icon-button matSuffix (click)="togglePassword()" type="button">
-              <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-            </button>
-          </mat-form-field>
-          <a class="recover-password">Recover Password</a>
-          <button mat-raised-button class="login-button" type="submit">
-            Sign In
-          </button>
-          <div class="or-continue">Or continue with</div>
-          <div class="social-login">
-            <button mat-icon-button class="social-icon">
-              <img src="googleIcon.png" alt="Google" />
-            </button>
-            <button mat-icon-button class="social-icon">
-              <img src="appleIcon.jpg" alt="Apple" />
-            </button>
-            <button mat-icon-button class="social-icon">
-              <img src="facebookIcon.jpg" alt="Facebook" />
-            </button>
-          </div>
-        </form>
-      </mat-card>
-    </div>
-  </mat-grid-tile>
-</mat-grid-list>
+<div class="grid-container">
+  <div class="left-side">
+    <img src="HLogo.png" alt="Background" class="background-image" />
+  </div>
+  <div class="right-side">
+    <p-card header="Simple Card">
+      <p-button label="Login" icon="pi pi-check" (click)="onSubmit()"></p-button>
+      <p-button label="Register" icon="pi pi-user" ></p-button>
+    </p-card>
+  </div>
+</div>

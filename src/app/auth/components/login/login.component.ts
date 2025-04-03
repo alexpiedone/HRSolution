@@ -3,24 +3,18 @@ import { AuthService } from '../../auth.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Auth, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import {MatGridList} from '@angular/material/grid-list';  
-import { MatGridTile } from '@angular/material/grid-list';
 
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { CardModule } from 'primeng/card';
+import { PasswordModule } from 'primeng/password';
 @Component({
   selector: 'app-login',
   imports: [FormsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatGridList,
-    MatGridTile
+    ButtonModule,
+    InputTextModule,
+    CardModule,
+    PasswordModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'

@@ -7,7 +7,11 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { environment } from '../environment/environment'; 
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { providePrimeNG } from 'primeng/config';
+import Material from '@primeng/themes/material';
+import Aura from '@primeng/themes/aura';
+import Lara from '@primeng/themes/lara';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), 
@@ -15,6 +19,18 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     provideHttpClient(), AuthModule,
     provideAuth(() => getAuth()),
-    provideFirebaseApp(() => initializeApp(environment.firebaseConfig))
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideAnimationsAsync(),
+    providePrimeNG({
+        theme: {
+            preset: Lara,
+            options: {
+              prefix: 'p',
+              darkModeSelector: '.my-app-dark',
+              cssLayer: false,
+              ripple: true
+            },
+        }
+    })
   ],
 };
