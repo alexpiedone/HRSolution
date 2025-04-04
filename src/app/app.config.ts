@@ -23,7 +23,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     providePrimeNG({
         theme: {
-            preset: Lara,
+            preset: Aura,
             options: {
               prefix: 'p',
               darkModeSelector: '.my-app-dark',

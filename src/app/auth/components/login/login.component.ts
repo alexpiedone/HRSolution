@@ -3,18 +3,22 @@ import { AuthService } from '../../auth.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Auth, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
-
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { PasswordModule } from 'primeng/password';
+import { FloatLabel } from 'primeng/floatlabel';
+import { CheckboxModule } from 'primeng/checkbox';
+
 @Component({
   selector: 'app-login',
   imports: [FormsModule,
     ButtonModule,
     InputTextModule,
     CardModule,
-    PasswordModule
+    PasswordModule,
+    FloatLabel,
+    CheckboxModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'

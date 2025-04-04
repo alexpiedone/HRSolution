@@ -2,10 +2,48 @@
   <div class="left-side">
     <img src="HLogo.png" alt="Background" class="background-image" />
   </div>
-  <div class="right-side">
-    <p-card header="Simple Card">
-      <p-button label="Login" icon="pi pi-check" (click)="onSubmit()"></p-button>
-      <p-button label="Register" icon="pi pi-user" ></p-button>
-    </p-card>
+  <div class="flex items-center justify-center min-h-screen bg-white">
+    <div class="p-8 bg-white rounded-xl shadow-xl w-96">
+      <h2 class="mb-8 text-2xl font-semibold text-center text-gray-800">Login</h2>
+  
+      <p-floatlabel class="block mb-4">
+        <input type="text" id="username" pInputText [(ngModel)]="username" class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-200">
+        <label for="username">Username</label>
+      </p-floatlabel>
+  
+      <p-floatlabel class="block mb-6">
+        <input type="password" id="password" pInputText [(ngModel)]="password" class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-200">
+        <label for="password">Password</label>
+      </p-floatlabel>
+  
+      <div class="flex items-center justify-between mb-8">
+        <div class="flex items-center">
+          <p-checkbox  id="rememberMe"></p-checkbox>
+          <label for="rememberMe" class="ml-2 text-sm text-gray-600">Remember me</label>
+        </div>
+        <a href="#" class="text-sm text-blue-500 hover:underline">Forgot password?</a>
+      </div>
+  
+      <button pButton label="Login" class="w-full bg-blue-500 hover:bg-blue-600 text-white p-3 rounded mb-8"></button>
+  
+      <div class="border-t pt-8 mt-8">
+        <div class="flex justify-center space-x-4">
+          <button pButton class="flex items-center border rounded-full shadow-md hover:shadow-lg transition-shadow duration-300" style="background-color: white !important;">
+            <i class="pi pi-google mr-2" style="color: #DB4437;"></i>
+            <span class="text-sm text-gray-800">Google</span>
+          </button>
+        
+          <button pButton class="flex items-center border rounded-full shadow-md hover:shadow-lg transition-shadow duration-300" style="background-color: white !important;">
+            <i class="pi pi-apple mr-2" style="color: #000000;"></i>
+            <span class="text-sm text-gray-800">Apple</span>
+          </button>
+        
+          <button pButton class="flex items-center border rounded-full shadow-md hover:shadow-lg transition-shadow duration-300" style="background-color: white !important;">
+            <i class="pi pi-facebook mr-2" style="color: #1877F2;"></i>
+            <span class="text-sm text-gray-800">Facebook</span>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
