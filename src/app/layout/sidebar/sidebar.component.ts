@@ -32,20 +32,20 @@ export class SidebarComponent {
         label: 'People',
         icon: 'pi pi-users',
         items: [
-          { label: 'Employees', icon: 'pi pi-id-card', routerLink: '/home/EmployeeDetails' }
+          { label: 'Employees', icon: 'pi pi-id-card', routerLink: '/EmployeeDetails' }
         ]
       },
       {
         label: 'Requests',
         icon: 'pi pi-calendar',
         items: [
-          { label: 'Leave Requests', icon: 'pi pi-clock', routerLink: '/home/leaveRequest' }
+          { label: 'Leave Requests', icon: 'pi pi-clock', routerLink: '/leaveRequest' }
         ]
       },
       {
         label: 'Documents',
         icon: 'pi pi-file',
-        routerLink: '/home/Documents'
+        routerLink: '/Documents'
       }
     ];
   }

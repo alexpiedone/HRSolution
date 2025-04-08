@@ -1,3 +1,40 @@
-<div>
-  <p class="text-xl"> I am home component</p>
+<div class="p-6 space-y-6">
+  <!-- Welcome Section -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-800">Welcome, Alexandru Dobre</h1>
+      <p class="text-gray-600">Developer</p>
+    </div>
+  </div>
+  <p-card  styleClass="p-4">
+    <div class="flex gap-12">
+      <p-card header="Training" styleClass="w-72">
+        <p class="m-0">
+            Accesează cursurile de dezvoltare profesională.
+        </p>
+      </p-card>
+      <p-divider layout="vertical"></p-divider>
+      <p-card header="Colleagues" styleClass="w-72">
+        <p class="m-0">
+            Vezi lista colegilor tăi din companie.
+        </p>
+      </p-card>
+      <p-divider layout="vertical"></p-divider>
+      <p-card header="Documents" styleClass="w-72">
+        <p class="m-0">
+            Accesează documentele personale și de companie.
+        </p>
+      </p-card>
+    </div>
+  </p-card>
+  <div></div>
+  <div class="bg-white p-4 rounded-2xl shadow col-span-1 md:col-span-2">
+    <h2 class="text-lg font-semibold mb-4">Colleagues</h2>
+    <div class="overflow-x-auto whitespace-nowrap space-x-4 flex">
+      <div *ngFor="let person of colleagues" class="inline-block text-center">
+        <p-avatar [image]="person.avatar" shape="circle" [style]="{ 'width': '60px', 'height': '60px' }"></p-avatar>
+        <p class="text-sm mt-1">{{ person.name }}</p>
+      </div>
+    </div>
+  </div>
 </div>
