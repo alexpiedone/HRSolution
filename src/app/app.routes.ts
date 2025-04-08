@@ -3,7 +3,8 @@ import { authGuard } from './auth/auth.guard';
 import { HomeComponent } from './home/home.component';
 import { inject } from '@angular/core'; 
 import { AuthService } from './auth/auth.service'; 
-
+import { LoginComponent } from './auth/components/login/login.component';
+import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 const redirectBasedOnAuth: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
@@ -18,24 +19,47 @@ const redirectBasedOnAuth: CanActivateFn = () => {
 };
 
 export const routes: Routes = [
-  { 
-    path: 'home', 
-    component: HomeComponent, 
+  {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
+  {
+    path: '',
+    component: MainLayoutComponent, 
     canActivate: [authGuard],
     children: [
       {
+        path: 'home',
+        component: HomeComponent,
+      },
+      {
         path: 'Documents',
-        loadComponent: () => import('./people/components/document-list/document-list.component').then(m => m.DocumentListComponent),
+        loadComponent: () =>
+          import('./people/components/document-list/document-list.component').then(
+            (m) => m.DocumentListComponent
+          ),
       },
       {
         path: 'EmployeeDetails',
-        loadComponent: () => import('./people/components/employee-details/employee-details.component').then(m => m.EmployeeDetailsComponent),
+        loadComponent: () =>
+          import('./people/components/employee-details/employee-details.component').then(
+            (m) => m.EmployeeDetailsComponent
+          ),
       },
       {
         path: 'leaveRequest',
-        loadComponent: () => import('./people/components/leave-request/leave-request.component').then(m => m.LeaveRequestComponent),
-      }
-    ]
+        loadComponent: () =>
+          import('./people/components/leave-request/leave-request.component').then(
+            (m) => m.LeaveRequestComponent
+          ),
+      },
+    ],
+  },
+  {
+    path: 'auth/login',
+    loadComponent: () =>
+      import('./auth/components/login/login.component').then((m) => m.LoginComponent),
   },
   
 ];

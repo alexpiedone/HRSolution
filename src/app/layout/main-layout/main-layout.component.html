@@ -1,0 +1,14 @@
+<div class="flex h-screen bg-gray-100">
+    <!-- Sidebar -->
+    <app-sidebar [collapsed]="collapsed" (toggleSidebar)="toggleSidebar()"></app-sidebar>
+  
+    <div class="flex-1 flex flex-col">
+      <!-- Header -->
+      <app-header (toggleSidebarEvent)="toggleSidebar()"></app-header>
+  
+      <main class="flex-1 p-6 overflow-auto">
+        <router-outlet></router-outlet>  <!-- Conținutul va fi încărcat aici -->
+      </main>
+    </div>
+  </div>
+  
