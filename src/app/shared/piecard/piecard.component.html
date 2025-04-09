@@ -1,0 +1,22 @@
+<p-card [header]="card.header" styleClass="w-72">
+    <p class="m-0">{{ card.content }}</p>
+  
+    <div *ngIf="card.action as action" class="mt-4">
+      <button 
+        *ngIf="card.action.type === 'button'" 
+        (click)="action.onClick?.()" 
+        class="block w-full text-left p-2 rounded-lg transition duration-300 ease-in-out 
+               hover:bg-blue-100 hover:shadow-md hover:text-gray-700 cursor-pointer bg-transparent">
+        {{ action.label }}
+      </button>
+  
+      <a 
+        *ngIf="action.type === 'link'" 
+        [href]="action.href ?? '#'" 
+        class="block w-full p-2 rounded-lg transition duration-300 ease-in-out 
+               hover:bg-blue-100 hover:shadow-md hover:text-gray-700 cursor-pointer">
+        {{ action.label}}
+      </a>
+    </div>
+</p-card>
+  
