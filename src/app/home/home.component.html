@@ -16,6 +16,9 @@
     </div>
   </p-card>
   <div></div>
+  
+  <app-pielist [items]="tasks" itemType="task"></app-pielist>
+  
   <div *ngIf="showColleagues" class="bg-white p-4 rounded-2xl shadow col-span-1 md:col-span-2">
     <h2 class="text-lg font-semibold mb-4">Colleagues</h2>
     <div class="overflow-x-auto whitespace-nowrap space-x-4 flex">
