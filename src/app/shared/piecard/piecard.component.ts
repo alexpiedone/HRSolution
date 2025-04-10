@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 
 export interface PiecardCard {
   header: string;
-  content: string;
+  content?: string;
   action?: {
     type: 'button' | 'link';
     label: string;

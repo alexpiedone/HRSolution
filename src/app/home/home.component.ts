@@ -4,11 +4,11 @@ import { RouterModule } from '@angular/router'
 import { Avatar } from 'primeng/avatar';
 import { CardModule } from 'primeng/card';
 import { Divider } from 'primeng/divider';
-import { PiecardCard } from '../shared/piecard/piecard.component';
+import { PiecardCard, PiecardComponent } from '../shared/piecard/piecard.component';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterModule, CommonModule, Avatar, CardModule, Divider],
+  imports: [RouterModule, CommonModule, Avatar, CardModule, Divider, PiecardComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -22,7 +22,6 @@ export class HomeComponent {
   cards: PiecardCard[] = [
     {
       header: 'Colleagues',
-      content: 'Accesează colegii tăi.',
       action: {
         type: 'button',
         label: 'Accesează colegii',
@@ -31,7 +30,6 @@ export class HomeComponent {
     },
     {
       header: 'Training',
-      content: 'Accesează cursurile de dezvoltare profesională.',
       action: {
         type: 'link',
         label: 'Vezi cursuri',
@@ -40,7 +38,6 @@ export class HomeComponent {
     },
     {
       header: 'Documents',
-      content: 'Accesează documentele personale și de companie.'
     }
   ];
 

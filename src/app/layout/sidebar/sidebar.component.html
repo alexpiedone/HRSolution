@@ -18,7 +18,7 @@
   </p-panelMenu>
   
   <div class="px-4 py-4 border-t mt-auto flex items-center gap-3 w-full">
-    <p-avatar image="fearless-tab-shadow.png" shape="circle" [style]="{ 'width': collapsed ? '50px' : '70px', 'height': collapsed ? '50px' : '70px' }"></p-avatar>
+    <p-avatar image="fearless-tab-shadow.png" shape="circle" [size] = "collapsed? 'large' : 'xlarge'"></p-avatar>
     <div class="text-sm" [class.hidden]="collapsed">
       <div class="font-medium text-gray-800">Shadow</div>
       <div class="text-gray-500 text-xs">Developer</div>

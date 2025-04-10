@@ -1,5 +1,4 @@
 <div class="p-6 space-y-6">
-  <!-- Welcome Section -->
   <div class="flex items-center justify-between">
     <div>
       <h1 class="text-3xl font-bold text-gray-800">Welcome, Shadow</h1>
@@ -8,26 +7,12 @@
   </div>
   <p-card styleClass="p-4">
     <div class="flex gap-12">
-      <p-card header="Colleagues" styleClass="w-72">
-        <button (click)="toggleColleagues()" class="block w-full text-left p-2 rounded-lg transition duration-300 ease-in-out 
-                 hover:bg-blue-100 hover:shadow-md hover:text-gray-700 cursor-pointer bg-transparent">
-          Accesează colegii tăi.
-        </button>
-      </p-card>
-
-      <p-divider layout="vertical"></p-divider>
-      <p-card header="Training" styleClass="w-72">
-        <a href="#" class="block m-0 p-2 rounded-lg transition duration-300 ease-in-out 
-                hover:bg-blue-100 hover:shadow-md hover:text-gray-700 cursor-pointer">
-          Accesează cursurile de dezvoltare profesională.
-        </a>
-      </p-card>
-      <p-divider layout="vertical"></p-divider>
-      <p-card header="Documents" styleClass="w-72">
-        <p class="m-0">
-          Accesează documentele personale și de companie.
-        </p>
-      </p-card>
+      <div class="flex gap-12">
+        <ng-container *ngFor="let card of cards; let i = index">
+          <app-piecard [card] = "card"></app-piecard>
+          <p-divider *ngIf="i < cards.length - 1"  layout="vertical" />
+          </ng-container>
+      </div>
     </div>
   </p-card>
   <div></div>
@@ -35,7 +20,7 @@
     <h2 class="text-lg font-semibold mb-4">Colleagues</h2>
     <div class="overflow-x-auto whitespace-nowrap space-x-4 flex">
       <div *ngFor="let person of colleagues" class="inline-block text-center">
-        <p-avatar [image]="person.avatar" shape="circle" [style]="{ 'width': '60px', 'height': '60px' }"></p-avatar>
+        <p-avatar [image]="person.avatar" shape="circle" size="xlarge"></p-avatar>
         <p class="text-sm mt-1">{{ person.name }}</p>
       </div>
     </div>
