@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import {CardModule} from 'primeng/card';
-import {Checkbox} from 'primeng/checkbox';
+import { CardModule } from 'primeng/card';
+import { Checkbox } from 'primeng/checkbox';
 import { CommonModule } from '@angular/common';
 import { Button } from 'primeng/button';
 import { FormsModule } from '@angular/forms';  // Adaugă acest import
@@ -18,13 +18,17 @@ export class PielistComponent {
   @Input() itemType: string = '';
   @Input() listTitle: string = '';
 
-  constructor(private router: Router){}
+  constructor(private router: Router) { }
   markAsDone(item: any) {
     item.done = true;
   }
 
-  
+
   goToPage(url: string) {
     this.router.navigate([url]);
+  }
+
+  dismissNotification(item: any) {
+    item.dismissed = true;
   }
 }

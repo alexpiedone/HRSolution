@@ -9,23 +9,38 @@
     <div class="flex gap-12">
       <div class="flex gap-12">
         <ng-container *ngFor="let card of cards; let i = index">
-          <app-piecard [card] = "card"></app-piecard>
-          <p-divider *ngIf="i < cards.length - 1"  layout="vertical" />
-          </ng-container>
+          <app-piecard [card]="card"></app-piecard>
+          <p-divider *ngIf="i < cards.length - 1" layout="vertical" />
+        </ng-container>
       </div>
     </div>
   </p-card>
   <div></div>
-  
-  <app-pielist [items]="tasks" itemType="task"></app-pielist>
-  
-  <div *ngIf="showColleagues" class="bg-white p-4 rounded-2xl shadow col-span-1 md:col-span-2">
-    <h2 class="text-lg font-semibold mb-4">Colleagues</h2>
-    <div class="overflow-x-auto whitespace-nowrap space-x-4 flex">
-      <div *ngFor="let person of colleagues" class="inline-block text-center">
-        <p-avatar [image]="person.avatar" shape="circle" size="xlarge"></p-avatar>
-        <p class="text-sm mt-1">{{ person.name }}</p>
+  <div *ngIf="showColleagues" class="bg-white p-4 rounded-2xl shadow-md col-span-1 md:col-span-2">
+    <div class="flex items-center justify-between mb-4">
+      <p class="text-xl font-semibold text-gray-800">Colleagues</p>
+      <input pInputText [(ngModel)]="searchText" placeholder="Caută coleg..." class="w-full md:w-1/3 p-inputtext-sm" />
+    </div>
+    <div class="overflow-x-auto p-2 w-full">
+      <div class="inline-flex space-x-4"> 
+        <p-card *ngFor="let person of filteredColleagues()" class="shadow-xl" [style]="{ 'width': '250px' }">
+          <p-header class="flex justify-center items-center">
+            <p-avatar [image]="person.avatar" size="xlarge"></p-avatar>
+          </p-header>
+          <div class="p-4">
+            <h3 class="text-lg font-semibold text-gray-800">{{ person.name }}</h3>
+            <p class="text-sm text-gray-600 truncate">{{ person.role }}</p>
+          </div>
+        </p-card>
       </div>
     </div>
   </div>
+
+  <div></div>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <app-pielist [items]="tasks" itemType="task"></app-pielist>
+      <app-pielist [items]="notifications" itemType="notification"></app-pielist>
+  </div>
+
 </div>

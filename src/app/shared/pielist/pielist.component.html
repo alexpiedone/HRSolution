@@ -1,12 +1,15 @@
 <p-card [header]="listTitle ? listTitle : (itemType | titlecase) + ' List'" class="mb-4">
     <ul class="list-none p-0">
         <li *ngFor="let item of items" class="flex items-center justify-between py-2 px-4">
+            
+            <!-- Task fără acțiune -->
             <div *ngIf="!item.action" class="flex items-center">
                 <p-checkbox [(ngModel)]="item.done" class="mr-3"
                     [disabled]="item.done !== undefined && item.done"></p-checkbox>
                 <span [ngClass]="{'text-gray-500 line-through': item.done}" class="text-lg">{{ item.label }}</span>
             </div>
 
+            <!-- Task cu buton de completat -->
             <div *ngIf="item.action?.type === 'button'" class="flex items-center">
                 <p-checkbox [(ngModel)]="item.done" class="mr-3"
                     [disabled]="item.done !== undefined && item.done"></p-checkbox>
@@ -15,6 +18,7 @@
                     (click)="markAsDone(item)" class="p-button-sm"></p-button>
             </div>
 
+            <!-- Task cu redirecționare -->
             <div *ngIf="item.action?.type === 'redirect'" class="flex items-center">
                 <p-checkbox [(ngModel)]="item.done" class="mr-3" [disabled]="item.done !== undefined && item.done"></p-checkbox>
                 <span 
@@ -23,7 +27,10 @@
                   (click)="goToPage(item.action.url)">
                   {{ item.label }}
                 </span>
-              </div>
+            </div>
+            <div *ngIf="item.action?.type === 'notification'" class="flex items-center">
+                <span class="bg-blue-400" >{{ item.label }} </span>
+            </div>
               
         </li>
     </ul>
