@@ -1,8 +1,8 @@
 <div class="p-6 space-y-6">
   <div class="flex items-center justify-between">
     <div>
-      <h1 class="text-3xl font-bold text-gray-800">Welcome, Shadow</h1>
-      <p class="text-gray-600">Developer</p>
+      <h1 class="pie-info-header">Welcome, Shadow</h1>
+      <p class="pie-info-text">Developer</p>
     </div>
   </div>
   <p-card styleClass="p-4">
@@ -18,7 +18,7 @@
   <div></div>
   <div *ngIf="showColleagues" class="bg-white p-4 rounded-2xl shadow-md col-span-1 md:col-span-2">
     <div class="flex items-center justify-between mb-4">
-      <p class="text-xl font-semibold text-gray-800">Colleagues</p>
+      <p class="pie-info-text">Colleagues</p>
       <input pInputText [(ngModel)]="searchText" placeholder="Caută coleg..." class="w-full md:w-1/3 p-inputtext-sm" />
     </div>
     <div class="overflow-x-auto p-2 w-full">
@@ -29,8 +29,8 @@
             <p-avatar [image]="person.avatar" size="xlarge"></p-avatar>
           </p-header>
           <div class="p-4 ">
-            <h3 class="text-lg font-semibold text-gray-800">{{ person.name }}</h3>
-            <p class="text-sm text-gray-600 truncate">{{ person.role }}</p>
+            <h3 class="pie-info-header">{{ person.name }}</h3>
+            <p class="pie-info-text truncate">{{ person.role }}</p>
           </div>
         </p-card>
       </div>
@@ -51,24 +51,22 @@
     </ng-template>
     <ng-template pTemplate="content">
       <div *ngIf="selectedColleague" class="text-gray-800 space-y-6">
-        <!-- Avatar și Nume -->
         <div class="flex items-center space-x-4">
-          <p-avatar [image]="selectedColleague.avatar" size="xlarge" shape="circle" class="shadow-lg"></p-avatar>
+          <p-avatar [image]="selectedColleague.avatar" (click)="showAvatarDialog = true" shape="circle" size="xlarge"
+            class="shadow-lg cursor-pointer hover:bg-blue-100" />
           <div>
-            <h2 class="text-2xl font-semibold">{{ selectedColleague.name }}</h2>
-            <p class="text-sm text-gray-500 italic">{{ selectedColleague.role }}</p>
+            <h2 class="pie-info-header">{{ selectedColleague.name }}</h2>
+            <p class="pie-info-text">{{ selectedColleague.role }}</p>
           </div>
         </div>
 
-        <!-- Responsabilități -->
         <div>
-          <h3 class="text-lg font-semibold mb-1">Responsibilities</h3>
-          <p class="text-gray-600">{{ selectedColleague.responsibilities }}</p>
+          <h3 class="pie-info-header">Responsibilities</h3>
+          <p class="pie-info-text">{{ selectedColleague.responsibilities }}</p>
         </div>
 
-        <!-- Proiecte -->
         <div>
-          <h3 class="text-lg font-semibold mb-1">Projects</h3>
+          <h3 class="pie-info-header">Projects</h3>
           <ul class="list-disc pl-5 text-gray-600">
             <li *ngFor="let project of selectedColleague.projects">{{ project }}</li>
           </ul>
@@ -76,13 +74,19 @@
 
         <!-- Contact -->
         <div>
-          <h3 class="text-lg font-semibold mb-1">Contact Info</h3>
+          <h3 class="pie-info-header">Contact Info</h3>
           <p><i class="pi pi-envelope mr-2 text-blue-500"></i>{{ selectedColleague.email }}</p>
           <p><i class="pi pi-phone mr-2 text-green-500"></i>{{ selectedColleague.phone }}</p>
         </div>
       </div>
     </ng-template>
+  </p-dialog>
 
+  <p-dialog [(visible)]="showAvatarDialog" [modal]="true" [closable]="true" [dismissableMask]="true"
+    [style]="{width: 'auto'}">
+    <ng-template pTemplate="content">
+      <img [src]="selectedColleague.avatar" alt="Avatar" class="rounded-2xl shadow-xl max-w-full h-auto mx-auto" />
+    </ng-template>
   </p-dialog>
 
 </div>

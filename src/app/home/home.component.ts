@@ -21,6 +21,7 @@ import { Dialog } from 'primeng/dialog';
 export class HomeComponent {
   showColleagues: boolean = false;
   displayDialog: boolean = false;
+  showAvatarDialog: boolean = false;
   selectedColleague: any = null;
   searchText = '';
   toggleColleagues() {
