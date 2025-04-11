@@ -8,19 +8,29 @@ import { PiecardCard, PiecardComponent } from '../shared/piecard/piecard.compone
 import { PielistComponent } from '../shared/pielist/pielist.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
+import { Dialog } from 'primeng/dialog';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterModule, CommonModule, Avatar, CardModule, Divider, PiecardComponent, PielistComponent, InputTextModule, FormsModule],
+  imports: [RouterModule, CommonModule, Avatar, CardModule,
+    Divider, PiecardComponent, PielistComponent,
+    InputTextModule, FormsModule, Dialog],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  showColleagues = false;
+  showColleagues: boolean = false;
+  displayDialog: boolean = false;
+  selectedColleague: any = null;
   searchText = '';
   toggleColleagues() {
     this.showColleagues = !this.showColleagues;
   };
+
+  selectColleague(colleague: any) {
+    this.selectedColleague = colleague;
+    this.displayDialog = true;
+  }
 
   tasks = [
     {
@@ -79,48 +89,60 @@ export class HomeComponent {
   notifications = [
     {
       label: 'Nouă actualizare disponibilă!',
-      action: { type: 'notification'},
+      action: { type: 'notification' },
       dismissed: false
     },
     {
       label: 'Ești invitat la o ședință la ora 15:00',
-      action: { type: 'notification'},
+      action: { type: 'notification' },
       dismissed: false
     },
-    
+
     {
       label: 'Pe 15 Aprilie te asteapta un cadou din partea iepurasului de Paște!',
-      action: { type: 'notification'},
+      action: { type: 'notification' },
       dismissed: false
     },
   ];
-
   colleagues = [
-    { 
-      name: 'Shadow', 
-      avatar: 'fearless-tab-shadow.png', 
-      role: 'Lead Developer', 
-      responsibilities: 'Developing the core application features and leading the development team.' 
+    {
+      name: 'Shadow',
+      avatar: 'fearless-tab-shadow.png',
+      role: 'Lead Developer',
+      responsibilities: 'Developing the core application features and leading the development team.',
+      email: 'shadow@helpiehr.ro',
+      phone: '0740 111 222',
+      projects: ['Chaos Engine', 'Mobius Core', 'Dark UI System']
     },
-    { 
-      name: 'Tails', 
-      avatar: 'tails.png', 
-      role: 'Frontend Developer', 
-      responsibilities: 'Building and maintaining the user interface and ensuring responsiveness.' 
+    {
+      name: 'Tails',
+      avatar: 'tails.png',
+      role: 'Frontend Developer',
+      responsibilities: 'Building and maintaining the user interface and ensuring responsiveness.',
+      email: 'tails@helpiehr.ro',
+      phone: '0741 333 444',
+      projects: ['UI Overhaul', 'Component Library', 'Tailwind Theme']
     },
-    { 
-      name: 'Knuckles', 
-      avatar: 'knuckles.png', 
-      role: 'Backend Developer', 
-      responsibilities: 'Developing server-side logic and APIs for the application.' 
+    {
+      name: 'Knuckles',
+      avatar: 'knuckles.png',
+      role: 'Backend Developer',
+      responsibilities: 'Developing server-side logic and APIs for the application.',
+      email: 'knuckles@helpiehr.ro',
+      phone: '0742 555 666',
+      projects: ['REST API', 'Data Sync Engine', 'Auth Gateway']
     },
-    { 
-      name: 'Dr. Eggman', 
-      avatar: 'drEggman.png', 
-      role: 'Project Manager', 
-      responsibilities: 'Managing project timelines, ensuring team productivity, and overseeing the workflow.' 
+    {
+      name: 'Dr. Eggman',
+      avatar: 'drEggman.png',
+      role: 'Project Manager',
+      responsibilities: 'Managing project timelines, ensuring team productivity, and overseeing the workflow.',
+      email: 'eggman@helpiehr.ro',
+      phone: '0743 777 888',
+      projects: ['Timeline Tracker', 'Task Assignment System', 'Productivity Metrics']
     }
   ];
+  
 
   filteredColleagues() {
     const query = this.searchText.toLowerCase();
