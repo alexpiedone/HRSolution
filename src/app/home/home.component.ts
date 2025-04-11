@@ -79,11 +79,19 @@ export class HomeComponent {
   notifications = [
     {
       label: 'Nouă actualizare disponibilă!',
-      action: { type: 'notification'}
+      action: { type: 'notification'},
+      dismissed: false
     },
     {
       label: 'Ești invitat la o ședință la ora 15:00',
-      action: { type: 'notification'}
+      action: { type: 'notification'},
+      dismissed: false
+    },
+    
+    {
+      label: 'Pe 15 Aprilie te asteapta un cadou din partea iepurasului de Paște!',
+      action: { type: 'notification'},
+      dismissed: false
     },
   ];
 

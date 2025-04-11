@@ -1,7 +1,7 @@
 <p-card [header]="listTitle ? listTitle : (itemType | titlecase) + ' List'" class="mb-4">
     <ul class="list-none p-0">
         <li *ngFor="let item of items" class="flex items-center justify-between py-2 px-4">
-            
+
             <!-- Task fără acțiune -->
             <div *ngIf="!item.action" class="flex items-center">
                 <p-checkbox [(ngModel)]="item.done" class="mr-3"
@@ -20,18 +20,23 @@
 
             <!-- Task cu redirecționare -->
             <div *ngIf="item.action?.type === 'redirect'" class="flex items-center">
-                <p-checkbox [(ngModel)]="item.done" class="mr-3" [disabled]="item.done !== undefined && item.done"></p-checkbox>
-                <span 
-                  [ngClass]="{'text-gray-500 line-through': item.done}" 
-                  class="text-lg cursor-pointer hover:shadow-md hover:bg-blue-100 hover:text-blue-700 p-2 rounded transition-all" 
-                  (click)="goToPage(item.action.url)">
-                  {{ item.label }}
+                <p-checkbox [(ngModel)]="item.done" class="mr-3"
+                    [disabled]="item.done !== undefined && item.done"></p-checkbox>
+                <span [ngClass]="{'text-gray-500 line-through': item.done}"
+                    class="text-lg cursor-pointer hover:shadow-md hover:bg-blue-100 hover:text-blue-700 p-2 rounded transition-all"
+                    (click)="goToPage(item.action.url)">
+                    {{ item.label }}
                 </span>
             </div>
-            <div *ngIf="item.action?.type === 'notification'" class="flex items-center">
-                <span class="bg-blue-400" >{{ item.label }} </span>
+            <div *ngIf="item.action?.type === 'notification'"
+                class="flex items-center justify-between cursor-pointer hover:bg-blue-100 hover:text-blue-700 p-2 rounded-xl transition-all w-full"
+                (click)="dismissNotification(item)" [ngClass]="{'line-through': item.isDismissed}">
+                <span class="text-lg">
+                    {{ item.label }}
+                </span>
+                <i class="pi pi-eye text-blue-500 text-xl ml-4"></i>
             </div>
-              
+
         </li>
     </ul>
 </p-card>

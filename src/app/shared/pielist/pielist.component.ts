@@ -29,6 +29,8 @@ export class PielistComponent {
   }
 
   dismissNotification(item: any) {
-    item.dismissed = true;
+    console.log('Dismissed item:', item);
+    item.isDismissed = true;
   }
+  
 }
