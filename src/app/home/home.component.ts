@@ -9,6 +9,8 @@ import { PielistComponent } from '../shared/pielist/pielist.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { Dialog } from 'primeng/dialog';
+import { NewsService } from '../news/news.service';
+import { NewsItem } from '../models/newsitem';
 
 @Component({
   selector: 'app-home',
@@ -24,6 +26,20 @@ export class HomeComponent {
   showAvatarDialog: boolean = false;
   selectedColleague: any = null;
   searchText = '';
+  notifications: any[] = [];
+
+  constructor(private newsService: NewsService) { }
+  ngOnInit() {
+    console.log('componenta s a initializat');
+     this.newsService.getAllNews().subscribe(newsItems => {
+      console.log('se aduc news items', newsItems);
+      this.notifications = newsItems.map(item => ({
+        label: item.title,
+        action: { type: 'notification', content: item.content },
+        dismissed: false
+      }));
+    });
+  }
   toggleColleagues() {
     this.showColleagues = !this.showColleagues;
   };
@@ -87,24 +103,6 @@ export class HomeComponent {
     }
   ];
 
-  notifications = [
-    {
-      label: 'Nouă actualizare disponibilă!',
-      action: { type: 'notification' },
-      dismissed: false
-    },
-    {
-      label: 'Ești invitat la o ședință la ora 15:00',
-      action: { type: 'notification' },
-      dismissed: false
-    },
-
-    {
-      label: 'Pe 15 Aprilie te asteapta un cadou din partea iepurasului de Paște!',
-      action: { type: 'notification' },
-      dismissed: false
-    },
-  ];
   colleagues = [
     {
       name: 'Shadow',

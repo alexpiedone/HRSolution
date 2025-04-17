@@ -12,6 +12,7 @@ export class NewsService {
   constructor(private http: HttpClient) {}
 
   getAllNews(): Observable<NewsItem[]> {
+    console.log('se aduc news items');
     return this.http.get<NewsItem[]>(`${this.baseUrl}/GetAll`);
   }
 }
