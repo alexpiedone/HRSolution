@@ -30,9 +30,7 @@ export class HomeComponent {
 
   constructor(private newsService: NewsService) { }
   ngOnInit() {
-    console.log('componenta s a initializat');
      this.newsService.getAllNews().subscribe(newsItems => {
-      console.log('se aduc news items', newsItems);
       this.notifications = newsItems.map(item => ({
         label: item.title,
         action: { type: 'notification', content: item.content },

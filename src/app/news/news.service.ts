@@ -7,12 +7,11 @@ import { NewsItem } from '../models/newsitem';
   providedIn: 'root',
 })
 export class NewsService {
-  private baseUrl = 'https://localhost:7124/api/News';
+  private baseUrl = 'http://localhost:5186/api/News';
 
   constructor(private http: HttpClient) {}
 
   getAllNews(): Observable<NewsItem[]> {
-    console.log('se aduc news items');
     return this.http.get<NewsItem[]>(`${this.baseUrl}/GetAll`);
   }
 }
