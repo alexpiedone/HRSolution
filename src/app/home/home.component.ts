@@ -30,8 +30,11 @@ export class HomeComponent {
   constructor(private newsService: NewsService) { }
   ngOnInit() {
       this.newsService.getAll().subscribe((data) => {
-        console.log(data);
-        this.news = data;
+        
+        this.news = data.map(item => ({
+          label: item.title,
+          description: item.content
+        }));
       });
   }
   toggleColleagues() {
