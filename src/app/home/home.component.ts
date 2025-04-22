@@ -29,7 +29,9 @@ export class HomeComponent {
 
   constructor(private newsService: NewsService) { }
   ngOnInit() {
-      this.newsService.getAll();
+      this.newsService.getAll().subscribe((data) => {
+        this.news = data;
+      });
   }
   toggleColleagues() {
     this.showColleagues = !this.showColleagues;
