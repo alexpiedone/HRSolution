@@ -16,31 +16,35 @@
     </div>
   </p-card>
   <div></div>
-  <div *ngIf="showColleagues" class="bg-white p-4 rounded-2xl shadow-md col-span-1 md:col-span-2">
-    <div class="flex items-center justify-between mb-4">
-      <p class="pie-info-text">Colleagues</p>
-      <input pInputText [(ngModel)]="searchText" placeholder="Caută coleg..." class="w-full md:w-1/3 p-inputtext-sm" />
-    </div>
-    <div class="overflow-x-auto p-2 w-full">
-      <div class="inline-flex space-x-4">
-        <p-card *ngFor="let person of filteredColleagues()" class="shadow-xs hover:shadow-2xl cursor-pointer "
-          [style]="{ 'width': '250px' }" (click)="selectColleague(person)">
-          <p-header class="flex justify-center items-center">
-            <p-avatar [image]="person.avatar" size="xlarge"></p-avatar>
-          </p-header>
-          <div class="p-4 ">
-            <h3 class="pie-info-header">{{ person.name }}</h3>
-            <p class="pie-info-text truncate">{{ person.role }}</p>
-          </div>
-        </p-card>
+  
+  @if(showColleagues){
+    <div class="bg-white p-4 rounded-2xl shadow-md col-span-1 md:col-span-2">
+      <div class="flex items-center justify-between mb-4">
+        <p class="pie-info-text">Colleagues</p>
+        <input pInputText [(ngModel)]="searchText" placeholder="Caută coleg..." class="w-full md:w-1/3 p-inputtext-sm" />
+      </div>
+      <div class="overflow-x-auto p-2 w-full">
+        <div class="inline-flex space-x-4">
+          <p-card *ngFor="let person of filteredColleagues()" class="shadow-xs hover:shadow-2xl cursor-pointer "
+            [style]="{ 'width': '250px' }" (click)="selectColleague(person)">
+            <p-header class="flex justify-center items-center">
+              <p-avatar [image]="person.avatar" size="xlarge"></p-avatar>
+            </p-header>
+            <div class="p-4 ">
+              <h3 class="pie-info-header">{{ person.name }}</h3>
+              <p class="pie-info-text truncate">{{ person.role }}</p>
+            </div>
+          </p-card>
+        </div>
       </div>
     </div>
-  </div>
+  }
+ 
 
   <div></div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <app-pielist [items]="tasks" itemType="redirect"></app-pielist>
+    <app-pielist [items]="tasks" itemType="redirect" listTitle="Mici pași, mari rezultate"></app-pielist>
     <app-pielist [items]="news" itemType="notification" listTitle="Newsletter 📰"></app-pielist>
   </div>
 
@@ -71,8 +75,6 @@
             <li *ngFor="let project of selectedColleague.projects">{{ project }}</li>
           </ul>
         </div>
-
-        <!-- Contact -->
         <div>
           <h3 class="pie-info-header">Contact Info</h3>
           <p><i class="pi pi-envelope mr-2 text-blue-500"></i>{{ selectedColleague.email }}</p>

@@ -30,7 +30,7 @@
             </div>
             <div *ngIf="itemType === 'notification'"
                 class="flex items-center justify-between cursor-pointer hover:bg-blue-100 hover:text-blue-700 p-2 rounded-xl transition-all w-full"
-                (click)="dismissNotification(item)" [ngClass]="{'line-through': item.isDismissed}">
+                (click)="showDialog(item)" [ngClass]="{'line-through': item.isDismissed}">
                 <span class="text-lg">
                     {{ item.label }}
                 </span>
@@ -40,3 +40,19 @@
         </li>
     </ul>
 </p-card>
+
+
+
+<p-dialog [(visible)]="displayDialog" [modal]="true" [responsive]="true" [style]="{width: '50vw'}">
+    <ng-template pTemplate="header">
+      <span>Detalii stire</span>
+    </ng-template>
+    <ng-template pTemplate="content">
+        <div class="flex items-center space-x-4">
+          <div>
+            <h2 class="pie-info-header">{{ selectedItem.label }}</h2>
+            <p class="pie-info-text">{{ selectedItem.description }}</p>
+          </div>
+        </div>
+    </ng-template>
+</p-dialog>
