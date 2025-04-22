@@ -2,33 +2,46 @@ import { Injectable } from '@angular/core';
 import { Inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-
+import { catchError, tap } from 'rxjs/operators';
+import { LoggingService } from './services/logging.service';
+import { environment } from '../../environment/environment';
+  
 @Injectable({ providedIn: 'root' })
 export class ApiService<T> {
   constructor(
     protected http: HttpClient,
+    private loggingService: LoggingService,
     @Inject(String) protected endpoint: string
   ) {}
 
   getAll(): Observable<T[]> {
-    return this.http.get<T[]>(`${this.endpoint}`).pipe(catchError(this.handleError));
+    return this.http.get<T[]>(`${environment.apiUrl}/${this.endpoint}`).pipe(
+      tap({
+        next: (data) => {
+          this.loggingService.log(`Received data from ${this.endpoint}`, 'info');
+        },
+        error: (error) => {
+          this.loggingService.log(`Error during GET request to ${this.endpoint}: ${error.message}`, 'error');
+        }
+      }),
+      catchError(this.handleError)
+    );
   }
 
   getById(id: number): Observable<T> {
-    return this.http.get<T>(`${this.endpoint}/${id}`).pipe(catchError(this.handleError));
+    return this.http.get<T>(`${environment.apiUrl}/${this.endpoint}/${id}`).pipe(catchError(this.handleError));
   }
 
   create(item: T): Observable<T> {
-    return this.http.post<T>(`${this.endpoint}`, item).pipe(catchError(this.handleError));
+    return this.http.post<T>(`${environment.apiUrl}/${this.endpoint}`, item).pipe(catchError(this.handleError));
   }
 
   update(id: number, item: T): Observable<T> {
-    return this.http.put<T>(`${this.endpoint}/${id}`, item).pipe(catchError(this.handleError));
+    return this.http.put<T>(`${environment.apiUrl}/${this.endpoint}`, item).pipe(catchError(this.handleError));
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.endpoint}/${id}`).pipe(catchError(this.handleError));
+    return this.http.delete<void>(`${environment.apiUrl}/${this.endpoint}`).pipe(catchError(this.handleError));
   }
 
   protected handleError(error: HttpErrorResponse) {

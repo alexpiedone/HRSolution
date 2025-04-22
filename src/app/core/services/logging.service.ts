@@ -25,7 +25,7 @@ export class LoggingService {
       });
     }
 
-    this.http.post('/api/logs', logEntry).subscribe({
+    this.http.post(`${environment.apiUrl}/logs/Create`, logEntry).subscribe({
       error: (err) => console.error('Nu am putut trimite logul:', err)
     });
   }
