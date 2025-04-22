@@ -9,8 +9,7 @@ import { PielistComponent } from '../shared/pielist/pielist.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { Dialog } from 'primeng/dialog';
-import { NewsService } from '../news/news.service';
-import { NewsItem } from '../models/newsitem';
+import { NewsService } from '../core/features/news/news.service';
 
 @Component({
   selector: 'app-home',
@@ -26,17 +25,11 @@ export class HomeComponent {
   showAvatarDialog: boolean = false;
   selectedColleague: any = null;
   searchText = '';
-  notifications: any[] = [];
+  news: any[] = [];
 
   constructor(private newsService: NewsService) { }
   ngOnInit() {
-     this.newsService.getAllNews().subscribe(newsItems => {
-      this.notifications = newsItems.map(item => ({
-        label: item.title,
-        action: { type: 'notification', content: item.content },
-        dismissed: false
-      }));
-    });
+      this.newsService.getAll();
   }
   toggleColleagues() {
     this.showColleagues = !this.showColleagues;
