@@ -15,7 +15,7 @@ export class ApiService<T> {
   ) {}
 
   getAll(): Observable<T[]> {
-    return this.http.get<T[]>(`${environment.apiUrl}/${this.endpoint}`).pipe(
+    return this.http.get<T[]>(`${environment.apiUrl}/${this.endpoint}/GetAll`).pipe(
       tap({
         next: (data) => {
           this.loggingService.log(`Received data from ${this.endpoint}`, 'info');
@@ -29,22 +29,24 @@ export class ApiService<T> {
   }
 
   getById(id: number): Observable<T> {
-    return this.http.get<T>(`${environment.apiUrl}/${this.endpoint}/${id}`).pipe(catchError(this.handleError));
+    return this.http.get<T>(`${environment.apiUrl}/${this.endpoint}/GetById/${id}`).pipe(catchError(this.handleError));
   }
 
   create(item: T): Observable<T> {
-    return this.http.post<T>(`${environment.apiUrl}/${this.endpoint}`, item).pipe(catchError(this.handleError));
+    return this.http.post<T>(`${environment.apiUrl}/${this.endpoint}/Create`, item).pipe(catchError(this.handleError));
   }
 
   update(id: number, item: T): Observable<T> {
-    return this.http.put<T>(`${environment.apiUrl}/${this.endpoint}`, item).pipe(catchError(this.handleError));
+    return this.http.put<T>(`${environment.apiUrl}/${this.endpoint}/Update`, item).pipe(catchError(this.handleError));
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${environment.apiUrl}/${this.endpoint}`).pipe(catchError(this.handleError));
+    return this.http.delete<void>(`${environment.apiUrl}/${this.endpoint}/Delete`).pipe(catchError(this.handleError));
   }
 
   protected handleError(error: HttpErrorResponse) {
+    console.error(error);
+
     const msg = error.error?.message || 'Eroare la comunicarea cu serverul';
     console.error(`[API Error] ${msg}`);
     return throwError(() => new Error(msg));
