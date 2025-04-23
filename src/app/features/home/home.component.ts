@@ -4,12 +4,12 @@ import { RouterModule } from '@angular/router'
 import { Avatar } from 'primeng/avatar';
 import { CardModule } from 'primeng/card';
 import { Divider } from 'primeng/divider';
-import { PiecardCard, PiecardComponent } from '../shared/piecard/piecard.component';
-import { PielistComponent } from '../shared/pielist/pielist.component';
+import { PiecardCard , PiecardComponent} from '../../shared/piecard/piecard.component';
+import { PielistComponent } from '../../shared/pielist/pielist.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { Dialog } from 'primeng/dialog';
-import { NewsService } from '../core/features/news/news.service';
+import { NewsService } from '../news/news.service';
 
 @Component({
   selector: 'app-home',
