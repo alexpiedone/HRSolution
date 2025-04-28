@@ -1,10 +1,10 @@
 import { Routes, CanActivateFn, Router } from '@angular/router';
 import { authGuard } from './auth/auth.guard';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './features/home/home.component';
 import { inject } from '@angular/core'; 
 import { AuthService } from './auth/auth.service'; 
 import { LoginComponent } from './auth/components/login/login.component';
-import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
+import { MainLayoutComponent } from './features/layout/main-layout/main-layout.component';
 const redirectBasedOnAuth: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);

@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { NewsItem } from '../../../models/newsitem';
-import { ApiService } from '../../services/api.service';
-import { LoggingService } from '../../services/logging.service';
-
+import { NewsItem } from '../../models/newsitem';
+import { ApiService } from '../../core/services/api.service';
+import { LoggingService } from '../../core/services/logging.service';
 @Injectable({providedIn: 'root'})
 export class NewsService extends ApiService<NewsItem> {
 
