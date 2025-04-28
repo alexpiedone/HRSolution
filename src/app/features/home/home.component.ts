@@ -10,6 +10,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { Dialog } from 'primeng/dialog';
 import { NewsService } from '../news/news.service';
+import { UsersService } from '../users/users.service';
 
 @Component({
   selector: 'app-home',
@@ -26,8 +27,9 @@ export class HomeComponent {
   selectedColleague: any = null;
   searchText = '';
   news: any[] = [];
-
-  constructor(private newsService: NewsService) { }
+  colleagues: any[] = [];
+ 
+  constructor(private newsService: NewsService, private usersService: UsersService) { }
   ngOnInit() {
       this.newsService.getAll().subscribe((data) => {
         
@@ -36,6 +38,18 @@ export class HomeComponent {
           description: item.content
         }));
       });
+
+      this.loadColleagues();
+  }
+  private loadColleagues(): void {
+    this.usersService.getColleagues().subscribe({
+      next: (data) => {
+        this.colleagues = data;
+      },
+      error: (err) => {
+        console.error('Error loading colleagues', err);
+      }
+    });
   }
   toggleColleagues() {
     this.showColleagues = !this.showColleagues;
@@ -100,44 +114,44 @@ export class HomeComponent {
     }
   ];
 
-  colleagues = [
-    {
-      name: 'Shadow',
-      avatar: 'fearless-tab-shadow.png',
-      role: 'Lead Developer',
-      responsibilities: 'Developing the core application features and leading the development team.',
-      email: 'shadow@helpiehr.ro',
-      phone: '0740 111 222',
-      projects: ['Chaos Engine', 'Mobius Core', 'Dark UI System']
-    },
-    {
-      name: 'Tails',
-      avatar: 'tails.png',
-      role: 'Frontend Developer',
-      responsibilities: 'Building and maintaining the user interface and ensuring responsiveness.',
-      email: 'tails@helpiehr.ro',
-      phone: '0741 333 444',
-      projects: ['UI Overhaul', 'Component Library', 'Tailwind Theme']
-    },
-    {
-      name: 'Knuckles',
-      avatar: 'knuckles.png',
-      role: 'Backend Developer',
-      responsibilities: 'Developing server-side logic and APIs for the application.',
-      email: 'knuckles@helpiehr.ro',
-      phone: '0742 555 666',
-      projects: ['REST API', 'Data Sync Engine', 'Auth Gateway']
-    },
-    {
-      name: 'Dr. Eggman',
-      avatar: 'drEggman.png',
-      role: 'Project Manager',
-      responsibilities: 'Managing project timelines, ensuring team productivity, and overseeing the workflow.',
-      email: 'eggman@helpiehr.ro',
-      phone: '0743 777 888',
-      projects: ['Timeline Tracker', 'Task Assignment System', 'Productivity Metrics']
-    }
-  ];
+  // colleagues = [
+  //   {
+  //     name: 'Shadow',
+  //     avatar: 'fearless-tab-shadow.png',
+  //     role: 'Lead Developer',
+  //     responsibilities: 'Developing the core application features and leading the development team.',
+  //     email: 'shadow@helpiehr.ro',
+  //     phone: '0740 111 222',
+  //     projects: ['Chaos Engine', 'Mobius Core', 'Dark UI System']
+  //   },
+  //   {
+  //     name: 'Tails',
+  //     avatar: 'tails.png',
+  //     role: 'Frontend Developer',
+  //     responsibilities: 'Building and maintaining the user interface and ensuring responsiveness.',
+  //     email: 'tails@helpiehr.ro',
+  //     phone: '0741 333 444',
+  //     projects: ['UI Overhaul', 'Component Library', 'Tailwind Theme']
+  //   },
+  //   {
+  //     name: 'Knuckles',
+  //     avatar: 'knuckles.png',
+  //     role: 'Backend Developer',
+  //     responsibilities: 'Developing server-side logic and APIs for the application.',
+  //     email: 'knuckles@helpiehr.ro',
+  //     phone: '0742 555 666',
+  //     projects: ['REST API', 'Data Sync Engine', 'Auth Gateway']
+  //   },
+  //   {
+  //     name: 'Dr. Eggman',
+  //     avatar: 'drEggman.png',
+  //     role: 'Project Manager',
+  //     responsibilities: 'Managing project timelines, ensuring team productivity, and overseeing the workflow.',
+  //     email: 'eggman@helpiehr.ro',
+  //     phone: '0743 777 888',
+  //     projects: ['Timeline Tracker', 'Task Assignment System', 'Productivity Metrics']
+  //   }
+  // ];
   
 
   filteredColleagues() {
