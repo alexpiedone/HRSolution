@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router'
 import { Avatar } from 'primeng/avatar';
 import { CardModule } from 'primeng/card';
 import { Divider } from 'primeng/divider';
-import { PiecardCard , PiecardComponent} from '../../shared/piecard/piecard.component';
+import { PiecardCard, PiecardComponent } from '../../shared/piecard/piecard.component';
 import { PielistComponent } from '../../shared/pielist/pielist.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
@@ -32,7 +32,6 @@ export class HomeComponent {
   constructor(private newsService: NewsService, private usersService: UsersService) { }
   ngOnInit() {
       this.newsService.getAll().subscribe((data) => {
-        
         this.news = data.map(item => ({
           label: item.title,
           description: item.content
