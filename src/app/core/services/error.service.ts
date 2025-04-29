@@ -28,7 +28,7 @@ export class ErrorService {
       console.error('Server-side error:', error);
     }
 
-    this._error$.next(errorMessage);
+    this._error$.next(errorMessage+ '\n' + error.message); // Emit the error message to subscribers
     // this._errorsignal.set(errorMessage); 
   }
 

@@ -37,8 +37,6 @@ export class HomeComponent {
           description: item.content
         }));
       });
-
-      this.loadColleagues();
   }
   private loadColleagues(): void {
     this.usersService.getColleagues().subscribe({
@@ -52,6 +50,9 @@ export class HomeComponent {
   }
   toggleColleagues() {
     this.showColleagues = !this.showColleagues;
+    if (this.showColleagues) {
+      this.loadColleagues();
+    }
   };
 
   selectColleague(colleague: any) {
