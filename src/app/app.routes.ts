@@ -1,9 +1,9 @@
 import { Routes, CanActivateFn, Router } from '@angular/router';
-import { authGuard } from './auth/auth.guard';
+import { authGuard } from './features/auth/auth.guard';
 import { HomeComponent } from './features/home/home.component';
 import { inject } from '@angular/core'; 
-import { AuthService } from './auth/auth.service'; 
-import { LoginComponent } from './auth/components/login/login.component';
+import { AuthService } from './features/auth/auth.service';
+import { LoginComponent } from './features/auth/login/login.component';
 import { MainLayoutComponent } from './features/layout/main-layout/main-layout.component';
 const redirectBasedOnAuth: CanActivateFn = () => {
   const authService = inject(AuthService);
@@ -59,7 +59,7 @@ export const routes: Routes = [
   {
     path: 'auth/login',
     loadComponent: () =>
-      import('./auth/components/login/login.component').then((m) => m.LoginComponent),
+      import('./features/auth/login/login.component').then((m) => m.LoginComponent),
   },
   
 ];
