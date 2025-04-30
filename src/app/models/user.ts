@@ -15,7 +15,7 @@ export interface Colleague {
     name: string;
     email?: string;
     phone?: string;
-    avatarUrl?: string;
+    avatar?: string;
     responsibilities?: string;
     projects: string[];
   }

@@ -23,7 +23,7 @@ export class UsersService extends ApiService<User> {
           name: u.name,
           email: u.email,
           phone: u.phone,
-          avatarUrl: u.avatarUrl,
+          avatar: u.avatar,
           responsibilities: u.responsibilities,
           projects: u.projects
         }))
