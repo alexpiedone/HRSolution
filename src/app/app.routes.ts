@@ -36,22 +36,22 @@ export const routes: Routes = [
       {
         path: 'Documents',
         loadComponent: () =>
-          import('./people/components/document-list/document-list.component').then(
-            (m) => m.DocumentListComponent
+          import('./features/auth/login/login.component').then(
+            (m) => m.LoginComponent
           ),
       },
       {
         path: 'EmployeeDetails',
         loadComponent: () =>
-          import('./people/components/employee-details/employee-details.component').then(
-            (m) => m.EmployeeDetailsComponent
+          import('./features/auth/login/login.component').then(
+            (m) => m.LoginComponent
           ),
       },
       {
         path: 'leaveRequest',
         loadComponent: () =>
-          import('./people/components/leave-request/leave-request.component').then(
-            (m) => m.LeaveRequestComponent
+          import('./features/auth/login/login.component').then(
+            (m) => m.LoginComponent
           ),
       },
     ],

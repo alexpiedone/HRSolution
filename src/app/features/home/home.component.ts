@@ -11,12 +11,14 @@ import { FormsModule } from '@angular/forms';
 import { Dialog } from 'primeng/dialog';
 import { NewsService } from '../news/news.service';
 import { UsersService } from '../users/users.service';
+import { EventComponent } from "../event/event.component";
+import { Event } from '../../models/event';
 
 @Component({
   selector: 'app-home',
   imports: [RouterModule, CommonModule, Avatar, CardModule,
     Divider, PiecardComponent, PielistComponent,
-    InputTextModule, FormsModule, Dialog],
+    InputTextModule, FormsModule, Dialog, EventComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -91,6 +93,54 @@ export class HomeComponent {
     }
   ];
 
+  upcomingEvents: Event[] = [
+    {
+      id: '1',
+      title: 'Team Wellness Check-in',
+      date: new Date(), // Today
+      location: 'Virtual meeting',
+      duration: '30 minutes'
+    },
+    {
+      id: '2',
+      title: 'Mindfulness Workshop',
+      date: new Date(new Date().setDate(new Date().getDate() + 1)), // Tomorrow
+      location: 'Conference Room A',
+      duration: '1 hour'
+    },
+    {
+      id: '3',
+      title: 'Team Building: Virtual Escape Room',
+      date: new Date(new Date().setDate(new Date().getDate() + 3)), // 3 days from now
+      location: 'Virtual event',
+      duration: '1 hour'
+    },
+    {
+      id: '2',
+      title: 'Mindfulness Workshop',
+      date: new Date(new Date().setDate(new Date().getDate() + 1)), // Tomorrow
+      location: 'Conference Room A',
+      duration: '1 hour'
+    },
+    {
+      id: '3',
+      title: 'Team Building: Virtual Escape Room',
+      date: new Date(new Date().setDate(new Date().getDate() + 3)), // 3 days from now
+      location: 'Virtual event',
+      duration: '1 hour'
+    }
+  ];
+
+  onEventSelected(event: Event) {
+    console.log('Event selected:', event);
+    // Navigate to event details or show modal
+  }
+
+  onViewAllEvents() {
+    console.log('View all events clicked');
+    // Navigate to full events page
+  }
+
 
   cards: PiecardCard[] = [
     {
@@ -114,45 +164,6 @@ export class HomeComponent {
     }
   ];
 
-  // colleagues = [
-  //   {
-  //     name: 'Shadow',
-  //     avatar: 'fearless-tab-shadow.png',
-  //     role: 'Lead Developer',
-  //     responsibilities: 'Developing the core application features and leading the development team.',
-  //     email: 'shadow@helpiehr.ro',
-  //     phone: '0740 111 222',
-  //     projects: ['Chaos Engine', 'Mobius Core', 'Dark UI System']
-  //   },
-  //   {
-  //     name: 'Tails',
-  //     avatar: 'tails.png',
-  //     role: 'Frontend Developer',
-  //     responsibilities: 'Building and maintaining the user interface and ensuring responsiveness.',
-  //     email: 'tails@helpiehr.ro',
-  //     phone: '0741 333 444',
-  //     projects: ['UI Overhaul', 'Component Library', 'Tailwind Theme']
-  //   },
-  //   {
-  //     name: 'Knuckles',
-  //     avatar: 'knuckles.png',
-  //     role: 'Backend Developer',
-  //     responsibilities: 'Developing server-side logic and APIs for the application.',
-  //     email: 'knuckles@helpiehr.ro',
-  //     phone: '0742 555 666',
-  //     projects: ['REST API', 'Data Sync Engine', 'Auth Gateway']
-  //   },
-  //   {
-  //     name: 'Dr. Eggman',
-  //     avatar: 'drEggman.png',
-  //     role: 'Project Manager',
-  //     responsibilities: 'Managing project timelines, ensuring team productivity, and overseeing the workflow.',
-  //     email: 'eggman@helpiehr.ro',
-  //     phone: '0743 777 888',
-  //     projects: ['Timeline Tracker', 'Task Assignment System', 'Productivity Metrics']
-  //   }
-  // ];
-  
 
   filteredColleagues() {
     const query = this.searchText.toLowerCase();

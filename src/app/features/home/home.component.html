@@ -48,7 +48,11 @@
     <app-pielist [items]="news" itemType="notification" listTitle="Newsletter 📰"></app-pielist>
   </div>
 
-
+  <app-event 
+  [events]="upcomingEvents"
+  (selectEvent)="onEventSelected($event)"
+  (viewAll)="onViewAllEvents()">
+</app-event>
   <p-dialog [(visible)]="displayDialog" [modal]="true" [responsive]="true" [style]="{width: '50vw'}">
     <ng-template pTemplate="header">
       <span>{{ selectedColleague?.name }} - Details</span>

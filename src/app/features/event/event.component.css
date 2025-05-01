@@ -1,0 +1,20 @@
+.events-container {
+    max-width: 400px;
+  }
+  
+  /* Add hover effect for better interactivity */
+  .border-l-4:hover {
+    border-left-width: 6px;
+    transition: all 0.2s ease;
+  }
+
+.scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: #bfdbfe; /* blue-200 */
+    border-radius: 4px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background-color: #f0f9ff; /* blue-50 */
+  }

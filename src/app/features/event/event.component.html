@@ -1,0 +1,21 @@
+<div class="lg:col-span-2 bg-white rounded-xl shadow-md p-6 slide-in flex flex-col">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Upcoming Events</h2>
+
+    <!-- Scrollable events container with custom scrollbar -->
+    <div class="space-y-4 overflow-y-auto max-h-96 pr-2 scrollbar-thin scrollbar-thumb-blue-200 scrollbar-track-blue-50">
+        <div *ngFor="let event of events"
+            class="border-l-4 border-blue-400 pl-4 py-2 hover:bg-gray-200 transition cursor-pointer"
+            (click)="selectEvent.emit(event)">
+            <p class="text-sm text-blue-400 font-medium">
+                {{ getFormattedDate(event.date) }}
+            </p>
+            <h3 class="font-medium text-gray-800">{{ event.title }}</h3>
+            <p class="text-gray-600">{{ event.location }} - {{ event.duration }}</p>
+        </div>
+    </div>
+
+    <button class="mt-4 text-blue-400 font-medium hover:text-blue-700 transition flex items-center"
+        (click)="viewAll.emit()">
+        View all events <i class="pi pi-caret-right"></i>
+    </button>
+</div>
