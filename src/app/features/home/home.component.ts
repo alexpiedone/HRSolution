@@ -13,6 +13,8 @@ import { NewsService } from '../news/news.service';
 import { UsersService } from '../users/users.service';
 import { EventComponent } from "../event/event.component";
 import { Event } from '../../models/event';
+import { map } from 'rxjs';
+import { EventsService } from '../event/event.service';
 
 @Component({
   selector: 'app-home',
@@ -29,9 +31,10 @@ export class HomeComponent {
   selectedColleague: any = null;
   searchText = '';
   news: any[] = [];
+  events: any[] = [];
   colleagues: any[] = [];
  
-  constructor(private newsService: NewsService, private usersService: UsersService) { }
+  constructor(private newsService: NewsService, private usersService: UsersService, private eventService: EventsService) { }
   ngOnInit() {
       this.newsService.getAll().subscribe((data) => {
         this.news = data.map(item => ({
@@ -39,6 +42,16 @@ export class HomeComponent {
           description: item.content
         }));
       });
+      this.eventService.getAll().subscribe((data) => {
+        this.events = data.map( item => ({
+          title: item.title,
+          date: item.date,
+          location: item.location,
+          duration: item.duration,
+          description: item.description}));
+      });
+      
+
   }
   private loadColleagues(): void {
     this.usersService.getColleagues().subscribe({
@@ -93,52 +106,12 @@ export class HomeComponent {
     }
   ];
 
-  upcomingEvents: Event[] = [
-    {
-      id: '1',
-      title: 'Team Wellness Check-in',
-      date: new Date(), // Today
-      location: 'Virtual meeting',
-      duration: '30 minutes'
-    },
-    {
-      id: '2',
-      title: 'Mindfulness Workshop',
-      date: new Date(new Date().setDate(new Date().getDate() + 1)), // Tomorrow
-      location: 'Conference Room A',
-      duration: '1 hour'
-    },
-    {
-      id: '3',
-      title: 'Team Building: Virtual Escape Room',
-      date: new Date(new Date().setDate(new Date().getDate() + 3)), // 3 days from now
-      location: 'Virtual event',
-      duration: '1 hour'
-    },
-    {
-      id: '2',
-      title: 'Mindfulness Workshop',
-      date: new Date(new Date().setDate(new Date().getDate() + 1)), // Tomorrow
-      location: 'Conference Room A',
-      duration: '1 hour'
-    },
-    {
-      id: '3',
-      title: 'Team Building: Virtual Escape Room',
-      date: new Date(new Date().setDate(new Date().getDate() + 3)), // 3 days from now
-      location: 'Virtual event',
-      duration: '1 hour'
-    }
-  ];
-
   onEventSelected(event: Event) {
     console.log('Event selected:', event);
-    // Navigate to event details or show modal
   }
 
   onViewAllEvents() {
     console.log('View all events clicked');
-    // Navigate to full events page
   }
 
 
