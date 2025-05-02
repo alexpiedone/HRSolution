@@ -38,7 +38,7 @@ export class TaskComponent {
       // Priority filter
       const priorityMatch = 
         this.selectedPriority === 'all' || 
-        task.priority.toLowerCase() === this.selectedPriority;
+        task.priority.toLowerCase() === this.selectedPriority;  
       
       return statusMatch && priorityMatch;
     });

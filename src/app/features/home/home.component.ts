@@ -5,7 +5,6 @@ import { Avatar } from 'primeng/avatar';
 import { CardModule } from 'primeng/card';
 import { Divider } from 'primeng/divider';
 import { PiecardCard, PiecardComponent } from '../../shared/piecard/piecard.component';
-import { PielistComponent } from '../../shared/pielist/pielist.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { Dialog } from 'primeng/dialog';
@@ -17,12 +16,14 @@ import { map } from 'rxjs';
 import { EventsService } from '../event/event.service';
 import { TaskComponent } from "../task/task.component";
 import { Task } from '../../models/task';
+import { NewsletterComponent } from "../news/newsletter/newsletter.component";
+import { NewsItem } from '../../models/newsitem';
 
 @Component({
   selector: 'app-home',
   imports: [RouterModule, CommonModule, Avatar, CardModule,
-    Divider, PiecardComponent, PielistComponent,
-    InputTextModule, FormsModule, Dialog, EventComponent, TaskComponent],
+    Divider, PiecardComponent,
+    InputTextModule, FormsModule, Dialog, EventComponent, TaskComponent, NewsletterComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -38,12 +39,7 @@ export class HomeComponent {
  
   constructor(private newsService: NewsService, private usersService: UsersService, private eventService: EventsService) { }
   ngOnInit() {
-      this.newsService.getAll().subscribe((data) => {
-        this.news = data.map(item => ({
-          label: item.title,
-          description: item.content
-        }));
-      });
+      
       this.eventService.getAll().subscribe((data) => {
         this.events = data.map( item => ({
           title: item.title,
@@ -55,6 +51,39 @@ export class HomeComponent {
       
 
   }
+
+  newsItems: NewsItem[] = [
+    {
+      id: '1',
+      title: 'Quarterly Company Update: Q2 2023',
+      description: 'Join us for our quarterly company update where we\'ll discuss our achievements, challenges, and plans for the upcoming quarter.',
+      category: 'Announcement',
+      date: new Date('2023-06-15'),
+      author: {
+        name: 'Michael Johnson',
+        initials: 'MJ',
+        color: 'blue'
+      },
+      isFeatured: true,
+      action: {
+        type: 'link',
+        url: '/news/quarterly-update'
+      }
+    },
+    {
+      id: '2',
+      title: 'New Health Insurance Benefits',
+      description: 'We\'re excited to announce updates to our health insurance benefits package.',
+      category: 'Event',
+      date: new Date('2023-06-10'),
+      author: {
+        name: 'Sarah Lee',
+        initials: 'SL',
+        color: 'green'
+      }
+    },
+    // Add more news items...
+  ];
   private loadColleagues(): void {
     this.usersService.getColleagues().subscribe({
       next: (data) => {

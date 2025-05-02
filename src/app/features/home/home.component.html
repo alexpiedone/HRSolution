@@ -1,12 +1,15 @@
-<div class="p-6 space-y-6">
-  <div class="flex items-center justify-between">
+<div class="flex flex-col gap-4 p-4 md:p-6 bg-gray-50 min-h-screen">
+  <!-- Welcome Section -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
     <div>
       <h1 class="pie-info-header">Welcome, Shadow</h1>
       <p class="pie-info-text">Developer</p>
     </div>
   </div>
-  <p-card styleClass="p-4">
-    <div class="flex gap-12">
+
+  <!-- Pie Cards Section -->
+  <p-card styleClass="overflow-hidden">
+    <div class="p-4"> 
       <div class="flex gap-12">
         <ng-container *ngFor="let card of cards; let i = index">
           <app-piecard [card]="card"></app-piecard>
@@ -15,48 +18,37 @@
       </div>
     </div>
   </p-card>
-  <div></div>
 
-  @if(showColleagues){
-  <div class="bg-white p-4 rounded-2xl shadow-md col-span-1 md:col-span-2">
+  <!-- Colleagues Section -->
+  @if(showColleagues) {
+  <div class="bg-white p-4 rounded-2xl shadow-md">
     <div class="flex items-center justify-between mb-4">
       <p class="pie-info-text">Colleagues</p>
       <input pInputText [(ngModel)]="searchText" placeholder="Caută coleg..." class="w-full md:w-1/3 p-inputtext-sm" />
     </div>
     <div class="overflow-x-auto p-2 w-full">
       <div class="inline-flex space-x-4">
-        <p-card *ngFor="let person of filteredColleagues()" class="shadow-xs hover:shadow-2xl cursor-pointer "
+        <p-card *ngFor="let person of filteredColleagues()" class="shadow-xs hover:shadow-2xl cursor-pointer"
           [style]="{ 'width': '250px' }" (click)="selectColleague(person)">
-          <p-header class="flex justify-center items-center">
-            <p-avatar [image]="person.avatar" size="xlarge"></p-avatar>
-          </p-header>
-          <div class="p-4 ">
-            <h3 class="pie-info-header">{{ person.name }}</h3>
-            <p class="pie-info-text truncate">{{ person.role }}</p>
-          </div>
+          <!-- Card content -->
         </p-card>
       </div>
     </div>
   </div>
   }
 
+  <!-- Newsletter Component -->
+  <app-newsletter [newsItems]="newsItems"></app-newsletter>
 
-  <div></div>
+  <!-- Events Component -->
+  <app-event [events]="events" (selectEvent)="onEventSelected($event)" (viewAll)="onViewAllEvents()"></app-event>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <app-pielist [items]="tasks" itemType="redirect" listTitle="Mici pași, mari rezultate"></app-pielist>
-    <app-pielist [items]="news" itemType="notification" listTitle="Newsletter 📰"></app-pielist>
-  </div>
+  <!-- Tasks Component -->
+  <app-task [tasks]="tasksUpdated" (taskUpdated)="onTaskUpdate($event)" (taskDeleted)="onTaskDelete($event)"
+    (taskAction)="onTaskAction($event)" (addTaskRequested)="openAddTaskDialog()">
+  </app-task>
 
-  <app-event [events]="events" (selectEvent)="onEventSelected($event)" (viewAll)="onViewAllEvents()">
-  </app-event>
-
-  <app-task [tasks]="tasksUpdated" 
-  (taskUpdated)="onTaskUpdate($event)"
-  (taskDeleted)="onTaskDelete($event)"
-  (taskAction)="onTaskAction($event)"
-  (addTaskRequested)="openAddTaskDialog()"></app-task>
-  
+  <!-- Dialog content -->
   <p-dialog [(visible)]="displayDialog" [modal]="true" [responsive]="true" [style]="{width: '50vw'}">
     <ng-template pTemplate="header">
       <span>{{ selectedColleague?.name }} - Details</span>
@@ -92,6 +84,7 @@
     </ng-template>
   </p-dialog>
 
+  <!-- Dialog content -->
   <p-dialog [(visible)]="showAvatarDialog" [modal]="true" [closable]="true" [dismissableMask]="true"
     [style]="{width: 'auto'}">
     <ng-template pTemplate="content">

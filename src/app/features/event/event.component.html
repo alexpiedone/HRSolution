@@ -4,9 +4,9 @@
     <!-- Scrollable events container with custom scrollbar -->
     <div class="space-y-4 overflow-y-auto max-h-96 pr-2 scrollbar-thin scrollbar-thumb-blue-200 scrollbar-track-blue-50">
         <div *ngFor="let event of events"
-            class="border-l-4 border-blue-400 pl-4 py-2 hover:bg-gray-200 transition cursor-pointer"
+            class="border-l-4 border-blue-600 pl-4 py-2 hover:bg-gray-200 transition cursor-pointer"
             (click)="selectEvent.emit(event)">
-            <p class="text-sm text-blue-400 font-medium">
+            <p class="text-sm text-blue-600 font-medium">
                 {{ getFormattedDate(event.date) }}
             </p>
             <h3 class="font-medium text-gray-800">{{ event.title }}</h3>
@@ -14,7 +14,7 @@
         </div>
     </div>
 
-    <button class="mt-4 text-blue-400 font-medium hover:text-blue-700 transition flex items-center"
+    <button class="mt-4 text-blue-600 font-medium hover:text-blue-900  transition flex items-center"
         (click)="viewAll.emit()">
         View all events <i class="pi pi-caret-right"></i>
     </button>
