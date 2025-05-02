@@ -15,12 +15,14 @@ import { EventComponent } from "../event/event.component";
 import { Event } from '../../models/event';
 import { map } from 'rxjs';
 import { EventsService } from '../event/event.service';
+import { TaskComponent } from "../task/task.component";
+import { Task } from '../../models/task';
 
 @Component({
   selector: 'app-home',
   imports: [RouterModule, CommonModule, Avatar, CardModule,
     Divider, PiecardComponent, PielistComponent,
-    InputTextModule, FormsModule, Dialog, EventComponent],
+    InputTextModule, FormsModule, Dialog, EventComponent, TaskComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -75,6 +77,34 @@ export class HomeComponent {
     this.displayDialog = true;
   }
 
+  onTaskUpdate(updatedTask: Task) {
+    // Actualizează task-ul în backend
+  }
+  
+  onTaskDelete(taskName: string) {
+    // Șterge task-ul din backend
+  }
+  
+  onTaskAction(action: any) {
+    // Alte acțiuni
+  }
+  
+  openAddTaskDialog() {
+    // Deschide dialog pentru adăugare task nou
+  }
+  tasksUpdated: Task[] = [
+    {
+      name: 'Review project proposal',
+      description: ' feedback.',
+      status: 'Pending',
+      dueDate: new Date('2023-06-15'),
+      priority: 'high',
+      assignedTo: 'John Doe',
+      createdBy: 'Manager',
+      action: { type: 'redirect', url: '/projects/123' }
+    },
+    // ... alte task-uri
+  ];
   tasks = [
     {
       label: 'Semnează SSM',

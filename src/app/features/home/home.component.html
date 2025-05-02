@@ -50,6 +50,12 @@
 
   <app-event [events]="events" (selectEvent)="onEventSelected($event)" (viewAll)="onViewAllEvents()">
   </app-event>
+
+  <app-task [tasks]="tasksUpdated" 
+  (taskUpdated)="onTaskUpdate($event)"
+  (taskDeleted)="onTaskDelete($event)"
+  (taskAction)="onTaskAction($event)"
+  (addTaskRequested)="openAddTaskDialog()"></app-task>
   
   <p-dialog [(visible)]="displayDialog" [modal]="true" [responsive]="true" [style]="{width: '50vw'}">
     <ng-template pTemplate="header">
