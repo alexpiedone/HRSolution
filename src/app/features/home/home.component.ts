@@ -18,6 +18,7 @@ import { TaskComponent } from "../task/task.component";
 import { Task } from '../../models/task';
 import { NewsletterComponent } from "../news/newsletter/newsletter.component";
 import { NewsItem } from '../../models/newsitem';
+import { TaskService } from '../task/task.service';
 
 @Component({
   selector: 'app-home',
@@ -34,24 +35,32 @@ export class HomeComponent {
   selectedColleague: any = null;
   searchText = '';
   news: NewsItem[] = [];
+  tasks: Task[] = [];
   events: any[] = [];
   colleagues: any[] = [];
- 
-  constructor(private newsService: NewsService, private usersService: UsersService, private eventService: EventsService) { }
+
+  constructor(private newsService: NewsService,
+    private usersService: UsersService,
+    private eventService: EventsService,
+    private tasksService: TaskService) { }
   ngOnInit() {
-      
-      this.eventService.getAll().subscribe((data) => {
-        this.events = data.map( item => ({
-          title: item.title,
-          date: item.date,
-          location: item.location,
-          duration: item.duration,
-          description: item.description}));
-      });
-      this.newsService.GetAllDTO().subscribe((data) => {
-        this.news = data;});
 
+    this.eventService.getAll().subscribe((data) => {
+      this.events = data.map(item => ({
+        title: item.title,
+        date: item.date,
+        location: item.location,
+        duration: item.duration,
+        description: item.description
+      }));
+    });
+    this.newsService.GetAllDTO().subscribe((data) => {
+      this.news = data;
+    });
 
+    this.tasksService.GetAllDTO().subscribe((data) => {
+      this.tasks = data;
+    });
   }
 
   private loadColleagues(): void {
@@ -80,61 +89,18 @@ export class HomeComponent {
   onTaskUpdate(updatedTask: Task) {
     // Actualizează task-ul în backend
   }
-  
+
   onTaskDelete(taskName: string) {
     // Șterge task-ul din backend
   }
-  
+
   onTaskAction(action: any) {
     // Alte acțiuni
   }
-  
+
   openAddTaskDialog() {
     // Deschide dialog pentru adăugare task nou
   }
-  tasksUpdated: Task[] = [
-    {
-      name: 'Review project proposal',
-      description: ' feedback.',
-      status: 'Pending',
-      dueDate: new Date('2023-06-15'),
-      priority: 'high',
-      assignedTo: 'John Doe',
-      createdBy: 'Manager',
-      action: { type: 'redirect', url: '/projects/123' }
-    }
-  ];
-  tasks = [
-    {
-      label: 'Semnează SSM',
-      done: false,
-      action: { type: 'redirect', url: '/Documents' }
-    },
-    {
-      label: 'Trimite pontajul pe luna curentă',
-      done: false,
-      action: { type: 'redirect', url: '/Documents' }
-    },
-    {
-      label: 'Completează evaluare performance',
-      done: true
-    },
-    {
-      label: 'Actualizează informațiile de contact',
-      done: false,
-      action: { type: 'redirect', url: '/Documents' }
-    },
-    {
-      label: 'Completează chestionarul de satisfacție',
-      done: true
-    },
-    {
-      label: 'Încarcă documentele de recrutare pentru noul angajat',
-      done: false,
-      action: { type: 'button' }
-    }
-  ];
-
   onEventSelected(event: Event) {
     console.log('Event selected:', event);
   }

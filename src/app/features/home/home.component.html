@@ -9,7 +9,7 @@
 
   <!-- Pie Cards Section -->
   <p-card styleClass="overflow-hidden">
-    <div class="p-4"> 
+    <div class="p-4">
       <div class="flex gap-12">
         <ng-container *ngFor="let card of cards; let i = index">
           <app-piecard [card]="card"></app-piecard>
@@ -21,17 +21,44 @@
 
   <!-- Colleagues Section -->
   @if(showColleagues) {
-  <div class="bg-white p-4 rounded-2xl shadow-md">
-    <div class="flex items-center justify-between mb-4">
-      <p class="pie-info-text">Colleagues</p>
-      <input pInputText [(ngModel)]="searchText" placeholder="Caută coleg..." class="w-full md:w-1/3 p-inputtext-sm" />
+  <div class="bg-white rounded-xl shadow-lg overflow-hidden w-full">
+    <!-- Header with search -->
+    <div class="flex flex-col md:flex-row items-center justify-between p-6 bg-blue-50 border-b border-blue-100">
+      <h2 class="text-lg font-semibold text-gray-700 mb-4 md:mb-0">Colleagues</h2>
+      <div class="relative w-full md:w-1/3">
+        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+          <i class="pi pi-search"></i>
+        </span>
+        <input pInputText [(ngModel)]="searchText" 
+          class="w-full pl-10 p-inputtext-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-200 focus:border-blue-500" />
+      </div>
     </div>
-    <div class="overflow-x-auto p-2 w-full">
-      <div class="inline-flex space-x-4">
-        <p-card *ngFor="let person of filteredColleagues()" class="shadow-xs hover:shadow-2xl cursor-pointer"
-          [style]="{ 'width': '250px' }" (click)="selectColleague(person)">
-          <!-- Card content -->
-        </p-card>
+
+    <!-- Colleagues list -->
+    <div class="p-6">
+      <div class="overflow-x-auto pb-4">
+        <div class="inline-flex space-x-4">
+          <div *ngFor="let person of filteredColleagues()"
+            class="w-64 flex-shrink-0 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+            (click)="selectColleague(person)">
+            <div class="p-4 flex flex-col items-center">
+              <p-avatar [image]="person.avatar" size="xlarge" shape="circle"
+                class="border-2 border-white shadow-md mb-3"></p-avatar>
+              <h3 class="text-lg font-semibold text-gray-800 text-center">{{ person.name }}</h3>
+              <p class="text-sm text-gray-600 mt-1 truncate w-full text-center">Software Developer</p>
+
+              <!-- Additional info (optional) -->
+              <div class="mt-3 flex items-center justify-center space-x-2">
+                <span class="text-xs px-2 py-1 bg-blue-100 text-blue-600 rounded-full">
+                  <i class="pi pi-user"></i> Engineering
+                </span>
+                <span class="text-xs px-2 py-1 bg-indigo-100 text-indigo-600 rounded-full">
+                  <i class="pi pi-clipboard"></i> Frontend
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -44,7 +71,7 @@
   <app-event [events]="events" (selectEvent)="onEventSelected($event)" (viewAll)="onViewAllEvents()"></app-event>
 
   <!-- Tasks Component -->
-  <app-task [tasks]="tasksUpdated" (taskUpdated)="onTaskUpdate($event)" (taskDeleted)="onTaskDelete($event)"
+  <app-task [tasks]="tasks" (taskUpdated)="onTaskUpdate($event)" (taskDeleted)="onTaskDelete($event)"
     (taskAction)="onTaskAction($event)" (addTaskRequested)="openAddTaskDialog()">
   </app-task>
 
