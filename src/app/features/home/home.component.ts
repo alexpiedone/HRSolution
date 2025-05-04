@@ -33,7 +33,7 @@ export class HomeComponent {
   showAvatarDialog: boolean = false;
   selectedColleague: any = null;
   searchText = '';
-  news: any[] = [];
+  news: NewsItem[] = [];
   events: any[] = [];
   colleagues: any[] = [];
  
@@ -48,42 +48,12 @@ export class HomeComponent {
           duration: item.duration,
           description: item.description}));
       });
-      
+      this.newsService.GetAllDTO().subscribe((data) => {
+        this.news = data;});
+
 
   }
 
-  newsItems: NewsItem[] = [
-    {
-      id: '1',
-      title: 'Quarterly Company Update: Q2 2023',
-      description: 'Join us for our quarterly company update where we\'ll discuss our achievements, challenges, and plans for the upcoming quarter.',
-      category: 'Announcement',
-      date: new Date('2023-06-15'),
-      author: {
-        name: 'Michael Johnson',
-        initials: 'MJ',
-        color: 'blue'
-      },
-      isFeatured: true,
-      action: {
-        type: 'link',
-        url: '/news/quarterly-update'
-      }
-    },
-    {
-      id: '2',
-      title: 'New Health Insurance Benefits',
-      description: 'We\'re excited to announce updates to our health insurance benefits package.',
-      category: 'Event',
-      date: new Date('2023-06-10'),
-      author: {
-        name: 'Sarah Lee',
-        initials: 'SL',
-        color: 'green'
-      }
-    },
-    // Add more news items...
-  ];
   private loadColleagues(): void {
     this.usersService.getColleagues().subscribe({
       next: (data) => {
@@ -94,6 +64,7 @@ export class HomeComponent {
       }
     });
   }
+
   toggleColleagues() {
     this.showColleagues = !this.showColleagues;
     if (this.showColleagues) {
@@ -131,8 +102,7 @@ export class HomeComponent {
       assignedTo: 'John Doe',
       createdBy: 'Manager',
       action: { type: 'redirect', url: '/projects/123' }
-    },
-    // ... alte task-uri
+    }
   ];
   tasks = [
     {

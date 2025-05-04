@@ -11,7 +11,8 @@ export class NewsletterComponent {
   @Input() newsItems: NewsItem[] = [];
   
   activeFilter: string = 'all';
-  categories = ['all', 'Company News', 'Benefits', 'Events', 'Training'];
+  showAllItems: boolean = false;
+  categories = ['all', 'Announcement', 'Update', 'Event', 'General'];
 
   get filteredItems(): NewsItem[] {
     if (this.activeFilter === 'all') return this.newsItems;
@@ -38,10 +39,10 @@ export class NewsletterComponent {
 
   getCategoryColor(category: string): string {
     switch(category) {
-      case 'Company News': return 'blue';
-      case 'Benefits': return 'green';
-      case 'Events': return 'purple';
-      case 'Training': return 'yellow';
+      case 'Announcement': return 'blue';
+      case 'Update': return 'green';
+      case 'Event': return 'purple';
+      case 'General': return 'yellow';
       default: return 'gray';
     }
   }

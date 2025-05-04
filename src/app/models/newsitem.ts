@@ -4,7 +4,7 @@ export interface NewsItem {
   description: string;
   category: 'Announcement' | 'Update' | 'Event' | 'General';
   date: Date;
-  author: {
+  author?: {
     name: string;
     initials: string;
     color: string; 

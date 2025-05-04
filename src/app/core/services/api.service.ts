@@ -17,6 +17,9 @@ export class ApiService<T> {
   getAll(): Observable<T[]> {
     return this.http.get<T[]>(`${environment.apiUrl}/${this.endpoint}/GetAll`).pipe(catchError(this.handleError));
   }
+  GetAllDTO(): Observable<T[]> {
+    return this.http.get<T[]>(`${environment.apiUrl}/${this.endpoint}/GetAllDTO`).pipe(catchError(this.handleError));
+  }
 
   getById(id: number): Observable<T> {
     return this.http.get<T>(`${environment.apiUrl}/${this.endpoint}/GetById/${id}`).pipe(catchError(this.handleError));
