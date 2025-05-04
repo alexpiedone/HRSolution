@@ -46,6 +46,11 @@ export class SidebarComponent {
         label: 'Documents',
         icon: 'pi pi-file',
         routerLink: '/Documents'
+      },
+      {
+        label: 'Timesheet',
+        icon: 'pi pi-calendar',
+        routerLink: '/timesheet'
       }
     ];
   }

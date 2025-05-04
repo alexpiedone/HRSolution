@@ -1,0 +1,1197 @@
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f7fa;
+        }
+        .calendar-container {
+            max-width: 1200px;
+        }
+        .calendar-day {
+            min-height: 120px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s ease;
+        }
+        .calendar-day:hover {
+            background-color: #f9fafb;
+        }
+        .calendar-day.weekend {
+            background-color: #f8fafc;
+        }
+        .calendar-day.today {
+            border: 2px solid #3b82f6;
+        }
+        .calendar-day.other-month {
+            background-color: #f1f5f9;
+            opacity: 0.7;
+        }
+        .status-badge {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        .status-worked {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        .status-holiday {
+            background-color: #ffedd5;
+            color: #9a3412;
+        }
+        .work-type-badge {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        .work-type-office {
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+        .work-type-home {
+            background-color: #f3e8ff;
+            color: #6b21a8;
+        }
+        .work-type-departure {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        .request-link {
+            color: #4f46e5;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 11px;
+        }
+        .request-link:hover {
+            text-decoration: underline;
+        }
+        .summary-card {
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+<body>
+    <div class="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-50 py-8 px-4">
+        <div class="calendar-container mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="p-6 bg-gradient-to-r from-blue-600 to-indigo-700">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-2xl font-bold text-white">Employee Timesheet</h1>
+                    <div class="flex space-x-2">
+                        <button id="prev-month" class="bg-white/20 text-white border border-white/30 rounded-lg px-3 py-2 text-sm focus:outline-none hover:bg-white/30">
+                          
+                        </button>
+                        <div id="current-month" class="bg-white/20 text-white border border-white/30 rounded-lg px-4 py-2 text-sm font-medium">December 2024</div>
+                        <button id="next-month" class="bg-white/20 text-white border border-white/30 rounded-lg px-3 py-2 text-sm focus:outline-none hover:bg-white/30">
+                          
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="p-4 bg-gray-50 border-b border-gray-200">
+                <div class="flex flex-wrap gap-3 items-center">
+                    <div class="font-medium text-gray-700">Filters:</div>
+                    <select id="status-filter" class="bg-white border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="all">All Status</option>
+                        <option value="worked">Worked</option>
+                        <option value="holiday">Holiday</option>
+                    </select>
+                    <select id="work-type-filter" class="bg-white border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="all">All Work Types</option>
+                        <option value="office">Office</option>
+                        <option value="home">Work from Home</option>
+                        <option value="departure">Departure</option>
+                    </select>
+                    <div class="ml-auto">
+                        <button id="today-btn" class="bg-blue-100 text-blue-700 border border-blue-200 rounded-md px-3 py-1.5 text-sm font-medium hover:bg-blue-200">
+                            Today
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-white">
+                <div class="summary-card bg-gradient-to-br from-blue-50 to-indigo-50 p-4">
+                    <div class="text-sm text-gray-500 font-medium">Total Hours</div>
+                    <div class="text-2xl font-bold text-gray-800 mt-1" id="total-hours">164</div>
+                    <div class="text-xs text-gray-500 mt-1">This month</div>
+                </div>
+                <div class="summary-card bg-gradient-to-br from-green-50 to-emerald-50 p-4">
+                    <div class="text-sm text-gray-500 font-medium">Office Days</div>
+                    <div class="text-2xl font-bold text-gray-800 mt-1" id="office-days">13</div>
+                    <div class="text-xs text-gray-500 mt-1">This month</div>
+                </div>
+                <div class="summary-card bg-gradient-to-br from-purple-50 to-fuchsia-50 p-4">
+                    <div class="text-sm text-gray-500 font-medium">Remote Days</div>
+                    <div class="text-2xl font-bold text-gray-800 mt-1" id="remote-days">7</div>
+                    <div class="text-xs text-gray-500 mt-1">This month</div>
+                </div>
+                <div class="summary-card bg-gradient-to-br from-amber-50 to-orange-50 p-4">
+                    <div class="text-sm text-gray-500 font-medium">Departure Days</div>
+                    <div class="text-2xl font-bold text-gray-800 mt-1" id="departure-days">1</div>
+                    <div class="text-xs text-gray-500 mt-1">This month</div>
+                </div>
+            </div>
+
+            <!-- Calendar Header -->
+            <div class="grid grid-cols-7 bg-gray-100 border-b border-gray-200">
+                <div class="py-2 text-center text-sm font-semibold text-gray-600">Sunday</div>
+                <div class="py-2 text-center text-sm font-semibold text-gray-600">Monday</div>
+                <div class="py-2 text-center text-sm font-semibold text-gray-600">Tuesday</div>
+                <div class="py-2 text-center text-sm font-semibold text-gray-600">Wednesday</div>
+                <div class="py-2 text-center text-sm font-semibold text-gray-600">Thursday</div>
+                <div class="py-2 text-center text-sm font-semibold text-gray-600">Friday</div>
+                <div class="py-2 text-center text-sm font-semibold text-gray-600">Saturday</div>
+            </div>
+
+            <!-- Calendar Grid -->
+            <div id="calendar-grid" class="grid grid-cols-7"><div class="calendar-day p-2 weekend " data-date="2024-12-01">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">1</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-01">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-holiday">Holiday</span>
+                                        <span class="text-xs font-medium text-gray-400">0h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        
+                                        
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2  " data-date="2024-12-02">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">2</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-02">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-worked">Worked</span>
+                                        <span class="text-xs font-medium text-blue-600">8h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="work-type-badge work-type-office">Office</span>
+                                        <a href="#" class="request-link">REQ-1234</a>
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2  " data-date="2024-12-03">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">3</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-03">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-worked">Worked</span>
+                                        <span class="text-xs font-medium text-blue-600">8h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="work-type-badge work-type-office">Office</span>
+                                        <a href="#" class="request-link">REQ-1235</a>
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2  " data-date="2024-12-04">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">4</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-04">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-worked">Worked</span>
+                                        <span class="text-xs font-medium text-blue-600">8h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="work-type-badge work-type-home">Remote</span>
+                                        <a href="#" class="request-link">REQ-1236</a>
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2  " data-date="2024-12-05">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">5</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-05">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-worked">Worked</span>
+                                        <span class="text-xs font-medium text-blue-600">8h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="work-type-badge work-type-office">Office</span>
+                                        <a href="#" class="request-link">REQ-1237</a>
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2  " data-date="2024-12-06">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">6</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-06">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-worked">Worked</span>
+                                        <span class="text-xs font-medium text-blue-600">8h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="work-type-badge work-type-office">Office</span>
+                                        <a href="#" class="request-link">REQ-1238</a>
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2 weekend " data-date="2024-12-07">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">7</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-07">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-holiday">Holiday</span>
+                                        <span class="text-xs font-medium text-gray-400">0h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        
+                                        
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2 weekend " data-date="2024-12-08">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">8</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-08">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-holiday">Holiday</span>
+                                        <span class="text-xs font-medium text-gray-400">0h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        
+                                        
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2  " data-date="2024-12-09">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">9</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-09">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-worked">Worked</span>
+                                        <span class="text-xs font-medium text-blue-600">8h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="work-type-badge work-type-office">Office</span>
+                                        <a href="#" class="request-link">REQ-1239</a>
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2  " data-date="2024-12-10">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">10</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-10">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-worked">Worked</span>
+                                        <span class="text-xs font-medium text-blue-600">8h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="work-type-badge work-type-home">Remote</span>
+                                        <a href="#" class="request-link">REQ-1240</a>
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2  " data-date="2024-12-11">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">11</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-11">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-worked">Worked</span>
+                                        <span class="text-xs font-medium text-blue-600">8h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="work-type-badge work-type-home">Remote</span>
+                                        <a href="#" class="request-link">REQ-1241</a>
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2  " data-date="2024-12-12">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">12</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-12">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-worked">Worked</span>
+                                        <span class="text-xs font-medium text-blue-600">8h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="work-type-badge work-type-office">Office</span>
+                                        <a href="#" class="request-link">REQ-1242</a>
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2  " data-date="2024-12-13">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">13</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-13">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-worked">Worked</span>
+                                        <span class="text-xs font-medium text-blue-600">8h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="work-type-badge work-type-office">Office</span>
+                                        <a href="#" class="request-link">REQ-1243</a>
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2 weekend " data-date="2024-12-14">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">14</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-14">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-holiday">Holiday</span>
+                                        <span class="text-xs font-medium text-gray-400">0h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        
+                                        
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2 weekend " data-date="2024-12-15">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">15</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-15">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-holiday">Holiday</span>
+                                        <span class="text-xs font-medium text-gray-400">0h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        
+                                        
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2  " data-date="2024-12-16">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">16</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-16">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-worked">Worked</span>
+                                        <span class="text-xs font-medium text-blue-600">8h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="work-type-badge work-type-office">Office</span>
+                                        <a href="#" class="request-link">REQ-1244</a>
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2  " data-date="2024-12-17">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">17</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-17">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-worked">Worked</span>
+                                        <span class="text-xs font-medium text-blue-600">8h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="work-type-badge work-type-home">Remote</span>
+                                        <a href="#" class="request-link">REQ-1245</a>
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2  " data-date="2024-12-18">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">18</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-18">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-worked">Worked</span>
+                                        <span class="text-xs font-medium text-blue-600">8h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="work-type-badge work-type-office">Office</span>
+                                        <a href="#" class="request-link">REQ-1246</a>
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2  " data-date="2024-12-19">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">19</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-19">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-worked">Worked</span>
+                                        <span class="text-xs font-medium text-blue-600">8h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="work-type-badge work-type-office">Office</span>
+                                        <a href="#" class="request-link">REQ-1247</a>
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2  " data-date="2024-12-20">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">20</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-20">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-worked">Worked</span>
+                                        <span class="text-xs font-medium text-blue-600">8h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="work-type-badge work-type-home">Remote</span>
+                                        <a href="#" class="request-link">REQ-1248</a>
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2 weekend " data-date="2024-12-21">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">21</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-21">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-holiday">Holiday</span>
+                                        <span class="text-xs font-medium text-gray-400">0h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        
+                                        
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2 weekend " data-date="2024-12-22">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">22</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-22">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-holiday">Holiday</span>
+                                        <span class="text-xs font-medium text-gray-400">0h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        
+                                        
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2  " data-date="2024-12-23">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">23</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-23">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-worked">Worked</span>
+                                        <span class="text-xs font-medium text-blue-600">8h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="work-type-badge work-type-office">Office</span>
+                                        <a href="#" class="request-link">REQ-1249</a>
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2  " data-date="2024-12-24">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">24</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-24">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-worked">Worked</span>
+                                        <span class="text-xs font-medium text-blue-600">4h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="work-type-badge work-type-office">Office</span>
+                                        <a href="#" class="request-link">REQ-1250</a>
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2  " data-date="2024-12-25">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">25</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-25">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-holiday">Holiday</span>
+                                        <span class="text-xs font-medium text-gray-400">0h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        
+                                        
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2  " data-date="2024-12-26">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">26</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-26">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-worked">Worked</span>
+                                        <span class="text-xs font-medium text-blue-600">8h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="work-type-badge work-type-home">Remote</span>
+                                        <a href="#" class="request-link">REQ-1251</a>
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2  " data-date="2024-12-27">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">27</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-27">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-worked">Worked</span>
+                                        <span class="text-xs font-medium text-blue-600">8h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="work-type-badge work-type-home">Remote</span>
+                                        <a href="#" class="request-link">REQ-1252</a>
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2 weekend " data-date="2024-12-28">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">28</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-28">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-holiday">Holiday</span>
+                                        <span class="text-xs font-medium text-gray-400">0h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        
+                                        
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2 weekend " data-date="2024-12-29">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">29</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-29">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-holiday">Holiday</span>
+                                        <span class="text-xs font-medium text-gray-400">0h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        
+                                        
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2  " data-date="2024-12-30">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">30</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-30">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-worked">Worked</span>
+                                        <span class="text-xs font-medium text-blue-600">8h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="work-type-badge work-type-office">Office</span>
+                                        <a href="#" class="request-link">REQ-1253</a>
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day p-2  " data-date="2024-12-31">
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">31</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="2024-12-31">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge status-worked">Worked</span>
+                                        <span class="text-xs font-medium text-blue-600">8h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="work-type-badge work-type-departure">Departure</span>
+                                        <a href="#" class="request-link">REQ-1254</a>
+                                    </div>
+                                </div>
+                            
+                        </div><div class="calendar-day other-month p-2">
+                        <div class="text-xs text-gray-400">1</div>
+                        <div class="mt-1 text-gray-400">Other month</div>
+                    </div><div class="calendar-day other-month p-2">
+                        <div class="text-xs text-gray-400">2</div>
+                        <div class="mt-1 text-gray-400">Other month</div>
+                    </div><div class="calendar-day other-month p-2">
+                        <div class="text-xs text-gray-400">3</div>
+                        <div class="mt-1 text-gray-400">Other month</div>
+                    </div><div class="calendar-day other-month p-2">
+                        <div class="text-xs text-gray-400">4</div>
+                        <div class="mt-1 text-gray-400">Other month</div>
+                    </div><div class="calendar-day other-month p-2">
+                        <div class="text-xs text-gray-400">5</div>
+                        <div class="mt-1 text-gray-400">Other month</div>
+                    </div><div class="calendar-day other-month p-2">
+                        <div class="text-xs text-gray-400">6</div>
+                        <div class="mt-1 text-gray-400">Other month</div>
+                    </div><div class="calendar-day other-month p-2">
+                        <div class="text-xs text-gray-400">7</div>
+                        <div class="mt-1 text-gray-400">Other month</div>
+                    </div><div class="calendar-day other-month p-2">
+                        <div class="text-xs text-gray-400">8</div>
+                        <div class="mt-1 text-gray-400">Other month</div>
+                    </div><div class="calendar-day other-month p-2">
+                        <div class="text-xs text-gray-400">9</div>
+                        <div class="mt-1 text-gray-400">Other month</div>
+                    </div><div class="calendar-day other-month p-2">
+                        <div class="text-xs text-gray-400">10</div>
+                        <div class="mt-1 text-gray-400">Other month</div>
+                    </div><div class="calendar-day other-month p-2">
+                        <div class="text-xs text-gray-400">11</div>
+                        <div class="mt-1 text-gray-400">Other month</div>
+                    </div></div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="edit-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold text-gray-800">Edit Timesheet Entry</h3>
+                <button id="close-modal" class="text-gray-400 hover:text-gray-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                    <div id="edit-date" class="text-gray-800 font-medium">Dec 15, 2024</div>
+                </div>
+                <div>
+                    <label for="edit-status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                    <select id="edit-status" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="worked">Worked</option>
+                        <option value="holiday">Holiday</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="edit-hours" class="block text-sm font-medium text-gray-700 mb-1">Hours</label>
+                    <input type="number" id="edit-hours" min="0" max="24" step="0.5" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label for="edit-work-type" class="block text-sm font-medium text-gray-700 mb-1">Work Type</label>
+                    <select id="edit-work-type" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="office">Office</option>
+                        <option value="home">Work from Home</option>
+                        <option value="departure">Departure</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="edit-request" class="block text-sm font-medium text-gray-700 mb-1">Request ID</label>
+                    <input type="text" id="edit-request" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+                <button id="cancel-edit" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200">
+                    Cancel
+                </button>
+                <button id="save-edit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sample data for December 2024
+            const timesheetData = {
+                '2024-12-01': { status: 'holiday', hours: 0, workType: null, requestId: null },
+                '2024-12-02': { status: 'worked', hours: 8, workType: 'office', requestId: 'REQ-1234' },
+                '2024-12-03': { status: 'worked', hours: 8, workType: 'office', requestId: 'REQ-1235' },
+                '2024-12-04': { status: 'worked', hours: 8, workType: 'home', requestId: 'REQ-1236' },
+                '2024-12-05': { status: 'worked', hours: 8, workType: 'office', requestId: 'REQ-1237' },
+                '2024-12-06': { status: 'worked', hours: 8, workType: 'office', requestId: 'REQ-1238' },
+                '2024-12-07': { status: 'holiday', hours: 0, workType: null, requestId: null },
+                '2024-12-08': { status: 'holiday', hours: 0, workType: null, requestId: null },
+                '2024-12-09': { status: 'worked', hours: 8, workType: 'office', requestId: 'REQ-1239' },
+                '2024-12-10': { status: 'worked', hours: 8, workType: 'home', requestId: 'REQ-1240' },
+                '2024-12-11': { status: 'worked', hours: 8, workType: 'home', requestId: 'REQ-1241' },
+                '2024-12-12': { status: 'worked', hours: 8, workType: 'office', requestId: 'REQ-1242' },
+                '2024-12-13': { status: 'worked', hours: 8, workType: 'office', requestId: 'REQ-1243' },
+                '2024-12-14': { status: 'holiday', hours: 0, workType: null, requestId: null },
+                '2024-12-15': { status: 'holiday', hours: 0, workType: null, requestId: null },
+                '2024-12-16': { status: 'worked', hours: 8, workType: 'office', requestId: 'REQ-1244' },
+                '2024-12-17': { status: 'worked', hours: 8, workType: 'home', requestId: 'REQ-1245' },
+                '2024-12-18': { status: 'worked', hours: 8, workType: 'office', requestId: 'REQ-1246' },
+                '2024-12-19': { status: 'worked', hours: 8, workType: 'office', requestId: 'REQ-1247' },
+                '2024-12-20': { status: 'worked', hours: 8, workType: 'home', requestId: 'REQ-1248' },
+                '2024-12-21': { status: 'holiday', hours: 0, workType: null, requestId: null },
+                '2024-12-22': { status: 'holiday', hours: 0, workType: null, requestId: null },
+                '2024-12-23': { status: 'worked', hours: 8, workType: 'office', requestId: 'REQ-1249' },
+                '2024-12-24': { status: 'worked', hours: 4, workType: 'office', requestId: 'REQ-1250' },
+                '2024-12-25': { status: 'holiday', hours: 0, workType: null, requestId: null },
+                '2024-12-26': { status: 'worked', hours: 8, workType: 'home', requestId: 'REQ-1251' },
+                '2024-12-27': { status: 'worked', hours: 8, workType: 'home', requestId: 'REQ-1252' },
+                '2024-12-28': { status: 'holiday', hours: 0, workType: null, requestId: null },
+                '2024-12-29': { status: 'holiday', hours: 0, workType: null, requestId: null },
+                '2024-12-30': { status: 'worked', hours: 8, workType: 'office', requestId: 'REQ-1253' },
+                '2024-12-31': { status: 'worked', hours: 8, workType: 'departure', requestId: 'REQ-1254' }
+            };
+
+            let currentDate = new Date(2024, 11); // December 2024
+            let currentEditDate = null;
+            let statusFilter = 'all';
+            let workTypeFilter = 'all';
+
+            // Render calendar
+            function renderCalendar() {
+                const grid = document.getElementById('calendar-grid');
+                grid.innerHTML = '';
+
+                const year = currentDate.getFullYear();
+                const month = currentDate.getMonth();
+                
+                // Update month display
+                const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                document.getElementById('current-month').textContent = `${monthNames[month]} ${year}`;
+
+                // Get first day of month and total days
+                const firstDay = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                
+                // Get days from previous month
+                const prevMonthDays = new Date(year, month, 0).getDate();
+                
+                // Create calendar cells
+                let dayCount = 1;
+                let nextMonthDay = 1;
+
+                // Previous month days
+                for (let i = 0; i < firstDay; i++) {
+                    const prevMonthDate = prevMonthDays - firstDay + i + 1;
+                    const dateString = `${year}-${String(month).padStart(2, '0')}-${String(prevMonthDate).padStart(2, '0')}`;
+                    
+                    const cell = document.createElement('div');
+                    cell.className = 'calendar-day other-month p-2';
+                    cell.innerHTML = `
+                        <div class="text-xs text-gray-400">${prevMonthDate}</div>
+                        <div class="mt-1 text-gray-400">Other month</div>
+                    `;
+                    grid.appendChild(cell);
+                }
+
+                // Current month days
+                for (let i = 1; i <= daysInMonth; i++) {
+                    const dateObj = new Date(year, month, i);
+                    const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                    const isWeekend = dateObj.getDay() === 0 || dateObj.getDay() === 6;
+                    const isToday = new Date().toDateString() === dateObj.toDateString();
+                    
+                    const entry = timesheetData[dateString];
+                    
+                    // Apply filters
+                    let isVisible = true;
+                    if (entry) {
+                        if (statusFilter !== 'all' && entry.status !== statusFilter) {
+                            isVisible = false;
+                        }
+                        if (workTypeFilter !== 'all' && entry.workType !== workTypeFilter) {
+                            isVisible = false;
+                        }
+                    }
+                    
+                    const cell = document.createElement('div');
+                    cell.className = `calendar-day p-2 ${isWeekend ? 'weekend' : ''} ${isToday ? 'today' : ''}`;
+                    cell.dataset.date = dateString;
+                    
+                    if (isVisible) {
+                        let entryHTML = '';
+                        
+                        if (entry) {
+                            // Status badge
+                            const statusClass = entry.status === 'worked' ? 'status-worked' : 'status-holiday';
+                            const statusLabel = entry.status === 'worked' ? 'Worked' : 'Holiday';
+                            
+                            // Work type badge
+                            let workTypeBadge = '';
+                            if (entry.workType) {
+                                const workTypeClass = 
+                                    entry.workType === 'office' ? 'work-type-office' : 
+                                    entry.workType === 'home' ? 'work-type-home' : 'work-type-departure';
+                                
+                                const workTypeLabel = 
+                                    entry.workType === 'office' ? 'Office' : 
+                                    entry.workType === 'home' ? 'Remote' : 'Departure';
+                                
+                                workTypeBadge = `<span class="work-type-badge ${workTypeClass}">${workTypeLabel}</span>`;
+                            }
+                            
+                            // Request link
+                            const requestLink = entry.requestId ? 
+                                `<a href="#" class="request-link">${entry.requestId}</a>` : 
+                                '';
+                            
+                            entryHTML = `
+                                <div class="mt-1 flex flex-col space-y-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="status-badge ${statusClass}">${statusLabel}</span>
+                                        <span class="text-xs font-medium ${entry.hours > 0 ? 'text-blue-600' : 'text-gray-400'}">${entry.hours}h</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        ${workTypeBadge}
+                                        ${requestLink}
+                                    </div>
+                                </div>
+                            `;
+                        }
+                        
+                        cell.innerHTML = `
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm font-medium">${i}</div>
+                                <button class="edit-btn p-1 text-gray-400 hover:text-blue-600" data-date="${dateString}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            ${entryHTML}
+                        `;
+                    } else {
+                        cell.classList.add('opacity-50');
+                        cell.innerHTML = `
+                            <div class="text-sm font-medium">${i}</div>
+                            <div class="mt-1 text-xs text-gray-400">Filtered</div>
+                        `;
+                    }
+                    
+                    grid.appendChild(cell);
+                    dayCount++;
+                }
+
+                // Next month days
+                const totalCells = 42; // 6 rows of 7 days
+                const remainingCells = totalCells - (firstDay + daysInMonth);
+                
+                for (let i = 0; i < remainingCells; i++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'calendar-day other-month p-2';
+                    cell.innerHTML = `
+                        <div class="text-xs text-gray-400">${nextMonthDay}</div>
+                        <div class="mt-1 text-gray-400">Other month</div>
+                    `;
+                    grid.appendChild(cell);
+                    nextMonthDay++;
+                }
+
+                // Add event listeners to edit buttons
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const date = this.dataset.date;
+                        openEditModal(date);
+                    });
+                });
+
+                // Update summary
+                updateSummary();
+            }
+
+            // Update summary
+            function updateSummary() {
+                const year = currentDate.getFullYear();
+                const month = currentDate.getMonth() + 1;
+                
+                let totalHours = 0;
+                let officeDays = 0;
+                let remoteDays = 0;
+                let departureDays = 0;
+                
+                for (const [date, entry] of Object.entries(timesheetData)) {
+                    if (date.startsWith(`${year}-${String(month).padStart(2, '0')}`)) {
+                        totalHours += entry.hours;
+                        
+                        if (entry.workType === 'office') {
+                            officeDays++;
+                        } else if (entry.workType === 'home') {
+                            remoteDays++;
+                        } else if (entry.workType === 'departure') {
+                            departureDays++;
+                        }
+                    }
+                }
+                
+                document.getElementById('total-hours').textContent = totalHours;
+                document.getElementById('office-days').textContent = officeDays;
+                document.getElementById('remote-days').textContent = remoteDays;
+                document.getElementById('departure-days').textContent = departureDays;
+            }
+
+            // Open edit modal
+            function openEditModal(date) {
+                currentEditDate = date;
+                const entry = timesheetData[date] || { status: 'worked', hours: 8, workType: 'office', requestId: '' };
+                
+                const dateObj = new Date(date);
+                const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                
+                document.getElementById('edit-date').textContent = formattedDate;
+                document.getElementById('edit-status').value = entry.status;
+                document.getElementById('edit-hours').value = entry.hours;
+                document.getElementById('edit-work-type').value = entry.workType || 'office';
+                document.getElementById('edit-request').value = entry.requestId || '';
+                
+                document.getElementById('edit-modal').classList.remove('hidden');
+            }
+
+            // Close edit modal
+            function closeEditModal() {
+                document.getElementById('edit-modal').classList.add('hidden');
+                currentEditDate = null;
+            }
+
+            // Save edit
+            function saveEdit() {
+                if (!currentEditDate) return;
+                
+                const status = document.getElementById('edit-status').value;
+                const hours = parseFloat(document.getElementById('edit-hours').value) || 0;
+                const workType = document.getElementById('edit-work-type').value;
+                const requestId = document.getElementById('edit-request').value;
+                
+                // Create or update entry
+                timesheetData[currentEditDate] = {
+                    status: status,
+                    hours: status === 'holiday' ? 0 : hours,
+                    workType: status === 'holiday' ? null : workType,
+                    requestId: status === 'holiday' ? null : requestId
+                };
+                
+                closeEditModal();
+                renderCalendar();
+            }
+
+            // Navigate to previous month
+            function prevMonth() {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                renderCalendar();
+            }
+
+            // Navigate to next month
+            function nextMonth() {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                renderCalendar();
+            }
+
+            // Navigate to today
+            function goToToday() {
+                currentDate = new Date();
+                renderCalendar();
+            }
+
+            // Apply filters
+            function applyFilters() {
+                statusFilter = document.getElementById('status-filter').value;
+                workTypeFilter = document.getElementById('work-type-filter').value;
+                renderCalendar();
+            }
+
+            // Event listeners
+            document.getElementById('prev-month').addEventListener('click', prevMonth);
+            document.getElementById('next-month').addEventListener('click', nextMonth);
+            document.getElementById('today-btn').addEventListener('click', goToToday);
+            document.getElementById('status-filter').addEventListener('change', applyFilters);
+            document.getElementById('work-type-filter').addEventListener('change', applyFilters);
+            document.getElementById('close-modal').addEventListener('click', closeEditModal);
+            document.getElementById('cancel-edit').addEventListener('click', closeEditModal);
+            document.getElementById('save-edit').addEventListener('click', saveEdit);
+
+            // Initial render
+            renderCalendar();
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93a6bd6332f8e59a',t:'MTc0NjM0ODUxNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: medium; visibility: hidden;"></iframe>
+</body>

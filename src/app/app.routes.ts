@@ -54,6 +54,13 @@ export const routes: Routes = [
             (m) => m.LoginComponent
           ),
       },
+      {
+        path: 'timesheet',
+        loadComponent: () =>
+          import('./features/timesheet/timesheet.component').then(
+            (m) => m.TimesheetComponent
+          ),
+      },
     ],
   },
   {
