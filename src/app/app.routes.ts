@@ -41,17 +41,14 @@ export const routes: Routes = [
           ),
       },
       {
-        path: 'EmployeeDetails',
-        loadComponent: () =>
-          import('./features/auth/login/login.component').then(
-            (m) => m.LoginComponent
-          ),
+        path: 'user-overview', 
+        loadComponent: () => import('./features/users/user-overview/user-overview.component').then(m => m.UserOverviewComponent)
       },
       {
         path: 'leaveRequest',
         loadComponent: () =>
-          import('./features/auth/login/login.component').then(
-            (m) => m.LoginComponent
+          import('./features/requests/leaverequest/leaverequest.component').then(
+            (m) => m.LeaverequestComponent
           ),
       },
       {

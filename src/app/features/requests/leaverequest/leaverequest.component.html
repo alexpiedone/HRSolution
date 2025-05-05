@@ -1,0 +1,898 @@
+<head>
+   
+    <!-- PrimeNG Icons -->
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-light: #e0e7ff;
+            --success-color: #10b981;
+            --success-light: #d1fae5;
+            --warning-color: #f59e0b;
+            --warning-light: #fef3c7;
+            --danger-color: #ef4444;
+            --danger-light: #fee2e2;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+            color: #1f2937;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #4338ca;
+        }
+        
+        .btn-secondary {
+            background-color: #f3f4f6;
+            color: #4b5563;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e5e7eb;
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .badge-pending {
+            background-color: var(--warning-light);
+            color: var(--warning-color);
+        }
+        
+        .badge-approved {
+            background-color: var(--success-light);
+            color: var(--success-color);
+        }
+        
+        .badge-rejected {
+            background-color: var(--danger-light);
+            color: var(--danger-color);
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #4b5563;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            background-color: white;
+            color: #1f2937;
+            transition: border-color 0.2s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            background-color: white;
+            color: #1f2937;
+            appearance: none;
+            background-position: right 0.75rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
+        
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            background-color: white;
+            color: #1f2937;
+            transition: border-color 0.2s;
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .table th {
+            background-color: #f9fafb;
+            font-weight: 500;
+            text-align: left;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: middle;
+        }
+        
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .table tr:hover {
+            background-color: #f9fafb;
+        }
+        
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+        }
+        
+        .pagination-info {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        .pagination-controls {
+            display: flex;
+            gap: 0.25rem;
+        }
+        
+        .pagination-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 0.375rem;
+            background-color: white;
+            color: #4b5563;
+            border: 1px solid #d1d5db;
+            transition: all 0.2s;
+        }
+        
+        .pagination-button:hover {
+            background-color: #f9fafb;
+        }
+        
+        .pagination-button.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .pagination-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+        
+        .modal {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            width: 100%;
+            max-width: 32rem;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .modal-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 0.25rem;
+            transition: color 0.2s;
+        }
+        
+        .modal-close:hover {
+            color: #1f2937;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .modal-footer {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            padding: 1.25rem 1.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+<body class="p-6">
+    <div class="max-w-7xl mx-auto">
+        <div class="card">
+            <div class="p-6">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+                    <h1 class="text-2xl font-bold text-gray-900 mb-4 md:mb-0">Leave Requests</h1>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <div class="relative">
+                            <select id="status-filter" class="form-select">
+                                <option value="all">All Statuses</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        </div>
+                        <button id="new-request-btn" class="btn btn-primary">
+                            <i class="pi pi-plus mr-2"></i>
+                            New Request
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Period</th>
+                                <th>Days</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="requests-table-body"><tr>
+                        <td class="font-medium">Paid Leave</td>
+                        <td>Oct 15, 2023 - Oct 20, 2023</td>
+                        <td>5</td>
+                        <td>
+                            <span class="badge badge-approved">
+                                Approved
+                            </span>
+                        </td>
+                        <td>
+                            <button class="view-details-btn btn btn-secondary text-sm" data-id="1">
+                                <i class="pi pi-eye mr-1"></i> View Details
+                            </button>
+                        </td>
+                    </tr><tr>
+                        <td class="font-medium">Sick Leave</td>
+                        <td>Sep 5, 2023 - Sep 7, 2023</td>
+                        <td>3</td>
+                        <td>
+                            <span class="badge badge-approved">
+                                Approved
+                            </span>
+                        </td>
+                        <td>
+                            <button class="view-details-btn btn btn-secondary text-sm" data-id="2">
+                                <i class="pi pi-eye mr-1"></i> View Details
+                            </button>
+                        </td>
+                    </tr><tr>
+                        <td class="font-medium">Unpaid Leave</td>
+                        <td>Nov 10, 2023 - Nov 15, 2023</td>
+                        <td>5</td>
+                        <td>
+                            <span class="badge badge-pending">
+                                Pending
+                            </span>
+                        </td>
+                        <td>
+                            <button class="view-details-btn btn btn-secondary text-sm" data-id="3">
+                                <i class="pi pi-eye mr-1"></i> View Details
+                            </button>
+                        </td>
+                    </tr><tr>
+                        <td class="font-medium">Paid Leave</td>
+                        <td>Dec 24, 2023 - Dec 31, 2023</td>
+                        <td>7</td>
+                        <td>
+                            <span class="badge badge-pending">
+                                Pending
+                            </span>
+                        </td>
+                        <td>
+                            <button class="view-details-btn btn btn-secondary text-sm" data-id="4">
+                                <i class="pi pi-eye mr-1"></i> View Details
+                            </button>
+                        </td>
+                    </tr><tr>
+                        <td class="font-medium">Other</td>
+                        <td>Aug 18, 2023 - Aug 18, 2023</td>
+                        <td>1</td>
+                        <td>
+                            <span class="badge badge-rejected">
+                                Rejected
+                            </span>
+                        </td>
+                        <td>
+                            <button class="view-details-btn btn btn-secondary text-sm" data-id="5">
+                                <i class="pi pi-eye mr-1"></i> View Details
+                            </button>
+                        </td>
+                    </tr></tbody>
+                    </table>
+                </div>
+                
+                <div class="pagination">
+                    <div class="pagination-info">
+                        Showing <span id="showing-start">1</span> to <span id="showing-end">5</span> of <span id="total-items">12</span> requests
+                    </div>
+                    <div class="pagination-controls">
+                        <button id="prev-page" class="pagination-button" disabled="">
+                            <i class="pi pi-chevron-left"></i>
+                        </button>
+                        <button class="pagination-button active">1</button>
+                        <button class="pagination-button">2</button>
+                        <button class="pagination-button">3</button>
+                        <button id="next-page" class="pagination-button">
+                            <i class="pi pi-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- New Request Modal -->
+    <div id="new-request-modal" class="modal-backdrop hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">New Leave Request</h2>
+                <button class="modal-close" id="close-new-request-modal">
+                    <i class="pi pi-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="new-request-form">
+                    <div class="mb-4">
+                        <label for="request-type" class="form-label">Type</label>
+                        <select id="request-type" class="form-select" required="">
+                            <option value="">Select type</option>
+                            <option value="Paid Leave">Paid Leave</option>
+                            <option value="Unpaid Leave">Unpaid Leave</option>
+                            <option value="Sick Leave">Sick Leave</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="start-date" class="form-label">Start Date</label>
+                        <input type="date" id="start-date" class="form-input" required="">
+                    </div>
+                    <div class="mb-4">
+                        <label for="end-date" class="form-label">End Date</label>
+                        <input type="date" id="end-date" class="form-input" required="">
+                    </div>
+                    <div class="mb-4">
+                        <label for="reason" class="form-label">Reason</label>
+                        <textarea id="reason" class="form-textarea" placeholder="Please provide details about your request" required=""></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="cancel-request" class="btn btn-secondary">Cancel</button>
+                <button id="submit-request" class="btn btn-primary">Submit Request</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- View Request Details Modal -->
+    <div id="view-request-modal" class="modal-backdrop hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Request Details</h2>
+                <button class="modal-close" id="close-view-request-modal">
+                    <i class="pi pi-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <p class="text-sm text-gray-500 mb-1">Request Type</p>
+                        <p id="detail-type" class="font-medium">Other</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 mb-1">Status</p>
+                        <div id="detail-status-container">
+                            <span id="detail-status" class="badge badge-rejected">Rejected</span>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 mb-1">Start Date</p>
+                        <p id="detail-start-date" class="font-medium">Aug 18, 2023</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 mb-1">End Date</p>
+                        <p id="detail-end-date" class="font-medium">Aug 18, 2023</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 mb-1">Days Count</p>
+                        <p id="detail-days" class="font-medium">1</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 mb-1">Submitted On</p>
+                        <p id="detail-submitted" class="font-medium">Aug 10, 2023</p>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500 mb-1">Reason</p>
+                    <p id="detail-reason" class="text-gray-700 bg-gray-50 p-4 rounded-lg">Attending a conference</p>
+                </div>
+                
+                <div id="detail-feedback-container" class="mt-6 border-t border-gray-200 pt-4">
+                    <p class="text-sm text-gray-500 mb-1">Manager Feedback</p>
+                    <p id="detail-feedback" class="text-gray-700 bg-gray-50 p-4 rounded-lg">Rejected due to critical project deadline on the same day.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="close-details" class="btn btn-secondary">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sample data
+            const requests = [
+                {
+                    id: 1,
+                    type: 'Paid Leave',
+                    startDate: '2023-10-15',
+                    endDate: '2023-10-20',
+                    days: 5,
+                    status: 'approved',
+                    reason: 'Family vacation',
+                    submittedOn: '2023-10-01',
+                    feedback: 'Approved as requested.'
+                },
+                {
+                    id: 2,
+                    type: 'Sick Leave',
+                    startDate: '2023-09-05',
+                    endDate: '2023-09-07',
+                    days: 3,
+                    status: 'approved',
+                    reason: 'Flu and fever',
+                    submittedOn: '2023-09-04',
+                    feedback: 'Get well soon!'
+                },
+                {
+                    id: 3,
+                    type: 'Unpaid Leave',
+                    startDate: '2023-11-10',
+                    endDate: '2023-11-15',
+                    days: 5,
+                    status: 'pending',
+                    reason: 'Personal matters',
+                    submittedOn: '2023-10-25'
+                },
+                {
+                    id: 4,
+                    type: 'Paid Leave',
+                    startDate: '2023-12-24',
+                    endDate: '2023-12-31',
+                    days: 7,
+                    status: 'pending',
+                    reason: 'Year-end holidays',
+                    submittedOn: '2023-10-15'
+                },
+                {
+                    id: 5,
+                    type: 'Other',
+                    startDate: '2023-08-18',
+                    endDate: '2023-08-18',
+                    days: 1,
+                    status: 'rejected',
+                    reason: 'Attending a conference',
+                    submittedOn: '2023-08-10',
+                    feedback: 'Rejected due to critical project deadline on the same day.'
+                },
+                {
+                    id: 6,
+                    type: 'Sick Leave',
+                    startDate: '2023-07-03',
+                    endDate: '2023-07-05',
+                    days: 3,
+                    status: 'approved',
+                    reason: 'Medical procedure',
+                    submittedOn: '2023-06-25',
+                    feedback: 'Approved. Please share medical certificate upon return.'
+                },
+                {
+                    id: 7,
+                    type: 'Paid Leave',
+                    startDate: '2023-08-01',
+                    endDate: '2023-08-10',
+                    days: 10,
+                    status: 'approved',
+                    reason: 'Summer vacation',
+                    submittedOn: '2023-07-01',
+                    feedback: 'Approved. Enjoy your vacation!'
+                },
+                {
+                    id: 8,
+                    type: 'Unpaid Leave',
+                    startDate: '2023-09-20',
+                    endDate: '2023-09-25',
+                    days: 5,
+                    status: 'rejected',
+                    reason: 'Personal project',
+                    submittedOn: '2023-09-10',
+                    feedback: 'Rejected due to team understaffing during this period.'
+                },
+                {
+                    id: 9,
+                    type: 'Sick Leave',
+                    startDate: '2023-10-02',
+                    endDate: '2023-10-02',
+                    days: 1,
+                    status: 'approved',
+                    reason: 'Doctor appointment',
+                    submittedOn: '2023-09-29',
+                    feedback: 'Approved.'
+                },
+                {
+                    id: 10,
+                    type: 'Other',
+                    startDate: '2023-11-24',
+                    endDate: '2023-11-24',
+                    days: 1,
+                    status: 'pending',
+                    reason: 'Family emergency',
+                    submittedOn: '2023-11-23'
+                },
+                {
+                    id: 11,
+                    type: 'Paid Leave',
+                    startDate: '2024-01-02',
+                    endDate: '2024-01-05',
+                    days: 4,
+                    status: 'pending',
+                    reason: 'Extended New Year break',
+                    submittedOn: '2023-11-15'
+                },
+                {
+                    id: 12,
+                    type: 'Unpaid Leave',
+                    startDate: '2023-12-01',
+                    endDate: '2023-12-15',
+                    days: 15,
+                    status: 'pending',
+                    reason: 'Personal development course',
+                    submittedOn: '2023-11-01'
+                }
+            ];
+            
+            // Pagination state
+            let currentPage = 1;
+            const itemsPerPage = 5;
+            let filteredRequests = [...requests];
+            
+            // DOM elements
+            const requestsTableBody = document.getElementById('requests-table-body');
+            const newRequestModal = document.getElementById('new-request-modal');
+            const viewRequestModal = document.getElementById('view-request-modal');
+            const statusFilter = document.getElementById('status-filter');
+            const prevPageBtn = document.getElementById('prev-page');
+            const nextPageBtn = document.getElementById('next-page');
+            const showingStart = document.getElementById('showing-start');
+            const showingEnd = document.getElementById('showing-end');
+            const totalItems = document.getElementById('total-items');
+            
+            // Format date for display
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+            }
+            
+            // Calculate days between two dates
+            function calculateDays(startDate, endDate) {
+                const start = new Date(startDate);
+                const end = new Date(endDate);
+                const diffTime = Math.abs(end - start);
+                return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // +1 to include both start and end days
+            }
+            
+            // Render requests table
+            function renderTable() {
+                requestsTableBody.innerHTML = '';
+                
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = Math.min(startIndex + itemsPerPage, filteredRequests.length);
+                const displayedRequests = filteredRequests.slice(startIndex, endIndex);
+                
+                if (displayedRequests.length === 0) {
+                    requestsTableBody.innerHTML = `
+                        <tr>
+                            <td colspan="5" class="text-center py-8 text-gray-500">No requests found</td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                displayedRequests.forEach(request => {
+                    const row = document.createElement('tr');
+                    
+                    // Status badge class
+                    let statusClass = '';
+                    if (request.status === 'approved') {
+                        statusClass = 'badge-approved';
+                    } else if (request.status === 'rejected') {
+                        statusClass = 'badge-rejected';
+                    } else {
+                        statusClass = 'badge-pending';
+                    }
+                    
+                    // Format dates for display
+                    const formattedStartDate = formatDate(request.startDate);
+                    const formattedEndDate = formatDate(request.endDate);
+                    
+                    row.innerHTML = `
+                        <td class="font-medium">${request.type}</td>
+                        <td>${formattedStartDate} - ${formattedEndDate}</td>
+                        <td>${request.days}</td>
+                        <td>
+                            <span class="badge ${statusClass}">
+                                ${request.status.charAt(0).toUpperCase() + request.status.slice(1)}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="view-details-btn btn btn-secondary text-sm" data-id="${request.id}">
+                                <i class="pi pi-eye mr-1"></i> View Details
+                            </button>
+                        </td>
+                    `;
+                    
+                    requestsTableBody.appendChild(row);
+                });
+                
+                // Update pagination info
+                showingStart.textContent = filteredRequests.length > 0 ? startIndex + 1 : 0;
+                showingEnd.textContent = endIndex;
+                totalItems.textContent = filteredRequests.length;
+                
+                // Update pagination buttons
+                prevPageBtn.disabled = currentPage === 1;
+                nextPageBtn.disabled = endIndex >= filteredRequests.length;
+                
+                // Add event listeners to view details buttons
+                document.querySelectorAll('.view-details-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const requestId = parseInt(this.dataset.id);
+                        const request = requests.find(r => r.id === requestId);
+                        if (request) {
+                            showRequestDetails(request);
+                        }
+                    });
+                });
+            }
+            
+            // Filter requests by status
+            function filterRequests() {
+                const status = statusFilter.value;
+                
+                if (status === 'all') {
+                    filteredRequests = [...requests];
+                } else {
+                    filteredRequests = requests.filter(request => request.status === status);
+                }
+                
+                currentPage = 1; // Reset to first page when filtering
+                renderTable();
+            }
+            
+            // Show request details modal
+            function showRequestDetails(request) {
+                document.getElementById('detail-type').textContent = request.type;
+                
+                const statusElement = document.getElementById('detail-status');
+                statusElement.textContent = request.status.charAt(0).toUpperCase() + request.status.slice(1);
+                statusElement.className = `badge badge-${request.status}`;
+                
+                document.getElementById('detail-start-date').textContent = formatDate(request.startDate);
+                document.getElementById('detail-end-date').textContent = formatDate(request.endDate);
+                document.getElementById('detail-days').textContent = request.days;
+                document.getElementById('detail-submitted').textContent = formatDate(request.submittedOn);
+                document.getElementById('detail-reason').textContent = request.reason;
+                
+                const feedbackContainer = document.getElementById('detail-feedback-container');
+                if (request.feedback) {
+                    document.getElementById('detail-feedback').textContent = request.feedback;
+                    feedbackContainer.classList.remove('hidden');
+                } else {
+                    feedbackContainer.classList.add('hidden');
+                }
+                
+                viewRequestModal.classList.remove('hidden');
+            }
+            
+            // Submit new request
+            function submitNewRequest() {
+                const type = document.getElementById('request-type').value;
+                const startDate = document.getElementById('start-date').value;
+                const endDate = document.getElementById('end-date').value;
+                const reason = document.getElementById('reason').value;
+                
+                if (!type || !startDate || !endDate || !reason) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+                
+                if (new Date(endDate) < new Date(startDate)) {
+                    alert('End date cannot be before start date');
+                    return;
+                }
+                
+                const days = calculateDays(startDate, endDate);
+                
+                // Create new request
+                const newRequest = {
+                    id: requests.length + 1,
+                    type,
+                    startDate,
+                    endDate,
+                    days,
+                    status: 'pending',
+                    reason,
+                    submittedOn: new Date().toISOString().split('T')[0]
+                };
+                
+                // Add to requests array
+                requests.unshift(newRequest);
+                
+                // Reset filter to show all including the new request
+                statusFilter.value = 'all';
+                filterRequests();
+                
+                // Close modal and reset form
+                closeNewRequestModal();
+                
+                // Show success message
+                alert('Request submitted successfully!');
+            }
+            
+            // Open new request modal
+            function openNewRequestModal() {
+                // Set default dates
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('start-date').value = today;
+                document.getElementById('end-date').value = today;
+                
+                // Reset form
+                document.getElementById('new-request-form').reset();
+                document.getElementById('start-date').value = today;
+                document.getElementById('end-date').value = today;
+                
+                newRequestModal.classList.remove('hidden');
+            }
+            
+            // Close new request modal
+            function closeNewRequestModal() {
+                newRequestModal.classList.add('hidden');
+            }
+            
+            // Close view request modal
+            function closeViewRequestModal() {
+                viewRequestModal.classList.add('hidden');
+            }
+            
+            // Go to previous page
+            function goToPrevPage() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderTable();
+                }
+            }
+            
+            // Go to next page
+            function goToNextPage() {
+                const maxPage = Math.ceil(filteredRequests.length / itemsPerPage);
+                if (currentPage < maxPage) {
+                    currentPage++;
+                    renderTable();
+                }
+            }
+            
+            // Event listeners
+            document.getElementById('new-request-btn').addEventListener('click', openNewRequestModal);
+            document.getElementById('close-new-request-modal').addEventListener('click', closeNewRequestModal);
+            document.getElementById('cancel-request').addEventListener('click', closeNewRequestModal);
+            document.getElementById('submit-request').addEventListener('click', submitNewRequest);
+            document.getElementById('close-view-request-modal').addEventListener('click', closeViewRequestModal);
+            document.getElementById('close-details').addEventListener('click', closeViewRequestModal);
+            statusFilter.addEventListener('change', filterRequests);
+            prevPageBtn.addEventListener('click', goToPrevPage);
+            nextPageBtn.addEventListener('click', goToNextPage);
+            
+            // Initialize
+            renderTable();
+            
+            // Close modals when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === newRequestModal) {
+                    closeNewRequestModal();
+                }
+                if (event.target === viewRequestModal) {
+                    closeViewRequestModal();
+                }
+            });
+        });
+    </script>
+</body>

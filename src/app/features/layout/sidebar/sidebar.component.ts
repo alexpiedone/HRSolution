@@ -4,23 +4,27 @@ import { Router } from '@angular/router';
 import { Avatar } from 'primeng/avatar';
 import { PanelMenu } from 'primeng/panelmenu';
 import { MenuItem } from 'primeng/api';
-
+import { ButtonModule } from 'primeng/button';
 
 
 @Component({
   selector: 'app-sidebar',
-  imports: [CommonModule, Avatar, PanelMenu],
+  imports: [CommonModule, Avatar, PanelMenu, ButtonModule],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
 export class SidebarComponent {
   @Input() collapsed = false; 
+
+  constructor(private router: Router) {}
   toggleSidebar() {
     this.collapsed = !this.collapsed;
   }
   menuItems: MenuItem[] = [];
 
-  
+  navigateToProfile() {
+    this.router.navigate(['/user-overview']);
+  }
   ngOnInit() {
     this.menuItems = [
       {
