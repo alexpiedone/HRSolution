@@ -1,274 +1,5 @@
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HR Application - User Profile</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
-    <!-- PrimeNG Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/primeicons@6.0.1/primeicons.min.css">
-    <style>
-        :root {
-            --primary-color: #4f46e5;
-            --primary-light: #e0e7ff;
-            --success-color: #10b981;
-            --success-light: #d1fae5;
-            --warning-color: #f59e0b;
-            --warning-light: #fef3c7;
-            --danger-color: #ef4444;
-            --danger-light: #fee2e2;
-            --info-color: #3b82f6;
-            --info-light: #dbeafe;
-            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f9fafb;
-            color: #1f2937;
-        }
-        
-        .card {
-            background-color: white;
-            border-radius: 0.75rem;
-            box-shadow: var(--card-shadow);
-        }
-        
-        .avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid white;
-            box-shadow: 0 0 0 2px var(--primary-color);
-        }
-        
-        .avatar-sm {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-        
-        .badge-primary {
-            background-color: var(--primary-light);
-            color: var(--primary-color);
-        }
-        
-        .badge-success {
-            background-color: var(--success-light);
-            color: var(--success-color);
-        }
-        
-        .badge-warning {
-            background-color: var(--warning-light);
-            color: var(--warning-color);
-        }
-        
-        .badge-info {
-            background-color: var(--info-light);
-            color: var(--info-color);
-        }
-        
-        .tab-list {
-            display: flex;
-            border-bottom: 1px solid #e5e7eb;
-            margin-bottom: 1.5rem;
-        }
-        
-        .tab {
-            padding: 0.75rem 1.25rem;
-            font-weight: 500;
-            color: #6b7280;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s;
-        }
-        
-        .tab:hover {
-            color: var(--primary-color);
-        }
-        
-        .tab.active {
-            color: var(--primary-color);
-            border-bottom-color: var(--primary-color);
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-        }
-        
-        .table th {
-            background-color: #f9fafb;
-            font-weight: 500;
-            text-align: left;
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .table td {
-            padding: 1rem;
-            border-bottom: 1px solid #e5e7eb;
-            vertical-align: middle;
-        }
-        
-        .table tr:last-child td {
-            border-bottom: none;
-        }
-        
-        .table tr:hover {
-            background-color: #f9fafb;
-        }
-        
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 0.5rem;
-            padding: 0.5rem 1rem;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-        
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background-color: #4338ca;
-        }
-        
-        .btn-secondary {
-            background-color: #f3f4f6;
-            color: #4b5563;
-        }
-        
-        .btn-secondary:hover {
-            background-color: #e5e7eb;
-        }
-        
-        .btn-outline {
-            border: 1px solid #d1d5db;
-            background-color: white;
-            color: #4b5563;
-        }
-        
-        .btn-outline:hover {
-            background-color: #f9fafb;
-        }
-        
-        .btn-sm {
-            padding: 0.25rem 0.75rem;
-            font-size: 0.875rem;
-        }
-        
-        .sensitive-data {
-            filter: blur(4px);
-            transition: filter 0.3s ease;
-        }
-        
-        .sensitive-data:hover {
-            filter: blur(0);
-        }
-        
-        .org-chart {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .org-level {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 2rem;
-            position: relative;
-        }
-        
-        .org-level::after {
-            content: '';
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            width: 2px;
-            height: 1.5rem;
-            background-color: #d1d5db;
-        }
-        
-        .org-level:last-child::after {
-            display: none;
-        }
-        
-        .org-card {
-            background-color: white;
-            border-radius: 0.5rem;
-            box-shadow: var(--card-shadow);
-            padding: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            width: 250px;
-            margin: 0 0.5rem;
-        }
-        
-        .org-card.current {
-            border: 2px solid var(--primary-color);
-        }
-        
-        .org-peers {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-        }
-        
-        .document-card {
-            display: flex;
-            align-items: center;
-            padding: 1rem;
-            border: 1px solid #e5e7eb;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-            transition: all 0.2s;
-        }
-        
-        .document-card:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 1px var(--primary-light);
-        }
-        
-        .document-icon {
-            width: 40px;
-            height: 40px;
-            background-color: var(--primary-light);
-            color: var(--primary-color);
-            border-radius: 0.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 1rem;
-        }
-    </style>
-</head>
-<body class="p-6">
+
+<div class="p-6">
     <div class="max-w-6xl mx-auto">
         <!-- Profile Header -->
         <div class="card mb-6">
@@ -328,435 +59,236 @@
         <!-- Tabbed Content -->
         <div class="card">
             <div class="p-6">
-                <div class="tab-list">
-                    <div class="tab active" data-tab="personal-info">
-                        <i class="pi pi-user mr-2"></i>
-                        Personal Info
-                    </div>
-                    <div class="tab" data-tab="documents">
-                        <i class="pi pi-file mr-2"></i>
-                        Documents
-                    </div>
-                    <div class="tab" data-tab="salary">
-                        <i class="pi pi-dollar mr-2"></i>
-                        Salary
-                    </div>
-                    <div class="tab" data-tab="hierarchy">
-                        <i class="pi pi-sitemap mr-2"></i>
-                        Hierarchy
-                    </div>
+              <div class="tab-list">
+                <div class="tab" [class.active]="activeTab === 'personal-info'" (click)="changeTab('personal-info')">
+                  <i class="pi pi-user mr-2"></i>
+                  Personal Info
                 </div>
-                
-                <!-- Personal Info Tab -->
-                <div id="personal-info" class="tab-content active">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="tab" [class.active]="activeTab === 'documents'" (click)="changeTab('documents')">
+                  <i class="pi pi-file mr-2"></i>
+                  Documents
+                </div>
+                <div class="tab" [class.active]="activeTab === 'salary'" (click)="changeTab('salary')">
+                  <i class="pi pi-dollar mr-2"></i>
+                  Salary
+                </div>
+                <div class="tab" [class.active]="activeTab === 'hierarchy'" (click)="changeTab('hierarchy')">
+                  <i class="pi pi-sitemap mr-2"></i>
+                  Hierarchy
+                </div>
+              </div>
+              
+              <!-- Personal Info Tab -->
+              <div id="personal-info" class="tab-content" [class.active]="activeTab === 'personal-info'">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div>
+                    <h3 class="text-lg font-semibold mb-4">Role & Department</h3>
+                    <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                      <div class="mb-4">
+                        <p class="text-sm text-gray-500 mb-1">Position</p>
+                        <p class="font-medium">{{ roleInfo.position }}</p>
+                      </div>
+                      <div class="mb-4">
+                        <p class="text-sm text-gray-500 mb-1">Department</p>
+                        <p class="font-medium">{{ roleInfo.department }}</p>
+                      </div>
+                      <div class="mb-4">
+                        <p class="text-sm text-gray-500 mb-1">Team</p>
+                        <p class="font-medium">{{ roleInfo.team }}</p>
+                      </div>
+                      <div>
+                        <p class="text-sm text-gray-500 mb-1">Manager</p>
+                        <p class="font-medium">{{ roleInfo.manager }}</p>
+                      </div>
+                    </div>
+                    
+                    <h3 class="text-lg font-semibold mb-4">Projects Assigned</h3>
+                    <div class="space-y-3 mb-6">
+                      <div class="flex items-center justify-between bg-white border border-gray-200 rounded-lg p-4" *ngFor="let project of projects">
                         <div>
-                            <h3 class="text-lg font-semibold mb-4">Role &amp; Department</h3>
-                            <div class="bg-gray-50 rounded-lg p-4 mb-6">
-                                <div class="mb-4">
-                                    <p class="text-sm text-gray-500 mb-1">Position</p>
-                                    <p class="font-medium">Frontend Developer</p>
-                                </div>
-                                <div class="mb-4">
-                                    <p class="text-sm text-gray-500 mb-1">Department</p>
-                                    <p class="font-medium">Engineering</p>
-                                </div>
-                                <div class="mb-4">
-                                    <p class="text-sm text-gray-500 mb-1">Team</p>
-                                    <p class="font-medium">Web Applications</p>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500 mb-1">Manager</p>
-                                    <p class="font-medium">Michael Chen</p>
-                                </div>
-                            </div>
-                            
-                            <h3 class="text-lg font-semibold mb-4">Projects Assigned</h3>
-                            <div class="space-y-3 mb-6">
-                                <div class="flex items-center justify-between bg-white border border-gray-200 rounded-lg p-4">
-                                    <div>
-                                        <h4 class="font-medium">HR Dashboard Redesign</h4>
-                                        <p class="text-sm text-gray-500">Frontend Development</p>
-                                    </div>
-                                    <span class="badge badge-success">Active</span>
-                                </div>
-                                <div class="flex items-center justify-between bg-white border border-gray-200 rounded-lg p-4">
-                                    <div>
-                                        <h4 class="font-medium">Employee Mobile App</h4>
-                                        <p class="text-sm text-gray-500">UI Implementation</p>
-                                    </div>
-                                    <span class="badge badge-warning">Planning</span>
-                                </div>
-                                <div class="flex items-center justify-between bg-white border border-gray-200 rounded-lg p-4">
-                                    <div>
-                                        <h4 class="font-medium">Company Website</h4>
-                                        <p class="text-sm text-gray-500">Maintenance</p>
-                                    </div>
-                                    <span class="badge badge-info">Ongoing</span>
-                                </div>
-                            </div>
+                          <h4 class="font-medium">{{ project.name }}</h4>
+                          <p class="text-sm text-gray-500">{{ project.role }}</p>
                         </div>
-                        
+                        <span class="badge {{ project.statusClass }}">{{ project.status }}</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h3 class="text-lg font-semibold mb-4">Responsibilities</h3>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                      <span class="badge badge-primary" *ngFor="let responsibility of responsibilities">{{ responsibility }}</span>
+                    </div>
+                    
+                    <h3 class="text-lg font-semibold mb-4">Benefits</h3>
+                    <div class="space-y-3">
+                      <div class="flex items-center bg-white border border-gray-200 rounded-lg p-4" *ngFor="let benefit of benefits">
+                        <div class="w-10 h-10 rounded-full bg-success-light flex items-center justify-center mr-3">
+                          <i class="pi pi-check text-success-color"></i>
+                        </div>
                         <div>
-                            <h3 class="text-lg font-semibold mb-4">Responsibilities</h3>
-                            <div class="flex flex-wrap gap-2 mb-6">
-                                <span class="badge badge-primary">Frontend Development</span>
-                                <span class="badge badge-primary">UI Implementation</span>
-                                <span class="badge badge-primary">React.js</span>
-                                <span class="badge badge-primary">Vue.js</span>
-                                <span class="badge badge-primary">CSS/SCSS</span>
-                                <span class="badge badge-primary">Responsive Design</span>
-                                <span class="badge badge-primary">Performance Optimization</span>
-                                <span class="badge badge-primary">Code Reviews</span>
-                                <span class="badge badge-primary">Documentation</span>
-                            </div>
-                            
-                            <h3 class="text-lg font-semibold mb-4">Benefits</h3>
-                            <div class="space-y-3">
-                                <div class="flex items-center bg-white border border-gray-200 rounded-lg p-4">
-                                    <div class="w-10 h-10 rounded-full bg-success-light flex items-center justify-center mr-3">
-                                        <i class="pi pi-check text-success-color"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-medium">Health Insurance</h4>
-                                        <p class="text-sm text-gray-500">Premium Coverage</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center bg-white border border-gray-200 rounded-lg p-4">
-                                    <div class="w-10 h-10 rounded-full bg-success-light flex items-center justify-center mr-3">
-                                        <i class="pi pi-check text-success-color"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-medium">Meal Vouchers</h4>
-                                        <p class="text-sm text-gray-500">$15 per working day</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center bg-white border border-gray-200 rounded-lg p-4">
-                                    <div class="w-10 h-10 rounded-full bg-success-light flex items-center justify-center mr-3">
-                                        <i class="pi pi-check text-success-color"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-medium">Learning Budget</h4>
-                                        <p class="text-sm text-gray-500">$1,000 annually</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center bg-white border border-gray-200 rounded-lg p-4">
-                                    <div class="w-10 h-10 rounded-full bg-success-light flex items-center justify-center mr-3">
-                                        <i class="pi pi-check text-success-color"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-medium">Flexible Hours</h4>
-                                        <p class="text-sm text-gray-500">Core hours: 10 AM - 4 PM</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center bg-white border border-gray-200 rounded-lg p-4">
-                                    <div class="w-10 h-10 rounded-full bg-success-light flex items-center justify-center mr-3">
-                                        <i class="pi pi-check text-success-color"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-medium">Remote Work</h4>
-                                        <p class="text-sm text-gray-500">2 days per week</p>
-                                    </div>
-                                </div>
-                            </div>
+                          <h4 class="font-medium">{{ benefit.name }}</h4>
+                          <p class="text-sm text-gray-500">{{ benefit.description }}</p>
                         </div>
+                      </div>
                     </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Documents Tab -->
+              <div id="documents" class="tab-content" [class.active]="activeTab === 'documents'">
+                <div class="mb-6">
+                  <h3 class="text-lg font-semibold mb-4">Employment Documents</h3>
+                  <div class="document-card" *ngFor="let doc of employmentDocuments">
+                    <div class="document-icon">
+                      <i class="pi pi-file-pdf"></i>
+                    </div>
+                    <div class="flex-1">
+                      <h4 class="font-medium">{{ doc.name }}</h4>
+                      <p class="text-sm text-gray-500">{{ doc.date }}</p>
+                    </div>
+                    <button class="btn btn-outline btn-sm" (click)="downloadDocument(doc.name)">
+                      <i class="pi pi-download mr-2"></i>
+                      Download
+                    </button>
+                  </div>
                 </div>
                 
-                <!-- Documents Tab -->
-                <div id="documents" class="tab-content">
-                    <div class="mb-6">
-                        <h3 class="text-lg font-semibold mb-4">Employment Documents</h3>
-                        <div class="document-card">
-                            <div class="document-icon">
-                                <i class="pi pi-file-pdf"></i>
-                            </div>
-                            <div class="flex-1">
-                                <h4 class="font-medium">Employment Contract</h4>
-                                <p class="text-sm text-gray-500">Signed on March 15, 2021</p>
-                            </div>
-                            <button class="btn btn-outline btn-sm">
-                                <i class="pi pi-download mr-2"></i>
-                                Download
-                            </button>
-                        </div>
-                        <div class="document-card">
-                            <div class="document-icon">
-                                <i class="pi pi-file-pdf"></i>
-                            </div>
-                            <div class="flex-1">
-                                <h4 class="font-medium">Addendum - Role Change</h4>
-                                <p class="text-sm text-gray-500">Signed on November 10, 2022</p>
-                            </div>
-                            <button class="btn btn-outline btn-sm">
-                                <i class="pi pi-download mr-2"></i>
-                                Download
-                            </button>
-                        </div>
-                        <div class="document-card">
-                            <div class="document-icon">
-                                <i class="pi pi-file-pdf"></i>
-                            </div>
-                            <div class="flex-1">
-                                <h4 class="font-medium">Addendum - Salary Revision</h4>
-                                <p class="text-sm text-gray-500">Signed on March 20, 2023</p>
-                            </div>
-                            <button class="btn btn-outline btn-sm">
-                                <i class="pi pi-download mr-2"></i>
-                                Download
-                            </button>
-                        </div>
+                <div class="mb-6">
+                  <h3 class="text-lg font-semibold mb-4">Certificates & Training</h3>
+                  <div class="document-card" *ngFor="let cert of certificates">
+                    <div class="document-icon">
+                      <i class="pi pi-file-pdf"></i>
                     </div>
-                    
-                    <div class="mb-6">
-                        <h3 class="text-lg font-semibold mb-4">Certificates &amp; Training</h3>
-                        <div class="document-card">
-                            <div class="document-icon">
-                                <i class="pi pi-file-pdf"></i>
-                            </div>
-                            <div class="flex-1">
-                                <h4 class="font-medium">React Advanced Certification</h4>
-                                <p class="text-sm text-gray-500">Issued on July 15, 2022</p>
-                            </div>
-                            <button class="btn btn-outline btn-sm">
-                                <i class="pi pi-download mr-2"></i>
-                                Download
-                            </button>
-                        </div>
-                        <div class="document-card">
-                            <div class="document-icon">
-                                <i class="pi pi-file-pdf"></i>
-                            </div>
-                            <div class="flex-1">
-                                <h4 class="font-medium">UI/UX Design Fundamentals</h4>
-                                <p class="text-sm text-gray-500">Issued on September 5, 2022</p>
-                            </div>
-                            <button class="btn btn-outline btn-sm">
-                                <i class="pi pi-download mr-2"></i>
-                                Download
-                            </button>
-                        </div>
-                        <div class="document-card">
-                            <div class="document-icon">
-                                <i class="pi pi-file-pdf"></i>
-                            </div>
-                            <div class="flex-1">
-                                <h4 class="font-medium">Web Accessibility Training</h4>
-                                <p class="text-sm text-gray-500">Issued on February 20, 2023</p>
-                            </div>
-                            <button class="btn btn-outline btn-sm">
-                                <i class="pi pi-download mr-2"></i>
-                                Download
-                            </button>
-                        </div>
+                    <div class="flex-1">
+                      <h4 class="font-medium">{{ cert.name }}</h4>
+                      <p class="text-sm text-gray-500">{{ cert.date }}</p>
                     </div>
-                    
-                    <div>
-                        <h3 class="text-lg font-semibold mb-4">Other Documents</h3>
-                        <div class="document-card">
-                            <div class="document-icon">
-                                <i class="pi pi-file-pdf"></i>
-                            </div>
-                            <div class="flex-1">
-                                <h4 class="font-medium">Company Handbook</h4>
-                                <p class="text-sm text-gray-500">Latest version: 2023</p>
-                            </div>
-                            <button class="btn btn-outline btn-sm">
-                                <i class="pi pi-download mr-2"></i>
-                                Download
-                            </button>
-                        </div>
-                        <div class="document-card">
-                            <div class="document-icon">
-                                <i class="pi pi-file-pdf"></i>
-                            </div>
-                            <div class="flex-1">
-                                <h4 class="font-medium">IT Security Policy</h4>
-                                <p class="text-sm text-gray-500">Acknowledged on March 16, 2021</p>
-                            </div>
-                            <button class="btn btn-outline btn-sm">
-                                <i class="pi pi-download mr-2"></i>
-                                Download
-                            </button>
-                        </div>
-                    </div>
+                    <button class="btn btn-outline btn-sm" (click)="downloadDocument(cert.name)">
+                      <i class="pi pi-download mr-2"></i>
+                      Download
+                    </button>
+                  </div>
                 </div>
                 
-                <!-- Salary Tab -->
-                <div id="salary" class="tab-content">
-                    <div class="mb-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-semibold">Current Salary Information</h3>
-                            <div class="text-sm text-gray-500">
-                                <i class="pi pi-eye mr-1"></i>
-                                Hover over sensitive data to view
-                            </div>
-                        </div>
-                        
-                        <div class="bg-gray-50 rounded-lg p-6 mb-6">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <p class="text-sm text-gray-500 mb-1">Gross Monthly Salary</p>
-                                    <p class="text-xl font-bold sensitive-data">$5,800.00</p>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500 mb-1">Net Monthly Salary</p>
-                                    <p class="text-xl font-bold sensitive-data">$4,350.00</p>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500 mb-1">Annual Bonus Target</p>
-                                    <p class="text-xl font-bold sensitive-data">$6,960.00 (12%)</p>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500 mb-1">Last Salary Review</p>
-                                    <p class="text-xl font-bold">March 20, 2023</p>
-                                </div>
-                            </div>
-                        </div>
+                <div>
+                  <h3 class="text-lg font-semibold mb-4">Other Documents</h3>
+                  <div class="document-card" *ngFor="let doc of otherDocuments">
+                    <div class="document-icon">
+                      <i class="pi pi-file-pdf"></i>
                     </div>
-                    
-                    <div>
-                        <h3 class="text-lg font-semibold mb-4">Salary History</h3>
-                        <div class="overflow-x-auto">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Effective Date</th>
-                                        <th>Gross Monthly</th>
-                                        <th>Change</th>
-                                        <th>Reason</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>March 20, 2023</td>
-                                        <td class="sensitive-data">$5,800.00</td>
-                                        <td>
-                                            <span class="badge badge-success">+7.4%</span>
-                                        </td>
-                                        <td>Annual Review</td>
-                                    </tr>
-                                    <tr>
-                                        <td>November 10, 2022</td>
-                                        <td class="sensitive-data">$5,400.00</td>
-                                        <td>
-                                            <span class="badge badge-success">+12.5%</span>
-                                        </td>
-                                        <td>Promotion</td>
-                                    </tr>
-                                    <tr>
-                                        <td>March 15, 2022</td>
-                                        <td class="sensitive-data">$4,800.00</td>
-                                        <td>
-                                            <span class="badge badge-success">+6.7%</span>
-                                        </td>
-                                        <td>Annual Review</td>
-                                    </tr>
-                                    <tr>
-                                        <td>March 15, 2021</td>
-                                        <td class="sensitive-data">$4,500.00</td>
-                                        <td>
-                                            <span class="badge badge-info">Initial</span>
-                                        </td>
-                                        <td>Hiring</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="flex-1">
+                      <h4 class="font-medium">{{ doc.name }}</h4>
+                      <p class="text-sm text-gray-500">{{ doc.date }}</p>
                     </div>
+                    <button class="btn btn-outline btn-sm" (click)="downloadDocument(doc.name)">
+                      <i class="pi pi-download mr-2"></i>
+                      Download
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Salary Tab -->
+              <div id="salary" class="tab-content" [class.active]="activeTab === 'salary'">
+                <div class="mb-6">
+                  <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold">Current Salary Information</h3>
+                    <div class="text-sm text-gray-500">
+                      <i class="pi pi-eye mr-1"></i>
+                      Hover over sensitive data to view
+                    </div>
+                  </div>
+                  
+                  <div class="bg-gray-50 rounded-lg p-6 mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <p class="text-sm text-gray-500 mb-1">Gross Monthly Salary</p>
+                        <p class="text-xl font-bold sensitive-data">{{ currentSalary.grossMonthly }}</p>
+                      </div>
+                      <div>
+                        <p class="text-sm text-gray-500 mb-1">Net Monthly Salary</p>
+                        <p class="text-xl font-bold sensitive-data">{{ currentSalary.netMonthly }}</p>
+                      </div>
+                      <div>
+                        <p class="text-sm text-gray-500 mb-1">Annual Bonus Target</p>
+                        <p class="text-xl font-bold sensitive-data">{{ currentSalary.annualBonus }}</p>
+                      </div>
+                      <div>
+                        <p class="text-sm text-gray-500 mb-1">Last Salary Review</p>
+                        <p class="text-xl font-bold">{{ currentSalary.lastReview }}</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 
-                <!-- Hierarchy Tab -->
-                <div id="hierarchy" class="tab-content">
-                    <div class="org-chart">
-                        <!-- Manager Level -->
-                        <div class="org-level">
-                            <div class="org-card">
-                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Manager" class="avatar-sm">
-                                <div>
-                                    <h4 class="font-medium">Michael Chen</h4>
-                                    <p class="text-sm text-gray-500">Engineering Manager</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Current Employee Level -->
-                        <div class="org-level">
-                            <div class="org-card current">
-                                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah Johnson" class="avatar-sm">
-                                <div>
-                                    <h4 class="font-medium">Sarah Johnson</h4>
-                                    <p class="text-sm text-gray-500">Frontend Developer</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Team Members Level -->
-                        <h3 class="text-lg font-semibold mb-4 text-center">Team Members</h3>
-                        <div class="org-peers">
-                            <div class="org-card">
-                                <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Team Member" class="avatar-sm">
-                                <div>
-                                    <h4 class="font-medium">David Kim</h4>
-                                    <p class="text-sm text-gray-500">Frontend Developer</p>
-                                </div>
-                            </div>
-                            <div class="org-card">
-                                <img src="https://randomuser.me/api/portraits/women/28.jpg" alt="Team Member" class="avatar-sm">
-                                <div>
-                                    <h4 class="font-medium">Emily Rodriguez</h4>
-                                    <p class="text-sm text-gray-500">UI/UX Designer</p>
-                                </div>
-                            </div>
-                            <div class="org-card">
-                                <img src="https://randomuser.me/api/portraits/men/36.jpg" alt="Team Member" class="avatar-sm">
-                                <div>
-                                    <h4 class="font-medium">James Wilson</h4>
-                                    <p class="text-sm text-gray-500">Backend Developer</p>
-                                </div>
-                            </div>
-                            <div class="org-card">
-                                <img src="https://randomuser.me/api/portraits/women/56.jpg" alt="Team Member" class="avatar-sm">
-                                <div>
-                                    <h4 class="font-medium">Sophia Lee</h4>
-                                    <p class="text-sm text-gray-500">QA Engineer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div>
+                  <h3 class="text-lg font-semibold mb-4">Salary History</h3>
+                  <div class="overflow-x-auto">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Effective Date</th>
+                          <th>Gross Monthly</th>
+                          <th>Change</th>
+                          <th>Reason</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let salary of salaryHistory">
+                          <td>{{ salary.date }}</td>
+                          <td class="sensitive-data">{{ salary.amount }}</td>
+                          <td>
+                            <span class="badge {{ salary.changeClass }}">{{ salary.change }}</span>
+                          </td>
+                          <td>{{ salary.reason }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
+              </div>
+              
+              <!-- Hierarchy Tab -->
+              <div id="hierarchy" class="tab-content" [class.active]="activeTab === 'hierarchy'">
+                <div class="org-chart">
+                  <!-- Manager Level -->
+                  <div class="org-level">
+                    <div class="org-card">
+                      <img [src]="hierarchy.manager.image" alt="Manager" class="avatar-sm">
+                      <div>
+                        <h4 class="font-medium">{{ hierarchy.manager.name }}</h4>
+                        <p class="text-sm text-gray-500">{{ hierarchy.manager.role }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Current Employee Level -->
+                  <div class="org-level">
+                    <div class="org-card current">
+                      <img [src]="hierarchy.currentEmployee.image" alt="Current Employee" class="avatar-sm">
+                      <div>
+                        <h4 class="font-medium">{{ hierarchy.currentEmployee.name }}</h4>
+                        <p class="text-sm text-gray-500">{{ hierarchy.currentEmployee.role }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Team Members Level -->
+                  <h3 class="text-lg font-semibold mb-4 text-center">Team Members</h3>
+                  <div class="org-peers">
+                    <div class="org-card" *ngFor="let member of hierarchy.teamMembers">
+                      <img [src]="member.image" alt="Team Member" class="avatar-sm">
+                      <div>
+                        <h4 class="font-medium">{{ member.name }}</h4>
+                        <p class="text-sm text-gray-500">{{ member.role }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-        </div>
+          </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Tab switching functionality
-            const tabs = document.querySelectorAll('.tab');
-            const tabContents = document.querySelectorAll('.tab-content');
-            
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const tabId = this.getAttribute('data-tab');
-                    
-                    // Remove active class from all tabs and contents
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tabContents.forEach(c => c.classList.remove('active'));
-                    
-                    // Add active class to current tab and content
-                    this.classList.add('active');
-                    document.getElementById(tabId).classList.add('active');
-                });
-            });
-            
-            // Document download buttons
-            const downloadButtons = document.querySelectorAll('.btn-outline');
-            downloadButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const documentName = this.parentElement.querySelector('h4').textContent;
-                    alert(`Downloading ${documentName}...\n\nIn a real application, this would initiate a download of the document.`);
-                });
-            });
-        });
-    </script>
-</body>
+</div>

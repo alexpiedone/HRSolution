@@ -1,0 +1,241 @@
+
+
+.card {
+    background-color: white;
+    border-radius: 0.75rem;
+    box-shadow: var(--card-shadow);
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid white;
+    box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+.avatar-sm {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.badge-primary {
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+}
+
+.badge-success {
+    background-color: var(--success-light);
+    color: var(--success-color);
+}
+
+.badge-warning {
+    background-color: var(--warning-light);
+    color: var(--warning-color);
+}
+
+.badge-info {
+    background-color: var(--info-light);
+    color: var(--info-color);
+}
+
+.tab-list {
+    display: flex;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 1.5rem;
+}
+
+.tab {
+    padding: 0.75rem 1.25rem;
+    font-weight: 500;
+    color: #6b7280;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+.tab:hover {
+    color: var(--primary-color);
+}
+
+.tab.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table th {
+    background-color: #f9fafb;
+    font-weight: 500;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: middle;
+}
+
+.table tr:last-child td {
+    border-bottom: none;
+}
+
+.table tr:hover {
+    background-color: #f9fafb;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #4338ca;
+}
+
+.btn-secondary {
+    background-color: #f3f4f6;
+    color: #4b5563;
+}
+
+.btn-secondary:hover {
+    background-color: #e5e7eb;
+}
+
+.btn-outline {
+    border: 1px solid #d1d5db;
+    background-color: white;
+    color: #4b5563;
+}
+
+.btn-outline:hover {
+    background-color: #f9fafb;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+.sensitive-data {
+    filter: blur(4px);
+    transition: filter 0.3s ease;
+}
+
+.sensitive-data:hover {
+    filter: blur(0);
+}
+
+.org-chart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.org-level {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.org-level::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 2px;
+    height: 1.5rem;
+    background-color: #d1d5db;
+}
+
+.org-level:last-child::after {
+    display: none;
+}
+
+.org-card {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: var(--card-shadow);
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 250px;
+    margin: 0 0.5rem;
+}
+
+.org-card.current {
+    border: 2px solid var(--primary-color);
+}
+
+.org-peers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.document-card {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    transition: all 0.2s;
+}
+
+.document-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 1px var(--primary-light);
+}
+
+.document-icon {
+    width: 40px;
+    height: 40px;
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+}
