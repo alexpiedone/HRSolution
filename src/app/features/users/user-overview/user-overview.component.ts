@@ -9,7 +9,6 @@ import { CommonModule } from '@angular/common';
 export class UserOverviewComponent {
   activeTab: string = 'personal-info';
 
-  // Personal Info Data
   roleInfo = {
     position: 'Frontend Developer',
     department: 'Engineering',
@@ -91,7 +90,6 @@ export class UserOverviewComponent {
   };
 
   changeTab(tabId: string): void {
-    console.log(`Changing tab to: ${tabId}`);
     this.activeTab = tabId;
   }
 
