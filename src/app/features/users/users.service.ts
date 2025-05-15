@@ -1,7 +1,7 @@
 import { ApiService } from '../../core/services/api.service';
 import { HttpClient } from '@angular/common/http';
 import { LoggingService } from '../../core/services/logging.service';
-import { Colleague, User } from '../../models/user';
+import {  User } from '../../models/user';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../environment/environment';
 import { Injectable } from '@angular/core';
@@ -15,15 +15,15 @@ export class UsersService extends ApiService<User> {
     super(http, loggingService, `News`);
   }
 
-  getColleagues(): Observable<Colleague[]> {
-    return this.http.get<Colleague[]>(`${environment.apiUrl}/Users/GetColleagues`).pipe(
+  getColleagues(): Observable<User[]> {
+    return this.http.get<User[]>(`${environment.apiUrl}/Users/GetColleagues`).pipe(
       map(users =>
         users.map(u => ({
           id: u.id,
-          name: u.name,
+          fullName: u.fullName,
           email: u.email,
           phone: u.phone,
-          avatar: u.avatar,
+          avatar: u.avatarUrl,
           responsibilities: u.responsibilities,
           projects: u.projects
         }))

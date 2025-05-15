@@ -9,13 +9,3 @@ export interface User {
     projects: string[];
   }
   
-
-export interface Colleague {
-    id: string;
-    name: string;
-    email?: string;
-    phone?: string;
-    avatar?: string;
-    responsibilities?: string;
-    projects: string[];
-  }
