@@ -1,34 +1,24 @@
 import { Routes, CanActivateFn, Router } from '@angular/router';
 import { authGuard } from './features/auth/auth.guard';
 import { HomeComponent } from './features/home/home.component';
-import { inject } from '@angular/core'; 
+import { inject } from '@angular/core';
 import { AuthService } from './features/auth/auth.service';
 import { LoginComponent } from './features/auth/login/login.component';
 import { MainLayoutComponent } from './features/layout/main-layout/main-layout.component';
-const redirectBasedOnAuth: CanActivateFn = () => {
-  const authService = inject(AuthService);
-  const router = inject(Router);
+import path from 'path';
 
-  if (authService.isAuthenticated()) {
-    router.navigate(['/home']);
-    return false; 
-  } else {
-    router.navigate(['/auth/login']);
-    return false; 
-  }
-};
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
-    pathMatch: 'full',
-  },
-  {
-    path: '',
-    component: MainLayoutComponent, 
+    component: MainLayoutComponent,
     canActivate: [authGuard],
     children: [
+      {
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full'
+      },
       {
         path: 'home',
         component: HomeComponent,
@@ -36,13 +26,16 @@ export const routes: Routes = [
       {
         path: 'Documents',
         loadComponent: () =>
-          import('./features/auth/login/login.component').then(
-            (m) => m.LoginComponent
+          import('./features/home/home.component').then(
+            (m) => m.HomeComponent
           ),
       },
       {
-        path: 'user-overview', 
-        loadComponent: () => import('./features/users/user-overview/user-overview.component').then(m => m.UserOverviewComponent)
+        path: 'user-overview',
+        loadComponent: () =>
+          import('./features/users/user-overview/user-overview.component').then(
+            (m) => m.UserOverviewComponent
+          ),
       },
       {
         path: 'leaveRequest',
@@ -57,13 +50,15 @@ export const routes: Routes = [
           import('./features/timesheet/timesheet.component').then(
             (m) => m.TimesheetComponent
           ),
-      },
+      }
     ],
   },
   {
     path: 'auth/login',
-    loadComponent: () =>
-      import('./features/auth/login/login.component').then((m) => m.LoginComponent),
+    component: LoginComponent,
   },
-  
+  {
+    path: '**',
+    redirectTo: 'auth/login',
+  },
 ];

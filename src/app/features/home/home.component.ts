@@ -19,6 +19,7 @@ import { Task } from '../../models/task';
 import { NewsletterComponent } from "../news/newsletter/newsletter.component";
 import { NewsItem } from '../../models/newsitem';
 import { TaskService } from '../task/task.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -38,11 +39,13 @@ export class HomeComponent {
   tasks: Task[] = [];
   events: any[] = [];
   colleagues: any[] = [];
+  username = '';
 
   constructor(private newsService: NewsService,
     private usersService: UsersService,
     private eventService: EventsService,
-    private tasksService: TaskService) { }
+    private tasksService: TaskService,
+    private authService: AuthService) { }
   ngOnInit() {
 
     this.eventService.getAll().subscribe((data) => {
@@ -61,6 +64,9 @@ export class HomeComponent {
     this.tasksService.GetAllDTO().subscribe((data) => {
       this.tasks = data;
     });
+
+    this.username = this.authService.getCurrentUsername();
+    console.log('Current username:', this.username);
   }
 
   private loadColleagues(): void {
@@ -135,10 +141,16 @@ export class HomeComponent {
 
   filteredColleagues() {
     const query = this.searchText.toLowerCase();
-    return this.colleagues.filter(person =>
-      person.name.toLowerCase().includes(query) ||
-      person.role.toLowerCase().includes(query) ||
-      person.responsibilities.toLowerCase().includes(query)
-    );
+    if (!query) {
+      return this.colleagues;
+    }
+    else {
+      return this.colleagues.filter(person =>
+        person.name.toLowerCase().includes(query) ||
+        person.role.toLowerCase().includes(query) ||
+        person.responsibilities.toLowerCase().includes(query)
+      );
+    }
+
   }
 }

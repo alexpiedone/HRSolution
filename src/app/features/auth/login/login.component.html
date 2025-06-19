@@ -4,43 +4,64 @@
   </div>
   <div class="flex items-center justify-center min-h-screen bg-white">
     <div class="p-8 bg-white rounded-xl shadow-xl w-96">
-      <h2 class="mb-8 text-2xl font-semibold text-center text-gray-800">Login</h2>
-  
-      <p-floatlabel class="block mb-4">
-        <input type="text" id="username" pInputText [(ngModel)]="username" class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-200">
-        <label for="username">Username</label>
-      </p-floatlabel>
-  
-      <p-floatlabel class="block mb-6">
-        <input type="password" id="password" pInputText [(ngModel)]="password" class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-200">
-        <label for="password">Password</label>
-      </p-floatlabel>
-  
-      <div class="flex items-center justify-between mb-8">
-        <div class="flex items-center">
-          <p-checkbox  id="rememberMe"></p-checkbox>
-          <label for="rememberMe" class="ml-2 text-sm text-gray-600">Remember me</label>
+      <h2 class="mb-8 text-2xl font-semibold text-center text-gray-800">
+        Login
+      </h2>
+
+      <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+        <p-floatlabel class="block mb-4">
+          <input type="text" id="username" pInputText [(ngModel)]="username" name="username" required
+            class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-200" />
+          <label for="username">Username</label>
+        </p-floatlabel>
+
+        <p-floatlabel class="block mb-6">
+          <input [type]="showPassword ? 'text' : 'password'" id="password" pInputText [(ngModel)]="password"
+            name="password" required
+            class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-200" />
+          <label for="password">Password</label>
+        </p-floatlabel>
+
+        <div class="flex items-center justify-between mb-8">
+          <div class="flex items-center">
+            <p-checkbox id="rememberMe"></p-checkbox>
+            <label for="rememberMe" class="ml-2 text-sm text-gray-600">Remember me</label>
+          </div>
+          <a href="#" class="text-sm text-blue-500 hover:underline">Forgot password?</a>
         </div>
-        <a href="#" class="text-sm text-blue-500 hover:underline">Forgot password?</a>
+
+        <button
+          type="submit"
+          [disabled]="!loginForm.valid"
+          class="w-full p-3 rounded mb-8 bg-blue-500 text-white font-semibold hover:bg-blue-600 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Login
+        </button>
+      </form>
+
+      <div *ngIf="errorMessage" class="text-red-500 text-center mb-4">
+        {{ errorMessage }}
       </div>
-  
-      <button pButton label="Login" class="w-full bg-blue-500 hover:bg-blue-600 text-white p-3 rounded mb-8"></button>
-  
+
       <div class="border-t pt-8 mt-8">
         <div class="flex justify-center space-x-4">
-          <button pButton class="flex items-center border rounded-full shadow-md hover:shadow-lg transition-shadow duration-300" style="background-color: white !important;">
-            <i class="pi pi-google mr-2" style="color: #DB4437;"></i>
-            <span class="text-sm text-gray-800">Google</span>
+          <button
+            class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 bg-white text-gray-800 text-sm font-medium"
+            (click)="signInWithGoogle()"
+          >
+            <i class="pi pi-google mr-2" style="color: #db4437"></i> <span>Google</span>
           </button>
-        
-          <button pButton class="flex items-center border rounded-full shadow-md hover:shadow-lg transition-shadow duration-300" style="background-color: white !important;">
-            <i class="pi pi-apple mr-2" style="color: #000000;"></i>
-            <span class="text-sm text-gray-800">Apple</span>
+
+          <button
+            class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 bg-white text-gray-800 text-sm font-medium"
+          >
+            <i class="pi pi-apple mr-2" style="color: #000000"></i> <span>Apple</span>
           </button>
-        
-          <button pButton class="flex items-center border rounded-full shadow-md hover:shadow-lg transition-shadow duration-300" style="background-color: white !important;">
-            <i class="pi pi-facebook mr-2" style="color: #1877F2;"></i>
-            <span class="text-sm text-gray-800">Facebook</span>
+
+          <button
+            class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 bg-white text-gray-800 text-sm font-medium"
+          >
+            <i class="pi pi-facebook mr-2" style="color: #1877f2"></i> <span>Facebook</span>
           </button>
         </div>
       </div>
