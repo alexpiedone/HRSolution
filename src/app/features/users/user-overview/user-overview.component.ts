@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Project } from '../../../models/project';
+import { Project, UserProject } from '../../../models/project';
 import { Benefit } from '../../../models/benefit';
 import { Document } from '../../../models/document';
 import { Role } from '../../../models/role';
@@ -18,7 +18,7 @@ import { Responsibility } from '../../hr/responsability';
 })
 export class UserOverviewComponent {
   activeTab: string = 'personal-info';
-  projects: Project[] = [];
+  projects: UserProject[] = [];
   responsibilities: Responsibility[] = [];
   benefits: Benefit[] = [];
   employmentDocuments: Document[] = [];
@@ -50,8 +50,9 @@ export class UserOverviewComponent {
         }
       );
       this.userService.getUserProjects(userId).subscribe(
-        (projects: Project[]) => {
+        (projects: UserProject[]) => {
           this.projects = projects;
+          console.log('Projects:', this.projects);
         }
       );
     }

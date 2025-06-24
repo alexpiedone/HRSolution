@@ -114,81 +114,32 @@
                 </div>
                 <div class="px-4 py-5 sm:p-6">
                   <div class="space-y-4">
-                    <div class="project-card bg-gray-50 p-4 rounded-lg">
-                      <div class="flex justify-between items-start">
-                        <div>
-                          <h4 class="text-sm font-semibold text-gray-900">Mobile App Redesign</h4>
-                          <p class="mt-1 text-xs text-gray-500">Lead Designer • Due Nov 15, 2023</p>
+                    <div *ngFor="let project of this.projects">
+                      <div class="project-card bg-gray-50 p-4 rounded-lg">
+                        <div class="flex justify-between items-start">
+                          <div>
+                            <h4 class="text-sm font-semibold text-gray-900">{{project.name}}</h4>
+                            <p class="mt-1 text-xs text-gray-500">{{project.position}} • {{project.dueDate}}</p>
+                          </div>
+                          <span
+                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                            {{project.status}}
+                          </span>
                         </div>
-                        <span
-                          class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                          In Progress
-                        </span>
-                      </div>
-
-                      <div class="mt-3 flex items-center">
-                        <div class="flex -space-x-2 overflow-hidden">
-                          <div
-                            class=" h-6 w-6 rounded-full ring-2 ring-white bg-indigo-500 text-white text-xs flex items-center justify-center">
-                            JD</div>
-                          <div
-                            class=" h-6 w-6 rounded-full ring-2 ring-white bg-pink-500 text-white text-xs flex items-center justify-center">
-                            AL</div>
-                          <div
-                            class=" h-6 w-6 rounded-full ring-2 ring-white bg-green-500 text-white text-xs flex items-center justify-center">
-                            RK</div>
+                        <div class="mt-3 flex items-center">
+                          <div class="flex -space-x-2 overflow-hidden">
+                            <div
+                              class=" h-6 w-6 rounded-full ring-2 ring-white bg-blue-500 text-white text-xs flex items-center justify-center">
+                              MC</div>
+                            <div
+                              class=" h-6 w-6 rounded-full ring-2 ring-white bg-orange-500 text-white text-xs flex items-center justify-center">
+                              PJ</div>
+                            <div
+                              class=" h-6 w-6 rounded-full ring-2 ring-white bg-teal-500 text-white text-xs flex items-center justify-center">
+                              SL</div>
+                          </div>
+                          <span class="ml-2 text-xs text-gray-500">+1 more</span>
                         </div>
-                        <span class="ml-2 text-xs text-gray-500">+2 more</span>
-                      </div>
-                    </div>
-
-                    <div class="project-card bg-gray-50 p-4 rounded-lg">
-                      <div class="flex justify-between items-start">
-                        <div>
-                          <h4 class="text-sm font-semibold text-gray-900">Design System Update</h4>
-                          <p class="mt-1 text-xs text-gray-500">Project Lead • Due Dec 1, 2023</p>
-                        </div>
-                        <span
-                          class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          On Track
-                        </span>
-                      </div>
-                      <div class="mt-3 flex items-center">
-                        <div class="flex -space-x-2 overflow-hidden">
-                          <div
-                            class=" h-6 w-6 rounded-full ring-2 ring-white bg-purple-500 text-white text-xs flex items-center justify-center">
-                            TM</div>
-                          <div
-                            class=" h-6 w-6 rounded-full ring-2 ring-white bg-yellow-500 text-white text-xs flex items-center justify-center">
-                            KL</div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="project-card bg-gray-50 p-4 rounded-lg">
-                      <div class="flex justify-between items-start">
-                        <div>
-                          <h4 class="text-sm font-semibold text-gray-900">Website Accessibility Audit</h4>
-                          <p class="mt-1 text-xs text-gray-500">Contributor • Due Oct 30, 2023</p>
-                        </div>
-                        <span
-                          class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                          At Risk
-                        </span>
-                      </div>
-                      <div class="mt-3 flex items-center">
-                        <div class="flex -space-x-2 overflow-hidden">
-                          <div
-                            class=" h-6 w-6 rounded-full ring-2 ring-white bg-blue-500 text-white text-xs flex items-center justify-center">
-                            MC</div>
-                          <div
-                            class=" h-6 w-6 rounded-full ring-2 ring-white bg-orange-500 text-white text-xs flex items-center justify-center">
-                            PJ</div>
-                          <div
-                            class=" h-6 w-6 rounded-full ring-2 ring-white bg-teal-500 text-white text-xs flex items-center justify-center">
-                            SL</div>
-                        </div>
-                        <span class="ml-2 text-xs text-gray-500">+1 more</span>
                       </div>
                     </div>
                   </div>
@@ -199,7 +150,7 @@
               <div class="bg-white overflow-hidden shadow rounded-lg px-1">
                 <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
                   <h3 class="text-lg leading-6 font-medium text-gray-900 flex items-center">
-                     <svg class="h-5 w-5 text-blue-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <svg class="h-5 w-5 text-blue-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd"
                         d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                         clip-rule="evenodd"></path>
@@ -208,7 +159,7 @@
                 </div>
                 <div class="px-4 py-5 sm:p-6">
                   <div class="flex items-start" *ngFor="let responsibility of this.responsibilities">
-                   ✅
+                    ✅
                     <span class="text-lg text-gray-700">{{ responsibility.description }}</span>
                   </div>
                 </div>

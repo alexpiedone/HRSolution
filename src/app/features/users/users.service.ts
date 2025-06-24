@@ -6,7 +6,7 @@ import { map, Observable } from 'rxjs';
 import { environment } from '../../../environment/environment';
 import { Injectable } from '@angular/core';
 import { Responsibility } from '../hr/responsability';
-import { Project } from '../../models/project';
+import { Project, UserProject } from '../../models/project';
 
 @Injectable({
   providedIn: 'root'
@@ -65,12 +65,14 @@ export class UsersService extends ApiService<User> {
       })
     );
   }
-   getUserProjects(id: number): Observable<Project[]> {
-    return this.http.get<Project[]>(`${environment.apiUrl}/Users/${id}/projects`).pipe(
-      map((projects: Project[]) => { 
+   getUserProjects(id: number): Observable<UserProject[]> {
+    return this.http.get<UserProject[]>(`${environment.apiUrl}/Users/${id}/projects`).pipe(
+      map((projects: UserProject[]) => { 
         return projects.map(project => ({
           name: project.name,
-          status: project.status
+          status: project.status,
+          position: project.position,
+          dueDate: project.dueDate
         }));
       })
     );
