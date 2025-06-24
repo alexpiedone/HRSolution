@@ -1,288 +1,314 @@
-
 <div class="p-6">
-    <div class="max-w-6xl mx-auto">
-        <!-- Profile Header -->
-        <div class="card mb-6">
-            <div class="p-6">
-                <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
-                    <div class="flex flex-col items-center">
-                        <img src="fearless-tab-shadow.png" alt="Profile Picture" class="avatar mb-2">
-                        <span class="badge badge-primary mt-2">Active</span>
-                    </div>
-                    <div class="flex-1 text-center md:text-left">
-                        <h1 class="text-2xl font-bold text-gray-900">Shadow the Hedgehog</h1>
-                        <p class="text-lg text-gray-600 mb-4">Frontend Developer • Engineering Department</p>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
-                                    <i class="pi pi-envelope text-primary-color"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500">Email</p>
-                                    <p class="font-medium">sarah.email</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
-                                    <i class="pi pi-phone text-primary-color"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500">Phone</p>
-                                    <p class="font-medium">+1 (555) 123-4567</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
-                                    <i class="pi pi-calendar text-primary-color"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500">Joined</p>
-                                    <p class="font-medium">March 15, 2021</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
-                                    <i class="pi pi-id-card text-primary-color"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500">Employee ID</p>
-                                    <p class="font-medium">EMP-2021-0342</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+  <div class="max-w-6xl mx-auto">
+    <!-- Profile Header -->
+    <div class="card mb-6">
+      <div class="p-6">
+        <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+          <div class="flex flex-col items-center">
+            <img src="fearless-tab-shadow.png" alt="Profile Picture" class="avatar mb-2">
+            <span class="badge badge-primary mt-2">Active</span>
+          </div>
+          <div class="flex-1 text-center md:text-left">
+            <h1 class="text-2xl font-bold text-gray-900">{{userinfo?.fullName}}</h1>
+            <p class="text-lg text-gray-600 mb-4">{{userRoleinfo?.position}} • {{userRoleinfo?.department}}</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
+                  <i class="pi pi-envelope text-primary-color"></i>
                 </div>
+                <div>
+                  <p class="text-sm text-gray-500">Email</p>
+                  <p class="font-medium">{{userinfo?.email}}</p>
+                </div>
+              </div>
+              <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
+                  <i class="pi pi-phone text-primary-color"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Phone</p>
+                  <p class="font-medium">{{userinfo?.phone}}</p>
+                </div>
+              </div>
+              <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
+                  <i class="pi pi-calendar text-primary-color"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Joined</p>
+                  <p class="font-medium">{{userinfo?.dateJoined | date}}</p>
+                </div>
+              </div>
+              <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
+                  <i class="pi pi-id-card text-primary-color"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Employee ID</p>
+                  <p class="font-medium">{{userinfo?.id}}</p>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-        
-        <!-- Tabbed Content -->
-        <div class="card">
-            <div class="p-6">
-              <div class="tab-list">
-                <div class="tab" [class.active]="activeTab === 'personal-info'" (click)="changeTab('personal-info')">
-                  <i class="pi pi-user mr-2"></i>
-                  Personal Info
+      </div>
+    </div>
+
+    <!-- Tabbed Content -->
+    <div class="card">
+      <div class="p-6">
+        <div class="tab-list">
+          <div class="tab" [class.active]="activeTab === 'personal-info'" (click)="changeTab('personal-info')">
+            <i class="pi pi-user mr-2"></i>
+            Personal Info
+          </div>
+          <div class="tab" [class.active]="activeTab === 'documents'" (click)="changeTab('documents')">
+            <i class="pi pi-file mr-2"></i>
+            Documents
+          </div>
+          <div class="tab" [class.active]="activeTab === 'salary'" (click)="changeTab('salary')">
+            <i class="pi pi-dollar mr-2"></i>
+            Salary
+          </div>
+          <div class="tab" [class.active]="activeTab === 'hierarchy'" (click)="changeTab('hierarchy')">
+            <i class="pi pi-sitemap mr-2"></i>
+            Hierarchy
+          </div>
+        </div>
+
+        <!-- Personal Info Tab -->
+        <div id="personal-info" class="tab-content" [class.active]="activeTab === 'personal-info'">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div>
+              <h3 class="text-lg font-semibold mb-4">Role & Department</h3>
+              <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                <div class="mb-4">
+                  <p class="text-sm text-gray-500 mb-1">Position</p>
+                  <p class="font-medium">{{ userRoleinfo?.position }}</p>
                 </div>
-                <div class="tab" [class.active]="activeTab === 'documents'" (click)="changeTab('documents')">
-                  <i class="pi pi-file mr-2"></i>
-                  Documents
+                <div class="mb-4">
+                  <p class="text-sm text-gray-500 mb-1">Department</p>
+                  <p class="font-medium">{{ userRoleinfo?.department }}</p>
                 </div>
-                <div class="tab" [class.active]="activeTab === 'salary'" (click)="changeTab('salary')">
-                  <i class="pi pi-dollar mr-2"></i>
-                  Salary
+                <div class="mb-4">
+                  <p class="text-sm text-gray-500 mb-1">Team</p>
+                  <p class="font-medium">{{ userRoleinfo?.team }}</p>
                 </div>
-                <div class="tab" [class.active]="activeTab === 'hierarchy'" (click)="changeTab('hierarchy')">
-                  <i class="pi pi-sitemap mr-2"></i>
-                  Hierarchy
-                </div>
-              </div>
-              
-              <!-- Personal Info Tab -->
-              <div id="personal-info" class="tab-content" [class.active]="activeTab === 'personal-info'">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <div>
-                    <h3 class="text-lg font-semibold mb-4">Role & Department</h3>
-                    <div class="bg-gray-50 rounded-lg p-4 mb-6">
-                      <div class="mb-4">
-                        <p class="text-sm text-gray-500 mb-1">Position</p>
-                        <p class="font-medium">{{ roleInfo.position }}</p>
-                      </div>
-                      <div class="mb-4">
-                        <p class="text-sm text-gray-500 mb-1">Department</p>
-                        <p class="font-medium">{{ roleInfo.department }}</p>
-                      </div>
-                      <div class="mb-4">
-                        <p class="text-sm text-gray-500 mb-1">Team</p>
-                        <p class="font-medium">{{ roleInfo.team }}</p>
-                      </div>
-                      <div>
-                        <p class="text-sm text-gray-500 mb-1">Manager</p>
-                        <p class="font-medium">{{ roleInfo.manager }}</p>
-                      </div>
-                    </div>
-                    
-                    <h3 class="text-lg font-semibold mb-4">Projects Assigned</h3>
-                    <div class="space-y-3 mb-6">
-                      <div class="flex items-center justify-between bg-white border border-gray-200 rounded-lg p-4" *ngFor="let project of projects">
-                        <div>
-                          <h4 class="font-medium">{{ project.name }}</h4>
-                          <p class="text-sm text-gray-500">{{ project.role }}</p>
-                        </div>
-                        <span class="badge {{ project.statusClass }}">{{ project.status }}</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <h3 class="text-lg font-semibold mb-4">Responsibilities</h3>
-                    <div class="flex flex-wrap gap-2 mb-6">
-                      <span class="badge badge-primary" *ngFor="let responsibility of responsabilities">{{ responsibility }}</span>
-                    </div>
-                    
-                    <h3 class="text-lg font-semibold mb-4">Benefits</h3>
-                    <div class="space-y-3">
-                      <div class="flex items-center bg-white border border-gray-200 rounded-lg p-4" *ngFor="let benefit of benefits">
-                        <div class="w-10 h-10 rounded-full bg-success-light flex items-center justify-center mr-3">
-                          <i class="pi pi-check text-success-color"></i>
-                        </div>
-                        <div>
-                          <h4 class="font-medium">{{ benefit.name }}</h4>
-                          <p class="text-sm text-gray-500">{{ benefit.description }}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Documents Tab -->
-              <div id="documents" class="tab-content" [class.active]="activeTab === 'documents'">
-                <div class="mb-6">
-                  <h3 class="text-lg font-semibold mb-4">Employment Documents</h3>
-                  <div class="document-card" *ngFor="let doc of employmentDocuments">
-                    <div class="document-icon">
-                      <i class="pi pi-file-pdf"></i>
-                    </div>
-                    <div class="flex-1">
-                      <h4 class="font-medium">{{ doc.name }}</h4>
-                      <p class="text-sm text-gray-500">{{ doc.date }}</p>
-                    </div>
-                    <button class="btn btn-outline btn-sm" (click)="downloadDocument(doc.name)">
-                      <i class="pi pi-download mr-2"></i>
-                      Download
-                    </button>
-                  </div>
-                </div>
-                
-                <div class="mb-6">
-                  <h3 class="text-lg font-semibold mb-4">Certificates & Training</h3>
-                  <div class="document-card" *ngFor="let cert of certificates">
-                    <div class="document-icon">
-                      <i class="pi pi-file-pdf"></i>
-                    </div>
-                    <div class="flex-1">
-                      <h4 class="font-medium">{{ cert.name }}</h4>
-                      <p class="text-sm text-gray-500">{{ cert.date }}</p>
-                    </div>
-                    <button class="btn btn-outline btn-sm" (click)="downloadDocument(cert.name)">
-                      <i class="pi pi-download mr-2"></i>
-                      Download
-                    </button>
-                  </div>
-                </div>
-                
                 <div>
-                  <h3 class="text-lg font-semibold mb-4">Other Documents</h3>
-                  <div class="document-card" *ngFor="let doc of otherDocuments">
-                    <div class="document-icon">
-                      <i class="pi pi-file-pdf"></i>
+                  <p class="text-sm text-gray-500 mb-1">Manager</p>
+                  <p class="font-medium">{{ userRoleinfo?.manager }}</p>
+                </div>
+              </div>
+              <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                  <div class="flex justify-between items-center">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900 flex items-center">
+                      📅 Current Projects
+                    </h3>
+                    <span
+                      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-blue-500">
+                      3 Active
+                    </span>
+                  </div>
+                </div>
+                <div class="px-4 py-5 sm:p-6">
+                  <div class="space-y-4">
+                    <div class="project-card bg-gray-50 p-4 rounded-lg">
+                      <div class="flex justify-between items-start">
+                        <div>
+                          <h4 class="text-sm font-semibold text-gray-900">Mobile App Redesign</h4>
+                          <p class="mt-1 text-xs text-gray-500">Lead Designer • Due Nov 15, 2023</p>
+                        </div>
+                        <span
+                          class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                          In Progress
+                        </span>
+                      </div>
+
+                      <div class="mt-3 flex items-center">
+                        <div class="flex -space-x-2 overflow-hidden">
+                          <div
+                            class=" h-6 w-6 rounded-full ring-2 ring-white bg-indigo-500 text-white text-xs flex items-center justify-center">
+                            JD</div>
+                          <div
+                            class=" h-6 w-6 rounded-full ring-2 ring-white bg-pink-500 text-white text-xs flex items-center justify-center">
+                            AL</div>
+                          <div
+                            class=" h-6 w-6 rounded-full ring-2 ring-white bg-green-500 text-white text-xs flex items-center justify-center">
+                            RK</div>
+                        </div>
+                        <span class="ml-2 text-xs text-gray-500">+2 more</span>
+                      </div>
                     </div>
-                    <div class="flex-1">
-                      <h4 class="font-medium">{{ doc.name }}</h4>
-                      <p class="text-sm text-gray-500">{{ doc.date }}</p>
+
+                    <div class="project-card bg-gray-50 p-4 rounded-lg">
+                      <div class="flex justify-between items-start">
+                        <div>
+                          <h4 class="text-sm font-semibold text-gray-900">Design System Update</h4>
+                          <p class="mt-1 text-xs text-gray-500">Project Lead • Due Dec 1, 2023</p>
+                        </div>
+                        <span
+                          class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          On Track
+                        </span>
+                      </div>
+                      <div class="mt-3 flex items-center">
+                        <div class="flex -space-x-2 overflow-hidden">
+                          <div
+                            class=" h-6 w-6 rounded-full ring-2 ring-white bg-purple-500 text-white text-xs flex items-center justify-center">
+                            TM</div>
+                          <div
+                            class=" h-6 w-6 rounded-full ring-2 ring-white bg-yellow-500 text-white text-xs flex items-center justify-center">
+                            KL</div>
+                        </div>
+                      </div>
                     </div>
-                    <button class="btn btn-outline btn-sm" (click)="downloadDocument(doc.name)">
-                      <i class="pi pi-download mr-2"></i>
-                      Download
-                    </button>
+
+                    <div class="project-card bg-gray-50 p-4 rounded-lg">
+                      <div class="flex justify-between items-start">
+                        <div>
+                          <h4 class="text-sm font-semibold text-gray-900">Website Accessibility Audit</h4>
+                          <p class="mt-1 text-xs text-gray-500">Contributor • Due Oct 30, 2023</p>
+                        </div>
+                        <span
+                          class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                          At Risk
+                        </span>
+                      </div>
+                      <div class="mt-3 flex items-center">
+                        <div class="flex -space-x-2 overflow-hidden">
+                          <div
+                            class=" h-6 w-6 rounded-full ring-2 ring-white bg-blue-500 text-white text-xs flex items-center justify-center">
+                            MC</div>
+                          <div
+                            class=" h-6 w-6 rounded-full ring-2 ring-white bg-orange-500 text-white text-xs flex items-center justify-center">
+                            PJ</div>
+                          <div
+                            class=" h-6 w-6 rounded-full ring-2 ring-white bg-teal-500 text-white text-xs flex items-center justify-center">
+                            SL</div>
+                        </div>
+                        <span class="ml-2 text-xs text-gray-500">+1 more</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              
-              <!-- Salary Tab -->
-              <div id="salary" class="tab-content" [class.active]="activeTab === 'salary'">
-                <div class="mb-6">
-                  <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-lg font-semibold">Current Salary Information</h3>
-                    <div class="text-sm text-gray-500">
-                      <i class="pi pi-eye mr-1"></i>
-                      Hover over sensitive data to view
-                    </div>
-                  </div>
-                  
-                  <div class="bg-gray-50 rounded-lg p-6 mb-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <p class="text-sm text-gray-500 mb-1">Gross Monthly Salary</p>
-                        <p class="text-xl font-bold sensitive-data">{{ currentSalary.grossMonthly }}</p>
-                      </div>
-                      <div>
-                        <p class="text-sm text-gray-500 mb-1">Net Monthly Salary</p>
-                        <p class="text-xl font-bold sensitive-data">{{ currentSalary.netMonthly }}</p>
-                      </div>
-                      <div>
-                        <p class="text-sm text-gray-500 mb-1">Annual Bonus Target</p>
-                        <p class="text-xl font-bold sensitive-data">{{ currentSalary.annualBonus }}</p>
-                      </div>
-                      <div>
-                        <p class="text-sm text-gray-500 mb-1">Last Salary Review</p>
-                        <p class="text-xl font-bold">{{ currentSalary.lastReview }}</p>
-                      </div>
-                    </div>
-                  </div>
+            </div>
+            <div>
+              <div class="bg-white overflow-hidden shadow rounded-lg px-1">
+                <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                  <h3 class="text-lg leading-6 font-medium text-gray-900 flex items-center">
+                     <svg class="h-5 w-5 text-blue-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd"
+                        d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clip-rule="evenodd"></path>
+                    </svg>Responsibilities
+                  </h3>
                 </div>
-                
-                <div>
-                  <h3 class="text-lg font-semibold mb-4">Salary History</h3>
-                  <div class="overflow-x-auto">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th>Effective Date</th>
-                          <th>Gross Monthly</th>
-                          <th>Change</th>
-                          <th>Reason</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let salary of salaryHistory">
-                          <td>{{ salary.date }}</td>
-                          <td class="sensitive-data">{{ salary.amount }}</td>
-                          <td>
-                            <span class="badge {{ salary.changeClass }}">{{ salary.change }}</span>
-                          </td>
-                          <td>{{ salary.reason }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                <div class="px-4 py-5 sm:p-6">
+                  <div class="flex items-start" *ngFor="let responsibility of this.responsibilities">
+                   ✅
+                    <span class="text-lg text-gray-700">{{ responsibility.description }}</span>
                   </div>
                 </div>
               </div>
-              
-              <!-- Hierarchy Tab -->
-              <div id="hierarchy" class="tab-content" [class.active]="activeTab === 'hierarchy'">
-                <div class="org-chart">
-                  <!-- Manager Level -->
-                  <div class="org-level">
-                    <div class="org-card">
-                      <img [src]="hierarchy.manager.image" alt="Manager" class="avatar-sm">
-                      <div>
-                        <h4 class="font-medium">{{ hierarchy.manager.name }}</h4>
-                        <p class="text-sm text-gray-500">{{ hierarchy.manager.role }}</p>
+              <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                  <h3 class="text-lg leading-6 font-medium text-gray-900 flex items-center">
+                    <svg class="h-5 w-5 text-blue-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd"
+                        d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clip-rule="evenodd"></path>
+                    </svg>
+                    Benefits
+                  </h3>
+                </div>
+                <div class="px-4 py-5 sm:p-6">
+                  <div class="grid grid-cols-1 gap-4">
+                    <div
+                      class="benefit-card p-3 bg-blue-50 rounded-lg border border-blue-100 transition-all duration-300">
+                      <div class="flex items-center">
+                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                          <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                            </path>
+                          </svg>
+                        </div>
+                        <div class="ml-4">
+                          <h4 class="text-sm font-medium text-gray-900">Health Insurance</h4>
+                          <p class="text-xs text-gray-500">Premium coverage for you and dependents</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  
-                  <!-- Current Employee Level -->
-                  <div class="org-level">
-                    <div class="org-card current">
-                      <img [src]="hierarchy.currentEmployee.image" alt="Current Employee" class="avatar-sm">
-                      <div>
-                        <h4 class="font-medium">{{ hierarchy.currentEmployee.name }}</h4>
-                        <p class="text-sm text-gray-500">{{ hierarchy.currentEmployee.role }}</p>
+
+                    <div
+                      class="benefit-card p-3 bg-green-50 rounded-lg border border-green-100 transition-all duration-300">
+                      <div class="flex items-center">
+                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
+                          <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                            </path>
+                          </svg>
+                        </div>
+                        <div class="ml-4">
+                          <h4 class="text-sm font-medium text-gray-900">401(k) Matching</h4>
+                          <p class="text-xs text-gray-500">100% match up to 6% of salary</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  
-                  <!-- Team Members Level -->
-                  <h3 class="text-lg font-semibold mb-4 text-center">Team Members</h3>
-                  <div class="org-peers">
-                    <div class="org-card" *ngFor="let member of hierarchy.teamMembers">
-                      <img [src]="member.image" alt="Team Member" class="avatar-sm">
-                      <div>
-                        <h4 class="font-medium">{{ member.name }}</h4>
-                        <p class="text-sm text-gray-500">{{ member.role }}</p>
+
+                    <div
+                      class="benefit-card p-3 bg-blue-50 rounded-lg border border-blue-100 transition-all duration-300">
+                      <div class="flex items-center">
+                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                          <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                            </path>
+                          </svg>
+                        </div>
+                        <div class="ml-4">
+                          <h4 class="text-sm font-medium text-gray-900">Unlimited PTO</h4>
+                          <p class="text-xs text-gray-500">Flexible time off policy</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      class="benefit-card p-3 bg-yellow-50 rounded-lg border border-yellow-100 transition-all duration-300">
+                      <div class="flex items-center">
+                        <div
+                          class="flex-shrink-0 h-10 w-10 rounded-full bg-yellow-100 flex items-center justify-center">
+                          <svg class="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                            </path>
+                          </svg>
+                        </div>
+                        <div class="ml-4">
+                          <h4 class="text-sm font-medium text-gray-900">Learning Stipend</h4>
+                          <p class="text-xs text-gray-500">$1,500 annual education allowance</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      class="benefit-card p-3 bg-red-50 rounded-lg border border-red-100 transition-all duration-300">
+                      <div class="flex items-center">
+                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-red-100 flex items-center justify-center">
+                          <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                            </path>
+                          </svg>
+                        </div>
+                        <div class="ml-4">
+                          <h4 class="text-sm font-medium text-gray-900">Remote Work</h4>
+                          <p class="text-xs text-gray-500">Hybrid schedule with home office stipend</p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -290,5 +316,161 @@
               </div>
             </div>
           </div>
+        </div>
+
+        <!-- Documents Tab -->
+        <div id="documents" class="tab-content" [class.active]="activeTab === 'documents'">
+          <div class="mb-6">
+            <h3 class="text-lg font-semibold mb-4">Employment Documents</h3>
+            <div class="document-card" *ngFor="let doc of employmentDocuments">
+              <div class="document-icon">
+                <i class="pi pi-file-pdf"></i>
+              </div>
+              <div class="flex-1">
+                <h4 class="font-medium">{{ doc.name }}</h4>
+                <p class="text-sm text-gray-500">{{ doc.date }}</p>
+              </div>
+              <button class="btn btn-outline btn-sm" (click)="downloadDocument(doc.name)">
+                <i class="pi pi-download mr-2"></i>
+                Download
+              </button>
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <h3 class="text-lg font-semibold mb-4">Certificates & Training</h3>
+            <div class="document-card" *ngFor="let cert of certificates">
+              <div class="document-icon">
+                <i class="pi pi-file-pdf"></i>
+              </div>
+              <div class="flex-1">
+                <h4 class="font-medium">{{ cert.name }}</h4>
+                <p class="text-sm text-gray-500">{{ cert.date }}</p>
+              </div>
+              <button class="btn btn-outline btn-sm" (click)="downloadDocument(cert.name)">
+                <i class="pi pi-download mr-2"></i>
+                Download
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Other Documents</h3>
+            <div class="document-card" *ngFor="let doc of otherDocuments">
+              <div class="document-icon">
+                <i class="pi pi-file-pdf"></i>
+              </div>
+              <div class="flex-1">
+                <h4 class="font-medium">{{ doc.name }}</h4>
+                <p class="text-sm text-gray-500">{{ doc.date }}</p>
+              </div>
+              <button class="btn btn-outline btn-sm" (click)="downloadDocument(doc.name)">
+                <i class="pi pi-download mr-2"></i>
+                Download
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Salary Tab -->
+        <div id="salary" class="tab-content" [class.active]="activeTab === 'salary'">
+          <div class="mb-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold">Current Salary Information</h3>
+              <div class="text-sm text-gray-500">
+                <i class="pi pi-eye mr-1"></i>
+                Hover over sensitive data to view
+              </div>
+            </div>
+
+            <div class="bg-gray-50 rounded-lg p-6 mb-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <p class="text-sm text-gray-500 mb-1">Gross Monthly Salary</p>
+                  <p class="text-xl font-bold sensitive-data">{{ currentSalary.grossMonthly }}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500 mb-1">Net Monthly Salary</p>
+                  <p class="text-xl font-bold sensitive-data">{{ currentSalary.netMonthly }}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500 mb-1">Annual Bonus Target</p>
+                  <p class="text-xl font-bold sensitive-data">{{ currentSalary.annualBonus }}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500 mb-1">Last Salary Review</p>
+                  <p class="text-xl font-bold">{{ currentSalary.lastReview }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Salary History</h3>
+            <div class="overflow-x-auto">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Effective Date</th>
+                    <th>Gross Monthly</th>
+                    <th>Change</th>
+                    <th>Reason</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let salary of salaryHistory">
+                    <td>{{ salary.date }}</td>
+                    <td class="sensitive-data">{{ salary.amount }}</td>
+                    <td>
+                      <span class="badge {{ salary.changeClass }}">{{ salary.change }}</span>
+                    </td>
+                    <td>{{ salary.reason }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hierarchy Tab -->
+        <div id="hierarchy" class="tab-content" [class.active]="activeTab === 'hierarchy'">
+          <div class="org-chart">
+            <!-- Manager Level -->
+            <div class="org-level">
+              <div class="org-card">
+                <img [src]="hierarchy.manager.image" alt="Manager" class="avatar-sm">
+                <div>
+                  <h4 class="font-medium">{{ hierarchy.manager.name }}</h4>
+                  <p class="text-sm text-gray-500">{{ hierarchy.manager.role }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Current Employee Level -->
+            <div class="org-level">
+              <div class="org-card current">
+                <img [src]="hierarchy.currentEmployee.image" alt="Current Employee" class="avatar-sm">
+                <div>
+                  <h4 class="font-medium">{{ hierarchy.currentEmployee.name }}</h4>
+                  <p class="text-sm text-gray-500">{{ hierarchy.currentEmployee.role }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Team Members Level -->
+            <h3 class="text-lg font-semibold mb-4 text-center">Team Members</h3>
+            <div class="org-peers">
+              <div class="org-card" *ngFor="let member of hierarchy.teamMembers">
+                <img [src]="member.image" alt="Team Member" class="avatar-sm">
+                <div>
+                  <h4 class="font-medium">{{ member.name }}</h4>
+                  <p class="text-sm text-gray-500">{{ member.role }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

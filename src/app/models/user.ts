@@ -5,7 +5,13 @@ export interface User {
     email?: string;
     phone?: string;
     avatarUrl?: string;
-    responsibilities?: string;
-    projects: string[];
+    dateJoined?: Date;
+  }
+
+  export interface UserRoleInfo{
+    position: string;
+    department: string;
+    team: string;
+    manager: string;
   }
   

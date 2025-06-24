@@ -5,6 +5,10 @@ import { Benefit } from '../../../models/benefit';
 import { Document } from '../../../models/document';
 import { Role } from '../../../models/role';
 import { CurrentSalary, SalaryRecord } from '../../../models/salary';
+import { UsersService } from '../users.service';
+import { User, UserRoleInfo } from '../../../models/user';
+import { AuthService } from '../../auth/auth.service';
+import { Responsibility } from '../../hr/responsability';
 
 @Component({
   selector: 'app-user-overview',
@@ -15,7 +19,7 @@ import { CurrentSalary, SalaryRecord } from '../../../models/salary';
 export class UserOverviewComponent {
   activeTab: string = 'personal-info';
   projects: Project[] = [];
-  responsabilities: string[] = [];
+  responsibilities: Responsibility[] = [];
   benefits: Benefit[] = [];
   employmentDocuments: Document[] = [];
   roles: Role[] = [];
@@ -28,14 +32,30 @@ export class UserOverviewComponent {
     lastReview: 'March 20, 2023'
   };
   salaryHistory: SalaryRecord[] = [];
+  userinfo: User | null = null;
+  userRoleinfo: UserRoleInfo | null = null;
 
-
-  roleInfo = {
-    position: 'Frontend Developer',
-    department: 'Engineering',
-    team: 'Web Applications',
-    manager: 'Michael Chen'
-  };
+  constructor(private userService: UsersService, private authService: AuthService) {
+    const userId = authService.getCurrentUserId();
+    if (userId !== null) {
+      this.userService.getUserInfo(userId).subscribe(user => {
+        this.userinfo = user;
+      });
+      this.userService.getUserRoleInfo(userId).subscribe(roleinfo => {
+        this.userRoleinfo = roleinfo;
+      });
+      this.userService.getUserResponsibilities(userId).subscribe(
+        (responsibilities: Responsibility[]) => {
+          this.responsibilities = responsibilities;
+        }
+      );
+      this.userService.getUserProjects(userId).subscribe(
+        (projects: Project[]) => {
+          this.projects = projects;
+        }
+      );
+    }
+  }
 
   // projects = [
   //   { name: 'HR Dashboard Redesign', role: 'Frontend Development', status: 'Active', statusClass: 'badge-success' },

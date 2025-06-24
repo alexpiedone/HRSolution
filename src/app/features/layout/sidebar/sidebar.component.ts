@@ -5,6 +5,7 @@ import { Avatar } from 'primeng/avatar';
 import { PanelMenu } from 'primeng/panelmenu';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import { AuthService } from '../../auth/auth.service';
 
 
 @Component({
@@ -15,8 +16,11 @@ import { ButtonModule } from 'primeng/button';
 })
 export class SidebarComponent {
   @Input() collapsed = false; 
+  userfullname = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,
+     private authService: AuthService) {}
+
   toggleSidebar() {
     this.collapsed = !this.collapsed;
   }
@@ -57,5 +61,6 @@ export class SidebarComponent {
         routerLink: '/timesheet'
       }
     ];
+    this.userfullname = this.authService.getCurrentUserFullname();
   }
 }

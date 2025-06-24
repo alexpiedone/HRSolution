@@ -39,15 +39,16 @@ export class HomeComponent {
   tasks: Task[] = [];
   events: any[] = [];
   colleagues: any[] = [];
-  username = '';
 
+  userfullname = '';
+  userId: number = 0;
   constructor(private newsService: NewsService,
     private usersService: UsersService,
     private eventService: EventsService,
     private tasksService: TaskService,
     private authService: AuthService) { }
-  ngOnInit() {
 
+  ngOnInit() {
     this.eventService.getAll().subscribe((data) => {
       this.events = data.map(item => ({
         title: item.title,
@@ -65,12 +66,11 @@ export class HomeComponent {
       this.tasks = data;
     });
 
-    this.username = this.authService.getCurrentUsername();
-    console.log('Current username:', this.username);
+    this.userfullname = this.authService.getCurrentUserFullname();
   }
 
   private loadColleagues(): void {
-    this.usersService.getColleagues().subscribe({
+    this.usersService.getColleagues(9).subscribe({
       next: (data) => {
         this.colleagues = data;
       },
@@ -93,19 +93,15 @@ export class HomeComponent {
   }
 
   onTaskUpdate(updatedTask: Task) {
-    // Actualizează task-ul în backend
   }
 
   onTaskDelete(taskName: string) {
-    // Șterge task-ul din backend
   }
 
   onTaskAction(action: any) {
-    // Alte acțiuni
   }
 
   openAddTaskDialog() {
-    // Deschide dialog pentru adăugare task nou
   }
   onEventSelected(event: Event) {
     console.log('Event selected:', event);
