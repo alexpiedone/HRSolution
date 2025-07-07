@@ -172,8 +172,6 @@
                 </div>
               </div>
               <!-- Benefits -->
-<div class=" bg-yellow-200 text-yellow-400"></div>
-
               <div class="bg-white overflow-hidden shadow rounded-lg mt-6">
                 <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
                   <h3 class="text-lg leading-6 font-medium text-gray-900 flex items-center">
@@ -197,7 +195,7 @@
                           </i>
                         </div>
                         <div class="ml-4">
-                          <h4 class="text-sm font-medium text-gray-900">{{ benefit.title }}</h4>
+                          <h4 class="text-sm font-medium text-gray-900">{{ benefit.name }}</h4>
                           <p class="text-xs text-gray-500">{{ benefit.description }}</p>
                         </div>
                       </div>
@@ -217,17 +215,37 @@
           <div class="mb-6">
             <h3 class="text-lg font-semibold mb-4">Employment Documents</h3>
             <div class="document-card" *ngFor="let doc of employmentDocuments">
-              <div class="document-icon">
-                <i class="pi pi-file-pdf"></i>
-              </div>
-              <div class="flex-1">
-                <h4 class="font-medium">{{ doc.name }}</h4>
-                <p class="text-sm text-gray-500">{{ doc.date }}</p>
-              </div>
-              <button class="btn btn-outline btn-sm" (click)="downloadDocument(doc.name)">
-                <i class="pi pi-download mr-2"></i>
-                Download
-              </button>
+              
+                <div class="bg-blue text-blue">
+                  <i class="pi pi-file-pdf"></i>
+                </div>
+                <div class="document-info">
+                  <h3 class="document-title">Contract individual de muncă</h3>
+                  <div class="document-meta">
+                    <div class="document-meta-item">
+                      <i class="pi pi-folder"></i>
+                      <span class="capitalize">angajare</span>
+                    </div>
+                    <div >
+                      <i class="pi pi-calendar"></i>
+                      <span>15 Mai 2023</span>
+                    </div>
+                    <div class="document-meta-item">
+                      <i class="pi pi-file"></i>
+                      <span>PDF • 245 KB</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="document-actions">
+                  <button class="btn btn-outline view-document" data-id="1">
+                    <i class="pi pi-eye"></i>
+                    Vizualizează
+                  </button>
+                  <button class="btn btn-primary download-document" data-id="1">
+                    <i class="pi pi-download"></i>
+                    Descarcă
+                  </button>
+                </div>
             </div>
           </div>
 

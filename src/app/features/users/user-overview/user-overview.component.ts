@@ -21,10 +21,7 @@ export class UserOverviewComponent {
   projects: UserProject[] = [];
   responsibilities: Responsibility[] = [];
   // benefits: Benefit[] = [];
-  employmentDocuments: Document[] = [];
   roles: Role[] = [];
-  certificates: Document[] = [];
-  otherDocuments: Document[] = [];
   currentSalary: CurrentSalary = {
     grossMonthly: '$5,800.00',
     netMonthly: '$4,350.00',
@@ -35,37 +32,7 @@ export class UserOverviewComponent {
   userinfo: User | null = null;
   userRoleinfo: UserRoleInfo | null = null;
 
-
-  benefits: Benefit[] = [
-    {
-      title: 'Health Insurance',
-      description: 'Premium coverage for you and dependents'
-    },
-    {
-      title: '401(k) Matching',
-      description: '100% match up to 6% of salary',
-      icon: 'wallet',
-      color: 'green'
-    },
-    {
-      title: 'Unlimited PTO',
-      description: 'Flexible time off policy',
-      icon: 'calendar',
-      color: 'blue'
-    },
-    {
-      title: 'Learning Stipend',
-      description: '$1,500 annual education allowance',
-      icon: 'book',
-      color: 'yellow'
-    },
-    {
-      title: 'Remote Work',
-      description: 'Hybrid schedule with home office stipend',
-      icon: 'home',
-      color: 'red'
-    }
-  ];
+  benefits: Benefit[] = [];
 
   getStyles(color?: string): { bg: string; iconBg: string; text: string } {
     const c = color ?? 'blue';
@@ -96,26 +63,31 @@ export class UserOverviewComponent {
           this.projects = projects;
         }
       );
+      this.userService.getUserBenefits(userId).subscribe(
+        (benefits: Benefit[]) => {
+          this.benefits = benefits;
+        }
+      );
     }
   }
 
   // Documents Data
-  // employmentDocuments = [
-  //   { name: 'Employment Contract', date: 'Signed on March 15, 2021' },
-  //   { name: 'Addendum - Role Change', date: 'Signed on November 10, 2022' },
-  //   { name: 'Addendum - Salary Revision', date: 'Signed on March 20, 2023' }
-  // ];
+  employmentDocuments = [
+    { name: 'Employment Contract', date: 'Signed on March 15, 2021' },
+    { name: 'Addendum - Role Change', date: 'Signed on November 10, 2022' },
+    { name: 'Addendum - Salary Revision', date: 'Signed on March 20, 2023' }
+  ];
 
-  // certificates = [
-  //   { name: 'React Advanced Certification', date: 'Issued on July 15, 2022' },
-  //   { name: 'UI/UX Design Fundamentals', date: 'Issued on September 5, 2022' },
-  //   { name: 'Web Accessibility Training', date: 'Issued on February 20, 2023' }
-  // ];
+  certificates = [
+    { name: 'React Advanced Certification', date: 'Issued on July 15, 2022' },
+    { name: 'UI/UX Design Fundamentals', date: 'Issued on September 5, 2022' },
+    { name: 'Web Accessibility Training', date: 'Issued on February 20, 2023' }
+  ];
 
-  // otherDocuments = [
-  //   { name: 'Company Handbook', date: 'Latest version: 2023' },
-  //   { name: 'IT Security Policy', date: 'Acknowledged on March 16, 2021' }
-  // ];
+  otherDocuments = [
+    { name: 'Company Handbook', date: 'Latest version: 2023' },
+    { name: 'IT Security Policy', date: 'Acknowledged on March 16, 2021' }
+  ];
 
   // Salary Data
   // currentSalary = {

@@ -84,10 +84,10 @@ export class UsersService extends ApiService<User> {
     return this.http.get<Benefit[]>(`${environment.apiUrl}/Users/${id}/benefits`).pipe(
       map((benefits: Benefit[]) => {
         return benefits.map(benefit => ({
-          title: benefit.title,
+          name: benefit.name,
           description: benefit.description,
           icon: benefit.icon,
-          bgColor: benefit.color
+          color: benefit.color
         }));
       })
     );
