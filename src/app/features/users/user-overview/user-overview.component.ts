@@ -20,7 +20,7 @@ export class UserOverviewComponent {
   activeTab: string = 'personal-info';
   projects: UserProject[] = [];
   responsibilities: Responsibility[] = [];
-  benefits: Benefit[] = [];
+  // benefits: Benefit[] = [];
   employmentDocuments: Document[] = [];
   roles: Role[] = [];
   certificates: Document[] = [];
@@ -34,6 +34,48 @@ export class UserOverviewComponent {
   salaryHistory: SalaryRecord[] = [];
   userinfo: User | null = null;
   userRoleinfo: UserRoleInfo | null = null;
+
+
+  benefits: Benefit[] = [
+    {
+      title: 'Health Insurance',
+      description: 'Premium coverage for you and dependents'
+    },
+    {
+      title: '401(k) Matching',
+      description: '100% match up to 6% of salary',
+      icon: 'wallet',
+      color: 'green'
+    },
+    {
+      title: 'Unlimited PTO',
+      description: 'Flexible time off policy',
+      icon: 'calendar',
+      color: 'blue'
+    },
+    {
+      title: 'Learning Stipend',
+      description: '$1,500 annual education allowance',
+      icon: 'book',
+      color: 'yellow'
+    },
+    {
+      title: 'Remote Work',
+      description: 'Hybrid schedule with home office stipend',
+      icon: 'home',
+      color: 'red'
+    }
+  ];
+
+  getStyles(color?: string): { bg: string; iconBg: string; text: string } {
+    const c = color ?? 'blue';
+    return {
+      bg: `bg-${c}-50`,
+      iconBg: `bg-${c}-200`,
+      text: `text-${c}-400`
+    };
+  }
+
 
   constructor(private userService: UsersService, private authService: AuthService) {
     const userId = authService.getCurrentUserId();
@@ -52,31 +94,10 @@ export class UserOverviewComponent {
       this.userService.getUserProjects(userId).subscribe(
         (projects: UserProject[]) => {
           this.projects = projects;
-          console.log('Projects:', this.projects);
         }
       );
     }
   }
-
-  // projects = [
-  //   { name: 'HR Dashboard Redesign', role: 'Frontend Development', status: 'Active', statusClass: 'badge-success' },
-  //   { name: 'Employee Mobile App', role: 'UI Implementation', status: 'Planning', statusClass: 'badge-warning' },
-  //   { name: 'Company Website', role: 'Maintenance', status: 'Ongoing', statusClass: 'badge-info' }
-  // ];
-
-  // responsibilities = [
-  //   'Frontend Development', 'UI Implementation', 'React.js', 'Vue.js',
-  //   'CSS/SCSS', 'Responsive Design', 'Performance Optimization',
-  //   'Code Reviews', 'Documentation'
-  // ];
-
-  // benefits = [
-  //   { name: 'Health Insurance', description: 'Premium Coverage' },
-  //   { name: 'Meal Vouchers', description: '$15 per working day' },
-  //   { name: 'Learning Budget', description: '$1,000 annually' },
-  //   { name: 'Flexible Hours', description: 'Core hours: 10 AM - 4 PM' },
-  //   { name: 'Remote Work', description: '2 days per week' }
-  // ];
 
   // Documents Data
   // employmentDocuments = [

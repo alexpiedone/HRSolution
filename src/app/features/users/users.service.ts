@@ -7,6 +7,7 @@ import { environment } from '../../../environment/environment';
 import { Injectable } from '@angular/core';
 import { Responsibility } from '../hr/responsability';
 import { Project, UserProject } from '../../models/project';
+import { Benefit } from '../../models/benefit';
 
 @Injectable({
   providedIn: 'root'
@@ -57,7 +58,7 @@ export class UsersService extends ApiService<User> {
 
   getUserResponsibilities(id: number): Observable<Responsibility[]> {
     return this.http.get<Responsibility[]>(`${environment.apiUrl}/Responsabilities/${id}`).pipe(
-      map((responsibilities: Responsibility[]) => { 
+      map((responsibilities: Responsibility[]) => {
         return responsibilities.map(responsibility => ({
           id: responsibility.id,
           description: responsibility.description
@@ -65,14 +66,28 @@ export class UsersService extends ApiService<User> {
       })
     );
   }
-   getUserProjects(id: number): Observable<UserProject[]> {
+
+  getUserProjects(id: number): Observable<UserProject[]> {
     return this.http.get<UserProject[]>(`${environment.apiUrl}/Users/${id}/projects`).pipe(
-      map((projects: UserProject[]) => { 
+      map((projects: UserProject[]) => {
         return projects.map(project => ({
           name: project.name,
           status: project.status,
           position: project.position,
           dueDate: project.dueDate
+        }));
+      })
+    );
+  }
+
+  getUserBenefits(id: number): Observable<Benefit[]> {
+    return this.http.get<Benefit[]>(`${environment.apiUrl}/Users/${id}/benefits`).pipe(
+      map((benefits: Benefit[]) => {
+        return benefits.map(benefit => ({
+          title: benefit.title,
+          description: benefit.description,
+          icon: benefit.icon,
+          bgColor: benefit.color
         }));
       })
     );
