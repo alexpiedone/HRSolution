@@ -4,7 +4,7 @@ import { Project, UserProject } from '../../../models/project';
 import { Benefit } from '../../../models/benefit';
 import { Document } from '../../../models/document';
 import { Role } from '../../../models/role';
-import { CurrentSalary, SalaryRecord } from '../../../models/salary';
+import { Salary} from '../../../models/salary';
 import { UsersService } from '../users.service';
 import { User, UserRoleInfo } from '../../../models/user';
 import { AuthService } from '../../auth/auth.service';
@@ -17,31 +17,24 @@ import { Responsibility } from '../../hr/responsability';
   styleUrl: './user-overview.component.css'
 })
 export class UserOverviewComponent {
+
   activeTab: string = 'personal-info';
+
   projects: UserProject[] = [];
+
   responsibilities: Responsibility[] = [];
-  // benefits: Benefit[] = [];
+
   roles: Role[] = [];
-  currentSalary: CurrentSalary = {
-    grossMonthly: '$5,800.00',
-    netMonthly: '$4,350.00',
-    annualBonus: '$6,960.00 (12%)',
-    lastReview: 'March 20, 2023'
-  };
-  salaryHistory: SalaryRecord[] = [];
+
+  currentSalary: Salary | null = null;
+
   userinfo: User | null = null;
+
   userRoleinfo: UserRoleInfo | null = null;
 
   benefits: Benefit[] = [];
-
-  getStyles(color?: string): { bg: string; iconBg: string; text: string } {
-    const c = color ?? 'blue';
-    return {
-      bg: `bg-${c}-50`,
-      iconBg: `bg-${c}-200`,
-      text: `text-${c}-400`
-    };
-  }
+  
+  documents: Document[] = [];
 
 
   constructor(private userService: UsersService, private authService: AuthService) {
@@ -68,43 +61,26 @@ export class UserOverviewComponent {
           this.benefits = benefits;
         }
       );
+      this.userService.getUserDocuments(userId).subscribe(
+        (documents: Document[]) => {
+          this.documents = documents;
+        }
+      );
+      this.userService.getUserCurrentSalary(userId).subscribe(
+        (salary: Salary) => {
+          this.currentSalary = salary;
+        }
+      );
     }
   }
 
-  // Documents Data
-  employmentDocuments = [
-    { name: 'Employment Contract', date: 'Signed on March 15, 2021' },
-    { name: 'Addendum - Role Change', date: 'Signed on November 10, 2022' },
-    { name: 'Addendum - Salary Revision', date: 'Signed on March 20, 2023' }
+  salaryHistory = [
+    { date: 'March 20, 2023', amount: '$5,800.00', change: '+7.4%', changeClass: 'badge-success', reason: 'Annual Review' },
+    { date: 'November 10, 2022', amount: '$5,400.00', change: '+12.5%', changeClass: 'badge-success', reason: 'Promotion' },
+    { date: 'March 15, 2022', amount: '$4,800.00', change: '+6.7%', changeClass: 'badge-success', reason: 'Annual Review' },
+    { date: 'March 15, 2021', amount: '$4,500.00', change: 'Initial', changeClass: 'badge-info', reason: 'Hiring' }
   ];
 
-  certificates = [
-    { name: 'React Advanced Certification', date: 'Issued on July 15, 2022' },
-    { name: 'UI/UX Design Fundamentals', date: 'Issued on September 5, 2022' },
-    { name: 'Web Accessibility Training', date: 'Issued on February 20, 2023' }
-  ];
-
-  otherDocuments = [
-    { name: 'Company Handbook', date: 'Latest version: 2023' },
-    { name: 'IT Security Policy', date: 'Acknowledged on March 16, 2021' }
-  ];
-
-  // Salary Data
-  // currentSalary = {
-  //   grossMonthly: '$5,800.00',
-  //   netMonthly: '$4,350.00',
-  //   annualBonus: '$6,960.00 (12%)',
-  //   lastReview: 'March 20, 2023'
-  // };
-
-  // salaryHistory = [
-  //   { date: 'March 20, 2023', amount: '$5,800.00', change: '+7.4%', changeClass: 'badge-success', reason: 'Annual Review' },
-  //   { date: 'November 10, 2022', amount: '$5,400.00', change: '+12.5%', changeClass: 'badge-success', reason: 'Promotion' },
-  //   { date: 'March 15, 2022', amount: '$4,800.00', change: '+6.7%', changeClass: 'badge-success', reason: 'Annual Review' },
-  //   { date: 'March 15, 2021', amount: '$4,500.00', change: 'Initial', changeClass: 'badge-info', reason: 'Hiring' }
-  // ];
-
-  // Hierarchy Data
   hierarchy = {
     manager: {
       name: 'Michael Chen',
@@ -130,5 +106,15 @@ export class UserOverviewComponent {
 
   downloadDocument(documentName: string): void {
     console.log(`Downloading ${documentName}`);
+  }
+
+  
+  getStyles(color?: string): { bg: string; iconBg: string; text: string } {
+    const c = color ?? 'blue';
+    return {
+      bg: `bg-${c}-50`,
+      iconBg: `bg-${c}-200`,
+      text: `text-${c}-400`
+    };
   }
 }

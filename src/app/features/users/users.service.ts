@@ -8,6 +8,8 @@ import { Injectable } from '@angular/core';
 import { Responsibility } from '../hr/responsability';
 import { Project, UserProject } from '../../models/project';
 import { Benefit } from '../../models/benefit';
+import { Document } from '../../models/document';
+import { Salary } from '../../models/salary';
 
 @Injectable({
   providedIn: 'root'
@@ -89,6 +91,32 @@ export class UsersService extends ApiService<User> {
           icon: benefit.icon,
           color: benefit.color
         }));
+      })
+    );
+  }
+
+  getUserDocuments(id: number): Observable<Document[]> {
+    return this.http.get<Document[]>(`${environment.apiUrl}/Users/${id}/documents`).pipe(
+      map((documents: Document[]) => {
+        return documents.map(document => ({
+          name: document.name,
+          category: document.category,
+          type: document.type,
+          date: document.date
+        }));
+      })
+    );
+  }
+
+  getUserCurrentSalary(id: number): Observable<Salary> {
+    return this.http.get<Salary>(`${environment.apiUrl}/Users/${id}/salary/current`).pipe(
+      map((salary: Salary) => {
+        return {
+          grossMonthly: salary.grossMonthly,
+          netMonthly: salary.netMonthly,
+          annualBonus: salary.annualBonus,
+          lastReview: salary.lastReview
+        };
       })
     );
   }

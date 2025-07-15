@@ -212,74 +212,26 @@
 
         <!-- Documents Tab -->
         <div id="documents" class="tab-content" [class.active]="activeTab === 'documents'">
-          <div class="mb-6">
-            <h3 class="text-lg font-semibold mb-4">Employment Documents</h3>
-            <div class="document-card" *ngFor="let doc of employmentDocuments">
-              
-                <div class="bg-blue text-blue">
-                  <i class="pi pi-file-pdf"></i>
+          <div class="mb-8">
+            <div class="grid gap-4">
+              <div *ngFor="let doc of documents"
+                class="flex items-center gap-4 p-4 bg-white rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition">
+                <div class="text-blue-500 text-xl">
+                  <i class="pi pi-file-o"></i>
                 </div>
-                <div class="document-info">
-                  <h3 class="document-title">Contract individual de muncă</h3>
-                  <div class="document-meta">
-                    <div class="document-meta-item">
-                      <i class="pi pi-folder"></i>
-                      <span class="capitalize">angajare</span>
-                    </div>
-                    <div >
-                      <i class="pi pi-calendar"></i>
-                      <span>15 Mai 2023</span>
-                    </div>
-                    <div class="document-meta-item">
-                      <i class="pi pi-file"></i>
-                      <span>PDF • 245 KB</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="document-actions">
-                  <button class="btn btn-outline view-document" data-id="1">
-                    <i class="pi pi-eye"></i>
-                    Vizualizează
-                  </button>
-                  <button class="btn btn-primary download-document" data-id="1">
-                    <i class="pi pi-download"></i>
-                    Descarcă
-                  </button>
-                </div>
-            </div>
-          </div>
 
-          <div class="mb-6">
-            <h3 class="text-lg font-semibold mb-4">Certificates & Training</h3>
-            <div class="document-card" *ngFor="let cert of certificates">
-              <div class="document-icon">
-                <i class="pi pi-file-pdf"></i>
-              </div>
-              <div class="flex-1">
-                <h4 class="font-medium">{{ cert.name }}</h4>
-                <p class="text-sm text-gray-500">{{ cert.date }}</p>
-              </div>
-              <button class="btn btn-outline btn-sm" (click)="downloadDocument(cert.name)">
-                <i class="pi pi-download mr-2"></i>
-                Download
-              </button>
-            </div>
-          </div>
+                <div class="flex-1">
+                  <h4 class="font-medium text-gray-900">{{ doc.name }}</h4>
+                  <p class="text-sm text-gray-500">{{ doc.date | date: 'dd-MMM-yyyy' }}</p>
+                </div>
 
-          <div>
-            <h3 class="text-lg font-semibold mb-4">Other Documents</h3>
-            <div class="document-card" *ngFor="let doc of otherDocuments">
-              <div class="document-icon">
-                <i class="pi pi-file-pdf"></i>
+                <button
+                  class="inline-flex items-center px-3 py-1.5 border border-primary-500 text-primary-500 rounded-md text-sm hover:bg-primary-50 transition"
+                  (click)="downloadDocument(doc.name)">
+                  <i class="pi pi-download mr-2"></i>
+                  Download
+                </button>
               </div>
-              <div class="flex-1">
-                <h4 class="font-medium">{{ doc.name }}</h4>
-                <p class="text-sm text-gray-500">{{ doc.date }}</p>
-              </div>
-              <button class="btn btn-outline btn-sm" (click)="downloadDocument(doc.name)">
-                <i class="pi pi-download mr-2"></i>
-                Download
-              </button>
             </div>
           </div>
         </div>
@@ -299,25 +251,25 @@
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <p class="text-sm text-gray-500 mb-1">Gross Monthly Salary</p>
-                  <p class="text-xl font-bold sensitive-data">{{ currentSalary.grossMonthly }}</p>
+                  <p class="text-xl font-bold sensitive-data">{{ currentSalary?.grossMonthly }}</p>
                 </div>
                 <div>
                   <p class="text-sm text-gray-500 mb-1">Net Monthly Salary</p>
-                  <p class="text-xl font-bold sensitive-data">{{ currentSalary.netMonthly }}</p>
+                  <p class="text-xl font-bold sensitive-data">{{ currentSalary?.netMonthly }}</p>
                 </div>
                 <div>
                   <p class="text-sm text-gray-500 mb-1">Annual Bonus Target</p>
-                  <p class="text-xl font-bold sensitive-data">{{ currentSalary.annualBonus }}</p>
+                  <p class="text-xl font-bold sensitive-data">{{ currentSalary?.annualBonus }}</p>
                 </div>
                 <div>
                   <p class="text-sm text-gray-500 mb-1">Last Salary Review</p>
-                  <p class="text-xl font-bold">{{ currentSalary.lastReview }}</p>
+                  <p class="text-xl font-bold">{{ currentSalary?.lastReview }}</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <div>
+          <!-- <div>
             <h3 class="text-lg font-semibold mb-4">Salary History</h3>
             <div class="overflow-x-auto">
               <table class="table">
@@ -341,7 +293,7 @@
                 </tbody>
               </table>
             </div>
-          </div>
+          </div> -->
         </div>
 
         <!-- Hierarchy Tab -->
