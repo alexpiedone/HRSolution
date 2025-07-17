@@ -13,41 +13,48 @@
             <p class="text-lg text-gray-600 mb-4">{{userRoleinfo?.position}} • {{userRoleinfo?.department}}</p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="flex items-center">
-                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
-                  <i class="pi pi-envelope text-primary-color"></i>
+              <ng-container *ngIf="!editContact">
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
+                    <i class="pi pi-envelope text-primary-color"></i>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-500">Email</p>
+                    <p class="font-medium">{{userinfo?.email}}</p>
+                  </div>
                 </div>
-                <div>
-                  <p class="text-sm text-gray-500">Email</p>
-                  <p class="font-medium">{{userinfo?.email}}</p>
+                <i class="pi pi-pencil text-blue-500 cursor-pointer" (click)="openContactEdit()"></i>
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
+                    <i class="pi pi-phone text-primary-color"></i>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-500">Phone</p>
+                    <p class="font-medium">{{userinfo?.phone}}</p>
+                  </div>
                 </div>
-              </div>
-              <div class="flex items-center">
-                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
-                  <i class="pi pi-phone text-primary-color"></i>
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
+                    <i class="pi pi-calendar text-primary-color"></i>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-500">Joined</p>
+                    <p class="font-medium">{{userinfo?.dateJoined | date}}</p>
+                  </div>
                 </div>
-                <div>
-                  <p class="text-sm text-gray-500">Phone</p>
-                  <p class="font-medium">{{userinfo?.phone}}</p>
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
+                    <i class="pi pi-id-card text-primary-color"></i>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-500">Employee ID</p>
+                    <p class="font-medium">{{userinfo?.id}}</p>
+                  </div>
                 </div>
-              </div>
-              <div class="flex items-center">
-                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
-                  <i class="pi pi-calendar text-primary-color"></i>
-                </div>
-                <div>
-                  <p class="text-sm text-gray-500">Joined</p>
-                  <p class="font-medium">{{userinfo?.dateJoined | date}}</p>
-                </div>
-              </div>
-              <div class="flex items-center">
-                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
-                  <i class="pi pi-id-card text-primary-color"></i>
-                </div>
-                <div>
-                  <p class="text-sm text-gray-500">Employee ID</p>
-                  <p class="font-medium">{{userinfo?.id}}</p>
-                </div>
+              </ng-container>
+              <div *ngIf="editContact" class="col-span-1 md:col-span-2">
+                <app-generic-form [model]="userinfo" [fields]="contactFields" saveEndpoint="/api/profile/updateContact"
+                  (saved)="onContactSaved($event)"></app-generic-form>
               </div>
             </div>
           </div>
@@ -201,11 +208,8 @@
                       </div>
                     </div>
                   </div>
-
                 </div>
               </div>
-
-
             </div>
           </div>
         </div>

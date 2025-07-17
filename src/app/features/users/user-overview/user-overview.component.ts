@@ -4,15 +4,16 @@ import { Project, UserProject } from '../../../models/project';
 import { Benefit } from '../../../models/benefit';
 import { Document } from '../../../models/document';
 import { Role } from '../../../models/role';
-import { Salary} from '../../../models/salary';
+import { Salary } from '../../../models/salary';
 import { UsersService } from '../users.service';
 import { User, UserRoleInfo } from '../../../models/user';
 import { AuthService } from '../../auth/auth.service';
 import { Responsibility } from '../../hr/responsability';
+import { FieldConfig, GenericFormComponent } from '../../../shared/genericform/genericform.component';
 
 @Component({
   selector: 'app-user-overview',
-  imports: [CommonModule],
+  imports: [CommonModule, GenericFormComponent],
   templateUrl: './user-overview.component.html',
   styleUrl: './user-overview.component.css'
 })
@@ -33,9 +34,15 @@ export class UserOverviewComponent {
   userRoleinfo: UserRoleInfo | null = null;
 
   benefits: Benefit[] = [];
-  
+
   documents: Document[] = [];
 
+  editContact = false;
+
+  contactFields: FieldConfig[] = [
+    { name: 'email', label: 'Email', type: 'email', editable: true },
+    { name: 'phone', label: 'Phone', type: 'tel', editable: true }
+  ];
 
   constructor(private userService: UsersService, private authService: AuthService) {
     const userId = authService.getCurrentUserId();
@@ -99,6 +106,9 @@ export class UserOverviewComponent {
       { name: 'Sophia Lee', role: 'QA Engineer', image: 'https://randomuser.me/api/portraits/women/56.jpg' }
     ]
   };
+  openContactEdit() {
+    this.editContact = true;
+  }
 
   changeTab(tabId: string): void {
     this.activeTab = tabId;
@@ -108,7 +118,13 @@ export class UserOverviewComponent {
     console.log(`Downloading ${documentName}`);
   }
 
-  
+  onContactSaved(event: { endpoint: string; payload: any }) {
+    console.log(`Saved contact info to ${event.endpoint}`, event.payload);
+    this.editContact = false;
+    this.userService.getUserInfo(this.authService.getCurrentUserId()!).subscribe(user => {
+      this.userinfo = user;
+    });
+  }
   getStyles(color?: string): { bg: string; iconBg: string; text: string } {
     const c = color ?? 'blue';
     return {
