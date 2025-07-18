@@ -1,5 +1,4 @@
-<div class="p-6">
-  <div class="max-w-6xl mx-auto">
+  <div class=" mx-auto">
     <!-- Profile Header -->
     <div class="card mb-6">
       <div class="p-6">
@@ -8,55 +7,70 @@
             <img src="fearless-tab-shadow.png" alt="Profile Picture" class="avatar mb-2">
             <span class="badge badge-primary mt-2">Active</span>
           </div>
-          <div class="flex-1 text-center md:text-left">
-            <h1 class="text-2xl font-bold text-gray-900">{{userinfo?.fullName}}</h1>
-            <p class="text-lg text-gray-600 mb-4">{{userRoleinfo?.position}} • {{userRoleinfo?.department}}</p>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <ng-container *ngIf="!editContact">
+          <div class="flex-1 text-center md:text-left">
+            <form [formGroup]="editProfileForm">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-blue-50 p-4  shadow">
+                <div>
+                  <h1 class="text-2xl font-bold text-gray-900">{{ userinfo?.fullName }}</h1>
+                  <p class="text-lg text-gray-600 mb-4">{{ userRoleinfo?.position }} • {{ userRoleinfo?.department }}
+                  </p>
+                </div>
+
+                <i *ngIf="!isEditing" class="pi pi-pencil text-blue-400 cursor-pointer text-lg"
+                  (click)="enterEditMode()"></i>
+
+                <div *ngIf="isEditing" class="flex items-center gap-3">
+                  <button class="btn btn-sm btn-primary" (click)="saveChanges()"
+                    [disabled]="editProfileForm.invalid">Salvează</button>
+                  <button class="btn btn-sm btn-ghost" (click)="cancelEdit()">Anulează</button>
+                </div>
                 <div class="flex items-center">
                   <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
                     <i class="pi pi-envelope text-primary-color"></i>
                   </div>
                   <div>
                     <p class="text-sm text-gray-500">Email</p>
-                    <p class="font-medium">{{userinfo?.email}}</p>
+                    <p *ngIf="!isEditing" class="font-medium">{{ userinfo?.email }}</p>
+                    <input *ngIf="isEditing" formControlName="email" type="email"
+                      class="input w-md px-3 py-2 rounded-lg bg-white text-blue-900 disabled:bg-transparent disabled:border-transparent" />
                   </div>
                 </div>
-                <i class="pi pi-pencil text-blue-500 cursor-pointer" (click)="openContactEdit()"></i>
+
                 <div class="flex items-center">
                   <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
                     <i class="pi pi-phone text-primary-color"></i>
                   </div>
                   <div>
                     <p class="text-sm text-gray-500">Phone</p>
-                    <p class="font-medium">{{userinfo?.phone}}</p>
+                    <p *ngIf="!isEditing" class="font-medium">{{ userinfo?.phone }}</p>
+                    <input *ngIf="isEditing" formControlName="phone" type="text"
+                      class="input w-md px-3 py-2 rounded-lg bg-white text-blue-900 disabled:bg-transparent disabled:border-transparent" />
                   </div>
                 </div>
+
                 <div class="flex items-center">
                   <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
                     <i class="pi pi-calendar text-primary-color"></i>
                   </div>
                   <div>
                     <p class="text-sm text-gray-500">Joined</p>
-                    <p class="font-medium">{{userinfo?.dateJoined | date}}</p>
+                    <p class="font-medium">{{ userinfo?.dateJoined | date }}</p>
                   </div>
                 </div>
+
                 <div class="flex items-center">
                   <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
                     <i class="pi pi-id-card text-primary-color"></i>
                   </div>
                   <div>
                     <p class="text-sm text-gray-500">Employee ID</p>
-                    <p class="font-medium">{{userinfo?.id}}</p>
+                    <p class="font-medium">{{ userinfo?.id }}</p>
                   </div>
                 </div>
-              </ng-container>
-              <div *ngIf="editContact" class="col-span-1 md:col-span-2">
-                <app-generic-form [model]="userinfo" [fields]="contactFields" saveEndpoint="/api/profile/updateContact"
-                  (saved)="onContactSaved($event)"></app-generic-form>
+
               </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>
@@ -341,4 +355,3 @@
       </div>
     </div>
   </div>
-</div>

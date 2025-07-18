@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Project, UserProject } from '../../../models/project';
 import { Benefit } from '../../../models/benefit';
 import { Document } from '../../../models/document';
@@ -9,11 +10,10 @@ import { UsersService } from '../users.service';
 import { User, UserRoleInfo } from '../../../models/user';
 import { AuthService } from '../../auth/auth.service';
 import { Responsibility } from '../../hr/responsability';
-import { FieldConfig, GenericFormComponent } from '../../../shared/genericform/genericform.component';
 
 @Component({
   selector: 'app-user-overview',
-  imports: [CommonModule, GenericFormComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './user-overview.component.html',
   styleUrl: './user-overview.component.css'
 })
@@ -30,6 +30,8 @@ export class UserOverviewComponent {
   currentSalary: Salary | null = null;
 
   userinfo: User | null = null;
+  email: string = '';
+  phone: string = '';
 
   userRoleinfo: UserRoleInfo | null = null;
 
@@ -37,18 +39,23 @@ export class UserOverviewComponent {
 
   documents: Document[] = [];
 
-  editContact = false;
+  isEditing = false;
+  editProfileForm: FormGroup;
 
-  contactFields: FieldConfig[] = [
-    { name: 'email', label: 'Email', type: 'email', editable: true },
-    { name: 'phone', label: 'Phone', type: 'tel', editable: true }
-  ];
 
-  constructor(private userService: UsersService, private authService: AuthService) {
+  constructor(private userService: UsersService, private authService: AuthService, private fb: FormBuilder) {
+     this.editProfileForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', Validators.required]
+    });
     const userId = authService.getCurrentUserId();
     if (userId !== null) {
       this.userService.getUserInfo(userId).subscribe(user => {
         this.userinfo = user;
+        if (this.userinfo) {
+          this.email = this.userinfo.email;
+          this.phone = this.userinfo.phone;
+        }
       });
       this.userService.getUserRoleInfo(userId).subscribe(roleinfo => {
         this.userRoleinfo = roleinfo;
@@ -81,6 +88,32 @@ export class UserOverviewComponent {
     }
   }
 
+  enterEditMode(): void {
+    this.isEditing = true;
+    this.editProfileForm.patchValue({
+      email: this.userinfo!.email,
+      phone: this.userinfo!.phone
+    });
+  }
+  cancelEdit(): void {
+    this.isEditing = false;
+  }
+
+  saveChanges(): void {
+    if (this.editProfileForm.valid) {
+      const updatedData = this.editProfileForm.value;
+
+      console.log('Date salvate:', updatedData);
+
+      this.userinfo!.email = updatedData.email;
+      this.userinfo!.phone = updatedData.phone;
+
+      this.isEditing = false;
+    } else {
+      console.log('Formularul nu este valid.');
+    }
+  }
+
   salaryHistory = [
     { date: 'March 20, 2023', amount: '$5,800.00', change: '+7.4%', changeClass: 'badge-success', reason: 'Annual Review' },
     { date: 'November 10, 2022', amount: '$5,400.00', change: '+12.5%', changeClass: 'badge-success', reason: 'Promotion' },
@@ -106,9 +139,6 @@ export class UserOverviewComponent {
       { name: 'Sophia Lee', role: 'QA Engineer', image: 'https://randomuser.me/api/portraits/women/56.jpg' }
     ]
   };
-  openContactEdit() {
-    this.editContact = true;
-  }
 
   changeTab(tabId: string): void {
     this.activeTab = tabId;
@@ -118,13 +148,6 @@ export class UserOverviewComponent {
     console.log(`Downloading ${documentName}`);
   }
 
-  onContactSaved(event: { endpoint: string; payload: any }) {
-    console.log(`Saved contact info to ${event.endpoint}`, event.payload);
-    this.editContact = false;
-    this.userService.getUserInfo(this.authService.getCurrentUserId()!).subscribe(user => {
-      this.userinfo = user;
-    });
-  }
   getStyles(color?: string): { bg: string; iconBg: string; text: string } {
     const c = color ?? 'blue';
     return {
@@ -133,4 +156,5 @@ export class UserOverviewComponent {
       text: `text-${c}-400`
     };
   }
+
 }
