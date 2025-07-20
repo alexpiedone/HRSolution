@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ErrorDialogComponent } from './pie-error-dialog.component';
+import { GenericDropDownComponent } from './generic-drop-down.component';
 
-describe('PieErrorDialogComponent', () => {
-  let component: ErrorDialogComponent;
-  let fixture: ComponentFixture<ErrorDialogComponent>;
+describe('GenericDropDownComponent', () => {
+  let component: GenericDropDownComponent;
+  let fixture: ComponentFixture<GenericDropDownComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ErrorDialogComponent]
+      imports: [GenericDropDownComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ErrorDialogComponent);
+    fixture = TestBed.createComponent(GenericDropDownComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

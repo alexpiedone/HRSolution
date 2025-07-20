@@ -1,7 +1,7 @@
 import { ApiService } from '../../core/services/api.service';
 import { HttpClient } from '@angular/common/http';
 import { LoggingService } from '../../core/services/logging.service';
-import { User, UserRoleInfo } from '../../models/user';
+import { UpdateRoleDto, User, UserRoleInfo } from '../../models/user';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../environment/environment';
 import { Injectable } from '@angular/core';
@@ -18,6 +18,15 @@ export class UsersService extends ApiService<User> {
 
   constructor(http: HttpClient, loggingService: LoggingService) {
     super(http, loggingService, `Users`);
+  }
+
+   updateUserInfo(userId: number , data: { email: string, phone: string }): Observable<any> {
+    const url = `${environment.apiUrl}/Users/${userId}/contact`; 
+    return this.http.patch(url, data);
+  }
+
+   updateUserRoleInfo(userId: number, roleDto: UpdateRoleDto): Observable<any> {
+    return this.http.patch(`${environment.apiUrl}/Users/${userId}/role`, roleDto);
   }
 
   getColleagues(id: number): Observable<User[]> {
@@ -51,9 +60,13 @@ export class UsersService extends ApiService<User> {
     return this.http.get<UserRoleInfo>(`${environment.apiUrl}/Users/${id}/roleinfo`).pipe(
       map(roleinfo => ({
         position: roleinfo.position,
+        positionId: roleinfo.positionId,
         department: roleinfo.department,
+        departmentId: roleinfo.departmentId,
         team: roleinfo.team,
-        manager: roleinfo.manager
+        teamId: roleinfo.teamId,
+        manager: roleinfo.manager,
+        managerId: roleinfo.managerId
       }))
     );
   }

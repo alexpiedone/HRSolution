@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Project, UserProject } from '../../../models/project';
@@ -7,110 +7,226 @@ import { Document } from '../../../models/document';
 import { Role } from '../../../models/role';
 import { Salary } from '../../../models/salary';
 import { UsersService } from '../users.service';
-import { User, UserRoleInfo } from '../../../models/user';
+import { UpdateRoleDto, User, UserRoleInfo } from '../../../models/user';
 import { AuthService } from '../../auth/auth.service';
 import { Responsibility } from '../../hr/responsability';
+import { NotificationService } from '../../../core/services/notification.service';
+import { GenericDropdownComponent } from '../../../shared/generic-drop-down/generic-drop-down.component';
+import { forkJoin } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-overview',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, GenericDropdownComponent],
   templateUrl: './user-overview.component.html',
   styleUrl: './user-overview.component.css'
 })
-export class UserOverviewComponent {
+export class UserOverviewComponent implements OnInit {
 
   activeTab: string = 'personal-info';
-
   projects: UserProject[] = [];
-
   responsibilities: Responsibility[] = [];
-
   roles: Role[] = [];
-
   currentSalary: Salary | null = null;
-
   userinfo: User | null = null;
   email: string = '';
   phone: string = '';
-
   userRoleinfo: UserRoleInfo | null = null;
-
   benefits: Benefit[] = [];
-
   documents: Document[] = [];
-
   isEditing = false;
-  editProfileForm: FormGroup;
+  editProfileForm!: FormGroup;
+  editRoleForm!: FormGroup;
+  isEditingRole = false;
 
-
-  constructor(private userService: UsersService, private authService: AuthService, private fb: FormBuilder) {
-     this.editProfileForm = this.fb.group({
+  constructor(
+    private userService: UsersService,
+    private authService: AuthService,
+    private fb: FormBuilder,
+    private notificationService: NotificationService
+  ) {
+    this.editProfileForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required]
     });
-    const userId = authService.getCurrentUserId();
+
+    this.editRoleForm = this.fb.group({
+      position: [null, Validators.required],
+      department: [null, Validators.required],
+      team: [null],
+      manager: [null]
+    });
+  }
+
+  ngOnInit(): void {
+    const userId = this.authService.getCurrentUserId();
+
     if (userId !== null) {
-      this.userService.getUserInfo(userId).subscribe(user => {
-        this.userinfo = user;
-        if (this.userinfo) {
-          this.email = this.userinfo.email;
-          this.phone = this.userinfo.phone;
+      forkJoin({
+        userInfo: this.userService.getUserInfo(userId),
+        userRoleInfo: this.userService.getUserRoleInfo(userId),
+        userResponsibilities: this.userService.getUserResponsibilities(userId),
+        userProjects: this.userService.getUserProjects(userId),
+        userBenefits: this.userService.getUserBenefits(userId),
+        userDocuments: this.userService.getUserDocuments(userId),
+        userCurrentSalary: this.userService.getUserCurrentSalary(userId)
+      }).pipe(
+        take(1)
+      ).subscribe({
+        next: ({ userInfo, userRoleInfo, userResponsibilities, userProjects, userBenefits, userDocuments, userCurrentSalary }) => {
+          this.userinfo = userInfo;
+          this.userRoleinfo = userRoleInfo;
+          this.responsibilities = userResponsibilities;
+          this.projects = userProjects;
+          this.benefits = userBenefits;
+          this.documents = userDocuments;
+          this.currentSalary = userCurrentSalary;
+
+          if (this.userinfo) {
+            this.email = this.userinfo.email;
+            this.phone = this.userinfo.phone;
+            this.editProfileForm.patchValue({
+              email: this.userinfo.email,
+              phone: this.userinfo.phone
+            });
+          }
+
+          if (this.userRoleinfo) {
+            this.editRoleForm.patchValue({
+              position: this.userRoleinfo.positionId,
+              department: this.userRoleinfo.departmentId,
+              team: this.userRoleinfo.teamId,
+              manager: this.userRoleinfo.managerId
+            });
+          }
+
+          console.log('Toate datele userului încărcate cu succes!');
+          this.logFormStatus();
+        },
+        error: (error) => {
+          console.error('Eroare la încărcarea datelor utilizatorului:', error);
+          this.notificationService.showError('Eroare la încărcarea datelor utilizatorului!');
         }
       });
-      this.userService.getUserRoleInfo(userId).subscribe(roleinfo => {
-        this.userRoleinfo = roleinfo;
-      });
-      this.userService.getUserResponsibilities(userId).subscribe(
-        (responsibilities: Responsibility[]) => {
-          this.responsibilities = responsibilities;
-        }
-      );
-      this.userService.getUserProjects(userId).subscribe(
-        (projects: UserProject[]) => {
-          this.projects = projects;
-        }
-      );
-      this.userService.getUserBenefits(userId).subscribe(
-        (benefits: Benefit[]) => {
-          this.benefits = benefits;
-        }
-      );
-      this.userService.getUserDocuments(userId).subscribe(
-        (documents: Document[]) => {
-          this.documents = documents;
-        }
-      );
-      this.userService.getUserCurrentSalary(userId).subscribe(
-        (salary: Salary) => {
-          this.currentSalary = salary;
-        }
-      );
     }
+  }
+
+  private logFormStatus(): void {
+    console.log('Starea editRoleForm:', this.editRoleForm);
+    console.log('Formularul este valid?', this.editRoleForm.valid);
+    console.log('Erori ale formularului (la nivel de FormGroup):', this.editRoleForm.errors);
+    Object.keys(this.editRoleForm.controls).forEach(key => {
+      const control = this.editRoleForm.get(key);
+      if (control) {
+        console.log(`Control '${key}':`, control);
+        console.log(`  Valid: ${control.valid}`);
+        console.log(`  Touched: ${control.touched}`);
+        console.log(`  Dirty: ${control.dirty}`);
+        console.log(`  Value: ${control.value}`);
+        console.log(`  Errors:`, control.errors);
+      }
+    });
   }
 
   enterEditMode(): void {
     this.isEditing = true;
-    this.editProfileForm.patchValue({
-      email: this.userinfo!.email,
-      phone: this.userinfo!.phone
-    });
+    if (this.userinfo) { // Verificare suplimentară
+      this.editProfileForm.patchValue({
+        email: this.userinfo.email,
+        phone: this.userinfo.phone
+      });
+    }
   }
+
   cancelEdit(): void {
     this.isEditing = false;
+    if (this.userinfo) {
+      this.editProfileForm.patchValue({
+        email: this.userinfo.email,
+        phone: this.userinfo.phone
+      });
+    }
   }
 
   saveChanges(): void {
     if (this.editProfileForm.valid) {
       const updatedData = this.editProfileForm.value;
+      const userId = this.authService.getCurrentUserId();
+      if (userId) {
+        this.userService.updateUserInfo(userId, updatedData).subscribe({
+          next: () => {
+            this.notificationService.showSuccess('Profil actualizat cu succes! 🥳');
+            this.userinfo = { ...this.userinfo, ...updatedData } as User;
+            this.isEditing = false;
+          },
+          error: (error) => {
+            this.notificationService.showError('Eroare la actualizarea profilului!');
+            console.error('Error updating user info:', error);
+          }
+        });
+      }
+    }
+  }
 
-      console.log('Date salvate:', updatedData);
+  enterEditModeRole(): void {
+    this.isEditingRole = true;
+    if (this.userRoleinfo) {
+      this.editRoleForm.patchValue({
+        position: this.userRoleinfo.positionId,
+        department: this.userRoleinfo.departmentId,
+        team: this.userRoleinfo.teamId,
+        manager: this.userRoleinfo.managerId
+      });
+    }
+    this.logFormStatus();
+  }
 
-      this.userinfo!.email = updatedData.email;
-      this.userinfo!.phone = updatedData.phone;
+  cancelEditRole(): void {
+    this.isEditingRole = false;
+    if (this.userRoleinfo) {
+      this.editRoleForm.patchValue({
+        position: this.userRoleinfo.positionId,
+        department: this.userRoleinfo.departmentId,
+        team: this.userRoleinfo.teamId,
+        manager: this.userRoleinfo.managerId
+      });
+    }
+  }
 
-      this.isEditing = false;
-    } else {
-      console.log('Formularul nu este valid.');
+  saveRoleChanges(): void {
+    if (this.editRoleForm.valid) {
+      const updatedData: UpdateRoleDto = {
+        positionId: this.editRoleForm.get('position')?.value,
+        departmentId: this.editRoleForm.get('department')?.value,
+        teamId: this.editRoleForm.get('team')?.value,
+        managerId: this.editRoleForm.get('manager')?.value
+      };
+      const userId = this.authService.getCurrentUserId();
+      if (userId) {
+        this.userService.updateUserRoleInfo(userId, updatedData).subscribe({
+          next: () => {
+            this.notificationService.showSuccess('Informațiile rolului au fost actualizate cu succes! 🎉');
+            if (this.userRoleinfo) {
+              this.userRoleinfo.positionId = updatedData.positionId ?? 0; 
+              this.userRoleinfo.departmentId = updatedData.departmentId ?? 0;
+              this.userRoleinfo.teamId = updatedData.teamId ?? null; 
+              this.userRoleinfo.managerId = updatedData.managerId ?? null;
+            }
+
+            this.isEditingRole = false;
+          },
+          error: (error) => {
+            this.notificationService.showError('Eroare la actualizarea informațiilor rolului!');
+            console.error('Error updating user role info:', error);
+          }
+        });
+      }
+    }
+    else {
+      this.notificationService.showError('Vă rugăm să completați toate câmpurile obligatorii!');
+      this.editRoleForm.markAllAsTouched();
+      this.logFormStatus();
     }
   }
 
@@ -156,5 +272,4 @@ export class UserOverviewComponent {
       text: `text-${c}-400`
     };
   }
-
 }

@@ -1,224 +1,247 @@
-  <div class=" mx-auto">
-    <!-- Profile Header -->
-    <div class="card mb-6">
-      <div class="p-6">
-        <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
-          <div class="flex flex-col items-center">
-            <img src="fearless-tab-shadow.png" alt="Profile Picture" class="avatar mb-2">
-            <span class="badge badge-primary mt-2">Active</span>
-          </div>
+<div class=" mx-auto">
+  <!-- Profile Header -->
+  <div class="card mb-6">
+    <div class="p-6">
+      <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+        <div class="flex flex-col items-center">
+          <img src="fearless-tab-shadow.png" alt="Profile Picture" class="avatar mb-2">
+          <span class="badge badge-primary mt-2">Active</span>
+        </div>
 
-          <div class="flex-1 text-center md:text-left">
-            <form [formGroup]="editProfileForm">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-blue-50 p-4  shadow">
-                <div>
-                  <h1 class="text-2xl font-bold text-gray-900">{{ userinfo?.fullName }}</h1>
-                  <p class="text-lg text-gray-600 mb-4">{{ userRoleinfo?.position }} • {{ userRoleinfo?.department }}
-                  </p>
-                </div>
-
-                <i *ngIf="!isEditing" class="pi pi-pencil text-blue-400 cursor-pointer text-lg"
-                  (click)="enterEditMode()"></i>
-
-                <div *ngIf="isEditing" class="flex items-center gap-3">
-                  <button class="btn btn-sm btn-primary" (click)="saveChanges()"
-                    [disabled]="editProfileForm.invalid">Salvează</button>
-                  <button class="btn btn-sm btn-ghost" (click)="cancelEdit()">Anulează</button>
-                </div>
-                <div class="flex items-center">
-                  <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
-                    <i class="pi pi-envelope text-primary-color"></i>
-                  </div>
-                  <div>
-                    <p class="text-sm text-gray-500">Email</p>
-                    <p *ngIf="!isEditing" class="font-medium">{{ userinfo?.email }}</p>
-                    <input *ngIf="isEditing" formControlName="email" type="email"
-                      class="input w-md px-3 py-2 rounded-lg bg-white text-blue-900 disabled:bg-transparent disabled:border-transparent" />
-                  </div>
-                </div>
-
-                <div class="flex items-center">
-                  <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
-                    <i class="pi pi-phone text-primary-color"></i>
-                  </div>
-                  <div>
-                    <p class="text-sm text-gray-500">Phone</p>
-                    <p *ngIf="!isEditing" class="font-medium">{{ userinfo?.phone }}</p>
-                    <input *ngIf="isEditing" formControlName="phone" type="text"
-                      class="input w-md px-3 py-2 rounded-lg bg-white text-blue-900 disabled:bg-transparent disabled:border-transparent" />
-                  </div>
-                </div>
-
-                <div class="flex items-center">
-                  <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
-                    <i class="pi pi-calendar text-primary-color"></i>
-                  </div>
-                  <div>
-                    <p class="text-sm text-gray-500">Joined</p>
-                    <p class="font-medium">{{ userinfo?.dateJoined | date }}</p>
-                  </div>
-                </div>
-
-                <div class="flex items-center">
-                  <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
-                    <i class="pi pi-id-card text-primary-color"></i>
-                  </div>
-                  <div>
-                    <p class="text-sm text-gray-500">Employee ID</p>
-                    <p class="font-medium">{{ userinfo?.id }}</p>
-                  </div>
-                </div>
-
+        <div class="flex-1 text-center md:text-left">
+          <form [formGroup]="editProfileForm">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-blue-50 p-4  shadow">
+              <div>
+                <h1 class="text-2xl font-bold text-gray-900">{{ userinfo?.fullName }}</h1>
+                <p class="text-lg text-gray-600 mb-4">{{ userRoleinfo?.position }} • {{ userRoleinfo?.department }}
+                </p>
               </div>
-            </form>
-          </div>
+
+              <i *ngIf="!isEditing" class="pi pi-pencil text-blue-400 cursor-pointer text-lg"
+                (click)="enterEditMode()"></i>
+
+              <div *ngIf="isEditing" class="flex items-center gap-3">
+                <button class="btn btn-sm btn-primary" (click)="saveChanges()"
+                  [disabled]="editProfileForm.invalid">Salvează</button>
+                <button class="btn btn-sm btn-ghost" (click)="cancelEdit()">Anulează</button>
+              </div>
+              <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
+                  <i class="pi pi-envelope text-primary-color"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Email</p>
+                  <p *ngIf="!isEditing" class="font-medium">{{ userinfo?.email }}</p>
+                  <input *ngIf="isEditing" formControlName="email" type="email"
+                    class="input w-md px-3 py-2 rounded-lg bg-white text-blue-900 disabled:bg-transparent disabled:border-transparent" />
+                </div>
+              </div>
+
+              <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
+                  <i class="pi pi-phone text-primary-color"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Phone</p>
+                  <p *ngIf="!isEditing" class="font-medium">{{ userinfo?.phone }}</p>
+                  <input *ngIf="isEditing" formControlName="phone" type="text"
+                    class="input w-md px-3 py-2 rounded-lg bg-white text-blue-900 disabled:bg-transparent disabled:border-transparent" />
+                </div>
+              </div>
+
+              <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
+                  <i class="pi pi-calendar text-primary-color"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Joined</p>
+                  <p class="font-medium">{{ userinfo?.dateJoined | date }}</p>
+                </div>
+              </div>
+
+              <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
+                  <i class="pi pi-id-card text-primary-color"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Employee ID</p>
+                  <p class="font-medium">{{ userinfo?.id }}</p>
+                </div>
+              </div>
+
+            </div>
+          </form>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Tabbed Content -->
-    <div class="card">
-      <div class="p-6">
-        <div class="tab-list">
-          <div class="tab" [class.active]="activeTab === 'personal-info'" (click)="changeTab('personal-info')">
-            <i class="pi pi-user mr-2"></i>
-            Personal Info
-          </div>
-          <div class="tab" [class.active]="activeTab === 'documents'" (click)="changeTab('documents')">
-            <i class="pi pi-file mr-2"></i>
-            Documents
-          </div>
-          <div class="tab" [class.active]="activeTab === 'salary'" (click)="changeTab('salary')">
-            <i class="pi pi-dollar mr-2"></i>
-            Salary
-          </div>
-          <div class="tab" [class.active]="activeTab === 'hierarchy'" (click)="changeTab('hierarchy')">
-            <i class="pi pi-sitemap mr-2"></i>
-            Hierarchy
-          </div>
+  <!-- Tabbed Content -->
+  <div class="card">
+    <div class="p-6">
+      <div class="tab-list">
+        <div class="tab" [class.active]="activeTab === 'personal-info'" (click)="changeTab('personal-info')">
+          <i class="pi pi-user mr-2"></i>
+          Personal Info
         </div>
+        <div class="tab" [class.active]="activeTab === 'documents'" (click)="changeTab('documents')">
+          <i class="pi pi-file mr-2"></i>
+          Documents
+        </div>
+        <div class="tab" [class.active]="activeTab === 'salary'" (click)="changeTab('salary')">
+          <i class="pi pi-dollar mr-2"></i>
+          Salary
+        </div>
+        <div class="tab" [class.active]="activeTab === 'hierarchy'" (click)="changeTab('hierarchy')">
+          <i class="pi pi-sitemap mr-2"></i>
+          Hierarchy
+        </div>
+      </div>
 
-        <!-- Personal Info Tab -->
-        <div id="personal-info" class="tab-content" [class.active]="activeTab === 'personal-info'">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div>
-              <!-- Role & Department -->
-              <div class="bg-white overflow-hidden shadow rounded-lg">
-                <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-                  <div class="flex justify-between items-center">
-                    <div class=" font-medium">
-                      🔷 Role & Department
-                    </div>
-                  </div>
-                </div>
-                <div class="px-4 py-5 sm:p-6">
-                  <div class="mb-4">
-                    <p class="text-sm text-gray-500 mb-1">Position</p>
-                    <p class="font-medium">{{ userRoleinfo?.position }}</p>
-                  </div>
-                  <div class="mb-4">
-                    <p class="text-sm text-gray-500 mb-1">Department</p>
-                    <p class="font-medium">{{ userRoleinfo?.department }}</p>
-                  </div>
-                  <div class="mb-4">
-                    <p class="text-sm text-gray-500 mb-1">Team</p>
-                    <p class="font-medium">{{ userRoleinfo?.team }}</p>
-                  </div>
-                  <div>
-                    <p class="text-sm text-gray-500 mb-1">Manager</p>
-                    <p class="font-medium">{{ userRoleinfo?.manager }}</p>
+      <!-- Personal Info Tab -->
+      <div id="personal-info" class="tab-content" [class.active]="activeTab === 'personal-info'">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <!-- Role & Department -->
+            <div class="bg-white shadow rounded-lg">
+              <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                  <div class="font-medium">🔷 Role & Department</div>
+                  <i *ngIf="!isEditingRole" class="pi pi-pencil text-blue-400 cursor-pointer text-lg"
+                    (click)="enterEditModeRole()"></i>
+
+                  <div *ngIf="isEditingRole" class="flex items-center gap-3">
+                    <button class="btn btn-sm bg-blue-200" (click)="saveRoleChanges()"
+                      [disabled]="editRoleForm.invalid">Salvează</button>
+                    <button class="btn btn-sm btn-ghost" (click)="cancelEditRole()">Anulează</button>
                   </div>
                 </div>
               </div>
-              <!-- Current Projects -->
-              <div class="bg-white overflow-hidden shadow rounded-lg mt-6">
-                <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-                  <div class="flex justify-between items-center">
-                    <div class="text-lg leading-6 font-medium text-gray-900 flex items-center">
-                      📅 Current Projects
-                    </div>
-                    <span
-                      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-blue-500">
-                      3 Active
-                    </span>
+              <div class="px-4 py-5 sm:p-6">
+                <form [formGroup]="editRoleForm">
+                  <div class="mb-4">
+                    <p class="text-sm text-gray-500 mb-1">Position</p>
+                    <app-generic-dropdown *ngIf="isEditingRole" [entityName]="'Positions'" placeholder="Alege o pozitie"
+                      [showClear]="false" [selectedValue]="editRoleForm.get('position')?.value"
+                      (selectionChange)="editRoleForm.get('position')?.setValue($event)"></app-generic-dropdown>
+
+                    <p *ngIf="!isEditingRole" class="font-medium">{{ userRoleinfo?.position }}</p>
                   </div>
+
+                  <div class="mb-4">
+                    <p class="text-sm text-gray-500 mb-1">Department</p>
+                    <app-generic-dropdown *ngIf="isEditingRole" [entityName]="'Departments'"
+                      placeholder="Alege un departament" [showClear]="false"
+                      [selectedValue]="editRoleForm.get('department')?.value"
+                      (selectionChange)="editRoleForm.get('department')?.setValue($event)"></app-generic-dropdown>
+
+                    <p *ngIf="!isEditingRole" class="font-medium">{{ userRoleinfo?.department }}</p>
+                  </div>
+                  <div class="mb-4">
+                    <p class="text-sm text-gray-500 mb-1">Team</p>
+                    <app-generic-dropdown *ngIf="isEditingRole" [entityName]="'Teams'" placeholder="Alege o echipă"
+                      [showClear]="false" [selectedValue]="editRoleForm.get('team')?.value"
+                      (selectionChange)="editRoleForm.get('team')?.setValue($event)"></app-generic-dropdown>
+                    <p *ngIf="!isEditingRole" class="font-medium">{{ userRoleinfo?.team }}</p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-500 mb-1">Manager</p>
+                    <app-generic-dropdown *ngIf="isEditingRole" [entityName]="'Users'" methodName="GetManagers" placeholder="Alege un manager"
+                      [showClear]="false" [selectedValue]="editRoleForm.get('manager')?.value"
+                      (selectionChange)="editRoleForm.get('manager')?.setValue($event)"></app-generic-dropdown>
+                    <p *ngIf="!isEditingRole" class="font-medium">{{ userRoleinfo?.manager }}</p>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- Current Projects -->
+            <div class="bg-white overflow-hidden shadow rounded-lg mt-6">
+              <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                  <div class="text-lg leading-6 font-medium text-gray-900 flex items-center">
+                    📅 Current Projects
+                  </div>
+                  <span
+                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-blue-500">
+                    3 Active
+                  </span>
                 </div>
-                <div class="px-4 py-5 sm:p-6">
-                  <div class="space-y-4">
-                    <div *ngFor="let project of this.projects">
-                      <div class="project-card bg-gray-50 p-4 rounded-lg">
-                        <div class="flex justify-between items-start">
-                          <div>
-                            <h4 class="text-sm font-semibold text-gray-900">{{project.name}}</h4>
-                            <p class="mt-1 text-xs text-gray-500">{{project.position}} • {{project.dueDate}}</p>
-                          </div>
-                          <span
-                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                            {{project.status}}
-                          </span>
+              </div>
+              <div class="px-4 py-5 sm:p-6">
+                <div class="space-y-4">
+                  <div *ngFor="let project of this.projects">
+                    <div class="project-card bg-gray-50 p-4 rounded-lg">
+                      <div class="flex justify-between items-start">
+                        <div>
+                          <h4 class="text-sm font-semibold text-gray-900">{{project.name}}</h4>
+                          <p class="mt-1 text-xs text-gray-500">{{project.position}} • {{project.dueDate}}</p>
                         </div>
-                        <div class="mt-3 flex items-center">
-                          <div class="flex -space-x-2 overflow-hidden">
-                            <div
-                              class=" h-6 w-6 rounded-full ring-2 ring-white bg-blue-500 text-white text-xs flex items-center justify-center">
-                              MC</div>
-                            <div
-                              class=" h-6 w-6 rounded-full ring-2 ring-white bg-orange-500 text-white text-xs flex items-center justify-center">
-                              PJ</div>
-                            <div
-                              class=" h-6 w-6 rounded-full ring-2 ring-white bg-teal-500 text-white text-xs flex items-center justify-center">
-                              SL</div>
-                          </div>
-                          <span class="ml-2 text-xs text-gray-500">+1 more</span>
+                        <span
+                          class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                          {{project.status}}
+                        </span>
+                      </div>
+                      <div class="mt-3 flex items-center">
+                        <div class="flex -space-x-2 overflow-hidden">
+                          <div
+                            class=" h-6 w-6 rounded-full ring-2 ring-white bg-blue-500 text-white text-xs flex items-center justify-center">
+                            MC</div>
+                          <div
+                            class=" h-6 w-6 rounded-full ring-2 ring-white bg-orange-500 text-white text-xs flex items-center justify-center">
+                            PJ</div>
+                          <div
+                            class=" h-6 w-6 rounded-full ring-2 ring-white bg-teal-500 text-white text-xs flex items-center justify-center">
+                            SL</div>
                         </div>
+                        <span class="ml-2 text-xs text-gray-500">+1 more</span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div>
-              <!-- Responsibilities -->
-              <div class="bg-white overflow-hidden shadow rounded-lg px-1">
-                <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-                  <h3 class="text-lg leading-6 font-medium text-gray-900 flex items-center">
-                    🔷 Responsibilities
-                  </h3>
-                </div>
-                <div class="px-4 py-5 sm:p-6">
-                  <div class="flex items-start" *ngFor="let responsibility of this.responsibilities">
-                    ✅
-                    <span class="text-lg text-gray-700">{{ responsibility.description }}</span>
-                  </div>
+          </div>
+          <div>
+            <!-- Responsibilities -->
+            <div class="bg-white overflow-hidden shadow rounded-lg px-1">
+              <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                <h3 class="text-lg leading-6 font-medium text-gray-900 flex items-center">
+                  🔷 Responsibilities
+                </h3>
+              </div>
+              <div class="px-4 py-5 sm:p-6">
+                <div class="flex items-start" *ngFor="let responsibility of this.responsibilities">
+                  ✅
+                  <span class="text-lg text-gray-700">{{ responsibility.description }}</span>
                 </div>
               </div>
-              <!-- Benefits -->
-              <div class="bg-white overflow-hidden shadow rounded-lg mt-6">
-                <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-                  <h3 class="text-lg leading-6 font-medium text-gray-900 flex items-center">
-                    🔷 Benefits
-                  </h3>
-                </div>
-                <div class="px-4 py-5 sm:p-6">
-                  <div class="grid grid-cols-1 gap-4">
-                    <div *ngFor="let benefit of benefits" class="p-3 rounded-lg transition-all duration-300"
-                      [ngClass]="getStyles(benefit.color).bg">
+            </div>
+            <!-- Benefits -->
+            <div class="bg-white overflow-hidden shadow rounded-lg mt-6">
+              <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                <h3 class="text-lg leading-6 font-medium text-gray-900 flex items-center">
+                  🔷 Benefits
+                </h3>
+              </div>
+              <div class="px-4 py-5 sm:p-6">
+                <div class="grid grid-cols-1 gap-4">
+                  <div *ngFor="let benefit of benefits" class="p-3 rounded-lg transition-all duration-300"
+                    [ngClass]="getStyles(benefit.color).bg">
 
-                      <div class="flex items-center">
-                        <div class="flex-shrink-0 h-10 w-10 rounded-full flex items-center justify-center"
-                          [ngClass]="getStyles(benefit.color).iconBg">
+                    <div class="flex items-center">
+                      <div class="flex-shrink-0 h-10 w-10 rounded-full flex items-center justify-center"
+                        [ngClass]="getStyles(benefit.color).iconBg">
 
-                          <i class="pi" [ngClass]="[
+                        <i class="pi" [ngClass]="[
                                 benefit.icon ? 'pi-' + benefit.icon : 'pi-circle',
                                 getStyles(benefit.color).text,
                                 'text-xl'
                               ]">
-                          </i>
-                        </div>
-                        <div class="ml-4">
-                          <h4 class="text-sm font-medium text-gray-900">{{ benefit.name }}</h4>
-                          <p class="text-xs text-gray-500">{{ benefit.description }}</p>
-                        </div>
+                        </i>
+                      </div>
+                      <div class="ml-4">
+                        <h4 class="text-sm font-medium text-gray-900">{{ benefit.name }}</h4>
+                        <p class="text-xs text-gray-500">{{ benefit.description }}</p>
                       </div>
                     </div>
                   </div>
@@ -227,67 +250,68 @@
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Documents Tab -->
-        <div id="documents" class="tab-content" [class.active]="activeTab === 'documents'">
-          <div class="mb-8">
-            <div class="grid gap-4">
-              <div *ngFor="let doc of documents"
-                class="flex items-center gap-4 p-4 bg-white rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition">
-                <div class="text-blue-500 text-xl">
-                  <i class="pi pi-file-o"></i>
-                </div>
+      <!-- Documents Tab -->
+      <div id="documents" class="tab-content" [class.active]="activeTab === 'documents'">
+        <div class="mb-8">
+          <div class="grid gap-4">
+            <div *ngFor="let doc of documents"
+              class="flex items-center gap-4 p-4 bg-white rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition">
+              <div class="text-blue-500 text-xl">
+                <i class="pi pi-file-o"></i>
+              </div>
 
-                <div class="flex-1">
-                  <h4 class="font-medium text-gray-900">{{ doc.name }}</h4>
-                  <p class="text-sm text-gray-500">{{ doc.date | date: 'dd-MMM-yyyy' }}</p>
-                </div>
+              <div class="flex-1">
+                <h4 class="font-medium text-gray-900">{{ doc.name }}</h4>
+                <p class="text-sm text-gray-500">{{ doc.date | date: 'dd-MMM-yyyy' }}</p>
+              </div>
 
-                <button
-                  class="inline-flex items-center px-3 py-1.5 border border-primary-500 text-primary-500 rounded-md text-sm hover:bg-primary-50 transition"
-                  (click)="downloadDocument(doc.name)">
-                  <i class="pi pi-download mr-2"></i>
-                  Download
-                </button>
+              <button
+                class="inline-flex items-center px-3 py-1.5 border border-primary-500 text-primary-500 rounded-md text-sm hover:bg-primary-50 transition"
+                (click)="downloadDocument(doc.name)">
+                <i class="pi pi-download mr-2"></i>
+                Download
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Salary Tab -->
+      <div id="salary" class="tab-content" [class.active]="activeTab === 'salary'">
+        <div class="mb-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold">Current Salary Information</h3>
+            <div class="text-sm text-gray-500">
+              <i class="pi pi-eye mr-1"></i>
+              Hover over sensitive data to view
+            </div>
+          </div>
+
+          <div class="bg-gray-50 rounded-lg p-6 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <p class="text-sm text-gray-500 mb-1">Gross Monthly Salary</p>
+                <p class="text-xl font-bold sensitive-data">{{ currentSalary?.grossMonthly }}</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500 mb-1">Net Monthly Salary</p>
+                <p class="text-xl font-bold sensitive-data">{{ currentSalary?.netMonthly }}</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500 mb-1">Annual Bonus Target</p>
+                <p class="text-xl font-bold sensitive-data">{{ currentSalary?.annualBonus }}</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500 mb-1">Last Salary Review</p>
+                <p class="text-xl font-bold">{{ currentSalary?.lastReview }}</p>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Salary Tab -->
-        <div id="salary" class="tab-content" [class.active]="activeTab === 'salary'">
-          <div class="mb-6">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-semibold">Current Salary Information</h3>
-              <div class="text-sm text-gray-500">
-                <i class="pi pi-eye mr-1"></i>
-                Hover over sensitive data to view
-              </div>
-            </div>
-
-            <div class="bg-gray-50 rounded-lg p-6 mb-6">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <p class="text-sm text-gray-500 mb-1">Gross Monthly Salary</p>
-                  <p class="text-xl font-bold sensitive-data">{{ currentSalary?.grossMonthly }}</p>
-                </div>
-                <div>
-                  <p class="text-sm text-gray-500 mb-1">Net Monthly Salary</p>
-                  <p class="text-xl font-bold sensitive-data">{{ currentSalary?.netMonthly }}</p>
-                </div>
-                <div>
-                  <p class="text-sm text-gray-500 mb-1">Annual Bonus Target</p>
-                  <p class="text-xl font-bold sensitive-data">{{ currentSalary?.annualBonus }}</p>
-                </div>
-                <div>
-                  <p class="text-sm text-gray-500 mb-1">Last Salary Review</p>
-                  <p class="text-xl font-bold">{{ currentSalary?.lastReview }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- <div>
+        <!-- <div>
             <h3 class="text-lg font-semibold mb-4">Salary History</h3>
             <div class="overflow-x-auto">
               <table class="table">
@@ -312,42 +336,41 @@
               </table>
             </div>
           </div> -->
-        </div>
+      </div>
 
-        <!-- Hierarchy Tab -->
-        <div id="hierarchy" class="tab-content" [class.active]="activeTab === 'hierarchy'">
-          <div class="org-chart">
-            <!-- Manager Level -->
-            <div class="org-level">
-              <div class="org-card">
-                <img [src]="hierarchy.manager.image" alt="Manager" class="avatar-sm">
-                <div>
-                  <h4 class="font-medium">{{ hierarchy.manager.name }}</h4>
-                  <p class="text-sm text-gray-500">{{ hierarchy.manager.role }}</p>
-                </div>
+      <!-- Hierarchy Tab -->
+      <div id="hierarchy" class="tab-content" [class.active]="activeTab === 'hierarchy'">
+        <div class="org-chart">
+          <!-- Manager Level -->
+          <div class="org-level">
+            <div class="org-card">
+              <img [src]="hierarchy.manager.image" alt="Manager" class="avatar-sm">
+              <div>
+                <h4 class="font-medium">{{ hierarchy.manager.name }}</h4>
+                <p class="text-sm text-gray-500">{{ hierarchy.manager.role }}</p>
               </div>
             </div>
+          </div>
 
-            <!-- Current Employee Level -->
-            <div class="org-level">
-              <div class="org-card current">
-                <img [src]="hierarchy.currentEmployee.image" alt="Current Employee" class="avatar-sm">
-                <div>
-                  <h4 class="font-medium">{{ hierarchy.currentEmployee.name }}</h4>
-                  <p class="text-sm text-gray-500">{{ hierarchy.currentEmployee.role }}</p>
-                </div>
+          <!-- Current Employee Level -->
+          <div class="org-level">
+            <div class="org-card current">
+              <img [src]="hierarchy.currentEmployee.image" alt="Current Employee" class="avatar-sm">
+              <div>
+                <h4 class="font-medium">{{ hierarchy.currentEmployee.name }}</h4>
+                <p class="text-sm text-gray-500">{{ hierarchy.currentEmployee.role }}</p>
               </div>
             </div>
+          </div>
 
-            <!-- Team Members Level -->
-            <h3 class="text-lg font-semibold mb-4 text-center">Team Members</h3>
-            <div class="org-peers">
-              <div class="org-card" *ngFor="let member of hierarchy.teamMembers">
-                <img [src]="member.image" alt="Team Member" class="avatar-sm">
-                <div>
-                  <h4 class="font-medium">{{ member.name }}</h4>
-                  <p class="text-sm text-gray-500">{{ member.role }}</p>
-                </div>
+          <!-- Team Members Level -->
+          <h3 class="text-lg font-semibold mb-4 text-center">Team Members</h3>
+          <div class="org-peers">
+            <div class="org-card" *ngFor="let member of hierarchy.teamMembers">
+              <img [src]="member.image" alt="Team Member" class="avatar-sm">
+              <div>
+                <h4 class="font-medium">{{ member.name }}</h4>
+                <p class="text-sm text-gray-500">{{ member.role }}</p>
               </div>
             </div>
           </div>
@@ -355,3 +378,4 @@
       </div>
     </div>
   </div>
+</div>

@@ -1,4 +1,3 @@
-// error-dialog.component.ts
 import { Component, Input } from '@angular/core';
 import { ErrorService } from '../../core/services/error.service';
 import { DialogModule } from 'primeng/dialog';

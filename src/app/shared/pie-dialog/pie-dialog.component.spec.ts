@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ErrorDialogComponent } from './pie-error-dialog.component';
+import { PieDialogComponent } from './pie-dialog.component';
 
-describe('PieErrorDialogComponent', () => {
-  let component: ErrorDialogComponent;
-  let fixture: ComponentFixture<ErrorDialogComponent>;
+describe('PieDialogComponent', () => {
+  let component: PieDialogComponent;
+  let fixture: ComponentFixture<PieDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ErrorDialogComponent]
+      imports: [PieDialogComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ErrorDialogComponent);
+    fixture = TestBed.createComponent(PieDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
