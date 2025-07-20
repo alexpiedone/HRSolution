@@ -1,9 +1,11 @@
 <p-dropdown
-  [options]="items"
-  [(ngModel)]="selectedItem"
-  (onChange)="onChange($event)"
+  [formControl]="control"           [options]="items"
   [placeholder]="placeholder"
   [showClear]="showClear"
   optionLabel="label"
   optionValue="value"
-></p-dropdown>
+  (onChange)="onDropdownChange($event)"
+  [filter]="true"
+  class="w-full"
+>
+</p-dropdown>

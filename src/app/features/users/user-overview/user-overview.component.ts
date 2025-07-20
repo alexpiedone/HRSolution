@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UsersService } from '../users.service';
+import { UpdateRoleDto, User, UserRoleInfo } from '../../../models/user';
+import { AuthService } from '../../auth/auth.service';
+import { NotificationService } from '../../../core/services/notification.service';
+import { GenericDropdownComponent } from '../../../shared/generic-drop-down/generic-drop-down.component';
+import { forkJoin } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { Project, UserProject } from '../../../models/project';
 import { Benefit } from '../../../models/benefit';
 import { Document } from '../../../models/document';
 import { Role } from '../../../models/role';
 import { Salary } from '../../../models/salary';
-import { UsersService } from '../users.service';
-import { UpdateRoleDto, User, UserRoleInfo } from '../../../models/user';
-import { AuthService } from '../../auth/auth.service';
 import { Responsibility } from '../../hr/responsability';
-import { NotificationService } from '../../../core/services/notification.service';
-import { GenericDropdownComponent } from '../../../shared/generic-drop-down/generic-drop-down.component';
-import { forkJoin } from 'rxjs';
-import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-overview',
@@ -51,11 +51,11 @@ export class UserOverviewComponent implements OnInit {
       phone: ['', Validators.required]
     });
 
-    this.editRoleForm = this.fb.group({
-      position: [null, Validators.required],
-      department: [null, Validators.required],
-      team: [null],
-      manager: [null]
+    this.editRoleForm = new FormGroup({
+      position: new FormControl(null, Validators.required),
+      department: new FormControl(null, Validators.required),
+      team: new FormControl(null),
+      manager: new FormControl(null)
     });
   }
 
@@ -100,38 +100,50 @@ export class UserOverviewComponent implements OnInit {
               manager: this.userRoleinfo.managerId
             });
           }
-
-          console.log('Toate datele userului încărcate cu succes!');
-          this.logFormStatus();
         },
         error: (error) => {
-          console.error('Eroare la încărcarea datelor utilizatorului:', error);
           this.notificationService.showError('Eroare la încărcarea datelor utilizatorului!');
+          console.error('Eroare la încărcarea datelor utilizatorului:', error);
         }
       });
     }
   }
 
-  private logFormStatus(): void {
-    console.log('Starea editRoleForm:', this.editRoleForm);
-    console.log('Formularul este valid?', this.editRoleForm.valid);
-    console.log('Erori ale formularului (la nivel de FormGroup):', this.editRoleForm.errors);
-    Object.keys(this.editRoleForm.controls).forEach(key => {
-      const control = this.editRoleForm.get(key);
-      if (control) {
-        console.log(`Control '${key}':`, control);
-        console.log(`  Valid: ${control.valid}`);
-        console.log(`  Touched: ${control.touched}`);
-        console.log(`  Dirty: ${control.dirty}`);
-        console.log(`  Value: ${control.value}`);
-        console.log(`  Errors:`, control.errors);
-      }
-    });
+  get positionControl(): FormControl {
+    return this.editRoleForm.get('position') as FormControl;
+  }
+
+  get departmentControl(): FormControl {
+    return this.editRoleForm.get('department') as FormControl;
+  }
+
+  get teamControl(): FormControl {
+    return this.editRoleForm.get('team') as FormControl;
+  }
+
+  get managerControl(): FormControl {
+    return this.editRoleForm.get('manager') as FormControl;
+  }
+
+  onPositionSelectionChange(value: number | string | null): void {
+    console.log('Parent component received new position:', value);
+  }
+
+  onDepartmentSelectionChange(value: number | string | null): void {
+    console.log('Parent component received new department:', value);
+  }
+
+  onTeamSelectionChange(value: number | string | null): void {
+    console.log('Parent component received new team:', value);
+  }
+
+  onManagerSelectionChange(value: number | string | null): void {
+    console.log('Parent component received new manager:', value);
   }
 
   enterEditMode(): void {
     this.isEditing = true;
-    if (this.userinfo) { // Verificare suplimentară
+    if (this.userinfo) {
       this.editProfileForm.patchValue({
         email: this.userinfo.email,
         phone: this.userinfo.phone
@@ -179,7 +191,6 @@ export class UserOverviewComponent implements OnInit {
         manager: this.userRoleinfo.managerId
       });
     }
-    this.logFormStatus();
   }
 
   cancelEditRole(): void {
@@ -208,12 +219,11 @@ export class UserOverviewComponent implements OnInit {
           next: () => {
             this.notificationService.showSuccess('Informațiile rolului au fost actualizate cu succes! 🎉');
             if (this.userRoleinfo) {
-              this.userRoleinfo.positionId = updatedData.positionId ?? 0; 
+              this.userRoleinfo.positionId = updatedData.positionId ?? 0;
               this.userRoleinfo.departmentId = updatedData.departmentId ?? 0;
-              this.userRoleinfo.teamId = updatedData.teamId ?? null; 
+              this.userRoleinfo.teamId = updatedData.teamId ?? null;
               this.userRoleinfo.managerId = updatedData.managerId ?? null;
             }
-
             this.isEditingRole = false;
           },
           error: (error) => {
@@ -222,11 +232,9 @@ export class UserOverviewComponent implements OnInit {
           }
         });
       }
-    }
-    else {
+    } else {
       this.notificationService.showError('Vă rugăm să completați toate câmpurile obligatorii!');
       this.editRoleForm.markAllAsTouched();
-      this.logFormStatus();
     }
   }
 

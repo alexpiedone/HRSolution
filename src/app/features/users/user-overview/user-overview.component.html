@@ -122,33 +122,34 @@
                   <div class="mb-4">
                     <p class="text-sm text-gray-500 mb-1">Position</p>
                     <app-generic-dropdown *ngIf="isEditingRole" [entityName]="'Positions'" placeholder="Alege o pozitie"
-                      [showClear]="false" [selectedValue]="editRoleForm.get('position')?.value"
-                      (selectionChange)="editRoleForm.get('position')?.setValue($event)"></app-generic-dropdown>
-
+                      [showClear]="false" [control]="positionControl">
+                    </app-generic-dropdown>
                     <p *ngIf="!isEditingRole" class="font-medium">{{ userRoleinfo?.position }}</p>
                   </div>
 
                   <div class="mb-4">
                     <p class="text-sm text-gray-500 mb-1">Department</p>
                     <app-generic-dropdown *ngIf="isEditingRole" [entityName]="'Departments'"
-                      placeholder="Alege un departament" [showClear]="false"
-                      [selectedValue]="editRoleForm.get('department')?.value"
-                      (selectionChange)="editRoleForm.get('department')?.setValue($event)"></app-generic-dropdown>
-
+                      placeholder="Alege un departament" [showClear]="false" [control]="departmentControl"
+                      (selectionChange)="onDepartmentSelectionChange($event)">
+                    </app-generic-dropdown>
                     <p *ngIf="!isEditingRole" class="font-medium">{{ userRoleinfo?.department }}</p>
                   </div>
+
                   <div class="mb-4">
                     <p class="text-sm text-gray-500 mb-1">Team</p>
-                    <app-generic-dropdown *ngIf="isEditingRole" [entityName]="'Teams'" placeholder="Alege o echipă"
-                      [showClear]="false" [selectedValue]="editRoleForm.get('team')?.value"
-                      (selectionChange)="editRoleForm.get('team')?.setValue($event)"></app-generic-dropdown>
+                    <app-generic-dropdown *ngIf="isEditingRole" [entityName]="'Teams'" placeholder="Alege o echipa"
+                      [showClear]="false" [control]="teamControl" (selectionChange)="onTeamSelectionChange($event)">
+                    </app-generic-dropdown>
                     <p *ngIf="!isEditingRole" class="font-medium">{{ userRoleinfo?.team }}</p>
                   </div>
-                  <div>
+
+                  <div class="mb-4">
                     <p class="text-sm text-gray-500 mb-1">Manager</p>
-                    <app-generic-dropdown *ngIf="isEditingRole" [entityName]="'Users'" methodName="GetManagers" placeholder="Alege un manager"
-                      [showClear]="false" [selectedValue]="editRoleForm.get('manager')?.value"
-                      (selectionChange)="editRoleForm.get('manager')?.setValue($event)"></app-generic-dropdown>
+                    <app-generic-dropdown *ngIf="isEditingRole" [entityName]="'Users'" placeholder="Alege un manager"
+                      [showClear]="false" [control]="managerControl" methodName="getManagers"
+                      (selectionChange)="onManagerSelectionChange($event)">
+                    </app-generic-dropdown>
                     <p *ngIf="!isEditingRole" class="font-medium">{{ userRoleinfo?.manager }}</p>
                   </div>
                 </form>
