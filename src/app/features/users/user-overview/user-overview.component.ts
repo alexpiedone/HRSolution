@@ -6,8 +6,7 @@ import { UpdateRoleDto, User, UserRoleInfo } from '../../../models/user';
 import { AuthService } from '../../auth/auth.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { GenericDropdownComponent } from '../../../shared/generic-drop-down/generic-drop-down.component';
-import { forkJoin } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { forkJoin, finalize, take } from 'rxjs';
 import { Project, UserProject } from '../../../models/project';
 import { Benefit } from '../../../models/benefit';
 import { Document } from '../../../models/document';
@@ -25,20 +24,20 @@ import { Responsibility } from '../../hr/responsability';
 export class UserOverviewComponent implements OnInit {
 
   activeTab: string = 'personal-info';
+  userinfo: User | null = null;
+  userRoleinfo: UserRoleInfo | null = null;
+  isEditingProfile = false;
+  isEditingRole = false;
+
+  editProfileForm: FormGroup;
+  editRoleForm: FormGroup;
+
   projects: UserProject[] = [];
   responsibilities: Responsibility[] = [];
-  roles: Role[] = [];
   currentSalary: Salary | null = null;
-  userinfo: User | null = null;
-  email: string = '';
-  phone: string = '';
-  userRoleinfo: UserRoleInfo | null = null;
   benefits: Benefit[] = [];
   documents: Document[] = [];
-  isEditing = false;
-  editProfileForm!: FormGroup;
-  editRoleForm!: FormGroup;
-  isEditingRole = false;
+  roles: Role[] = [];
 
   constructor(
     private userService: UsersService,
@@ -51,15 +50,19 @@ export class UserOverviewComponent implements OnInit {
       phone: ['', Validators.required]
     });
 
-    this.editRoleForm = new FormGroup({
-      position: new FormControl(null, Validators.required),
-      department: new FormControl(null, Validators.required),
-      team: new FormControl(null),
-      manager: new FormControl(null)
+    this.editRoleForm = this.fb.group({
+      position: [null, Validators.required],
+      department: [null, Validators.required],
+      team: [null],
+      manager: [null]
     });
   }
 
   ngOnInit(): void {
+    this.loadUserData();
+  }
+
+  private loadUserData(): void {
     const userId = this.authService.getCurrentUserId();
 
     if (userId !== null) {
@@ -72,7 +75,8 @@ export class UserOverviewComponent implements OnInit {
         userDocuments: this.userService.getUserDocuments(userId),
         userCurrentSalary: this.userService.getUserCurrentSalary(userId)
       }).pipe(
-        take(1)
+        take(1),
+        finalize(() => { })
       ).subscribe({
         next: ({ userInfo, userRoleInfo, userResponsibilities, userProjects, userBenefits, userDocuments, userCurrentSalary }) => {
           this.userinfo = userInfo;
@@ -83,94 +87,63 @@ export class UserOverviewComponent implements OnInit {
           this.documents = userDocuments;
           this.currentSalary = userCurrentSalary;
 
-          if (this.userinfo) {
-            this.email = this.userinfo.email;
-            this.phone = this.userinfo.phone;
-            this.editProfileForm.patchValue({
-              email: this.userinfo.email,
-              phone: this.userinfo.phone
-            });
-          }
-
-          if (this.userRoleinfo) {
-            this.editRoleForm.patchValue({
-              position: this.userRoleinfo.positionId,
-              department: this.userRoleinfo.departmentId,
-              team: this.userRoleinfo.teamId,
-              manager: this.userRoleinfo.managerId
-            });
-          }
+          this.populateForms();
         },
         error: (error) => {
           this.notificationService.showError('Eroare la încărcarea datelor utilizatorului!');
-          console.error('Eroare la încărcarea datelor utilizatorului:', error);
+          console.error('Error loading user data:', error);
         }
       });
     }
   }
 
-  get positionControl(): FormControl {
-    return this.editRoleForm.get('position') as FormControl;
-  }
-
-  get departmentControl(): FormControl {
-    return this.editRoleForm.get('department') as FormControl;
-  }
-
-  get teamControl(): FormControl {
-    return this.editRoleForm.get('team') as FormControl;
-  }
-
-  get managerControl(): FormControl {
-    return this.editRoleForm.get('manager') as FormControl;
-  }
-
-  onPositionSelectionChange(value: number | string | null): void {
-    console.log('Parent component received new position:', value);
-  }
-
-  onDepartmentSelectionChange(value: number | string | null): void {
-    console.log('Parent component received new department:', value);
-  }
-
-  onTeamSelectionChange(value: number | string | null): void {
-    console.log('Parent component received new team:', value);
-  }
-
-  onManagerSelectionChange(value: number | string | null): void {
-    console.log('Parent component received new manager:', value);
-  }
-
-  enterEditMode(): void {
-    this.isEditing = true;
+  private populateForms(): void {
     if (this.userinfo) {
       this.editProfileForm.patchValue({
         email: this.userinfo.email,
         phone: this.userinfo.phone
       });
     }
-  }
 
-  cancelEdit(): void {
-    this.isEditing = false;
-    if (this.userinfo) {
-      this.editProfileForm.patchValue({
-        email: this.userinfo.email,
-        phone: this.userinfo.phone
+    if (this.userRoleinfo) {
+      this.editRoleForm.patchValue({
+        position: this.userRoleinfo.positionId,
+        department: this.userRoleinfo.departmentId,
+        team: this.userRoleinfo.teamId,
+        manager: this.userRoleinfo.managerId
       });
     }
   }
 
-  saveChanges(): void {
+  getFormControl(controlName: string): FormControl {
+    const control = this.editRoleForm.get(controlName);
+    if (control instanceof FormControl) {
+      return control;
+    }
+    throw new Error(`Control '${controlName}' not found or is not a FormControl.`);
+  }
+
+  enterEditModeProfile(): void {
+    this.isEditingProfile = true;
+    this.populateForms();
+  }
+
+  cancelEditProfile(): void {
+    this.isEditingProfile = false;
+    this.populateForms();
+  }
+
+  saveProfileChanges(): void {
     if (this.editProfileForm.valid) {
       const updatedData = this.editProfileForm.value;
       const userId = this.authService.getCurrentUserId();
+
       if (userId) {
         this.userService.updateUserInfo(userId, updatedData).subscribe({
           next: () => {
             this.notificationService.showSuccess('Profil actualizat cu succes! 🥳');
             this.userinfo = { ...this.userinfo, ...updatedData } as User;
-            this.isEditing = false;
+            this.isEditingProfile = false;
           },
           error: (error) => {
             this.notificationService.showError('Eroare la actualizarea profilului!');
@@ -183,26 +156,12 @@ export class UserOverviewComponent implements OnInit {
 
   enterEditModeRole(): void {
     this.isEditingRole = true;
-    if (this.userRoleinfo) {
-      this.editRoleForm.patchValue({
-        position: this.userRoleinfo.positionId,
-        department: this.userRoleinfo.departmentId,
-        team: this.userRoleinfo.teamId,
-        manager: this.userRoleinfo.managerId
-      });
-    }
+    this.populateForms();
   }
 
   cancelEditRole(): void {
     this.isEditingRole = false;
-    if (this.userRoleinfo) {
-      this.editRoleForm.patchValue({
-        position: this.userRoleinfo.positionId,
-        department: this.userRoleinfo.departmentId,
-        team: this.userRoleinfo.teamId,
-        manager: this.userRoleinfo.managerId
-      });
-    }
+    this.populateForms();
   }
 
   saveRoleChanges(): void {
@@ -214,6 +173,7 @@ export class UserOverviewComponent implements OnInit {
         managerId: this.editRoleForm.get('manager')?.value
       };
       const userId = this.authService.getCurrentUserId();
+
       if (userId) {
         this.userService.updateUserRoleInfo(userId, updatedData).subscribe({
           next: () => {
@@ -236,6 +196,39 @@ export class UserOverviewComponent implements OnInit {
       this.notificationService.showError('Vă rugăm să completați toate câmpurile obligatorii!');
       this.editRoleForm.markAllAsTouched();
     }
+  }
+
+  onPositionSelectionChange(value: number | string | null): void {
+    console.log('New position selected:', value);
+  }
+
+  onDepartmentSelectionChange(value: number | string | null): void {
+    console.log('New department selected:', value);
+  }
+
+  onTeamSelectionChange(value: number | string | null): void {
+    console.log('New team selected:', value);
+  }
+
+  onManagerSelectionChange(value: number | string | null): void {
+    console.log('New manager selected:', value);
+  }
+
+  changeTab(tabId: string): void {
+    this.activeTab = tabId;
+  }
+
+  downloadDocument(documentName: string): void {
+    console.log(`Downloading ${documentName}`);
+  }
+
+  getStyles(color?: string): { bg: string; iconBg: string; text: string } {
+    const c = color ?? 'blue';
+    return {
+      bg: `bg-${c}-50`,
+      iconBg: `bg-${c}-200`,
+      text: `text-${c}-400`
+    };
   }
 
   salaryHistory = [
@@ -263,21 +256,4 @@ export class UserOverviewComponent implements OnInit {
       { name: 'Sophia Lee', role: 'QA Engineer', image: 'https://randomuser.me/api/portraits/women/56.jpg' }
     ]
   };
-
-  changeTab(tabId: string): void {
-    this.activeTab = tabId;
-  }
-
-  downloadDocument(documentName: string): void {
-    console.log(`Downloading ${documentName}`);
-  }
-
-  getStyles(color?: string): { bg: string; iconBg: string; text: string } {
-    const c = color ?? 'blue';
-    return {
-      bg: `bg-${c}-50`,
-      iconBg: `bg-${c}-200`,
-      text: `text-${c}-400`
-    };
-  }
 }

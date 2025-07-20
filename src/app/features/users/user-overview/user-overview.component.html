@@ -17,13 +17,13 @@
                 </p>
               </div>
 
-              <i *ngIf="!isEditing" class="pi pi-pencil text-blue-400 cursor-pointer text-lg"
-                (click)="enterEditMode()"></i>
+              <i *ngIf="!isEditingProfile" class="pi pi-pencil text-blue-400 cursor-pointer text-lg"
+                (click)="enterEditModeProfile()"></i>
 
-              <div *ngIf="isEditing" class="flex items-center gap-3">
-                <button class="btn btn-sm btn-primary" (click)="saveChanges()"
+              <div *ngIf="isEditingProfile" class="flex items-center gap-3">
+                <button class="btn btn-sm btn-primary" (click)="saveProfileChanges()"
                   [disabled]="editProfileForm.invalid">Salvează</button>
-                <button class="btn btn-sm btn-ghost" (click)="cancelEdit()">Anulează</button>
+                <button class="btn btn-sm btn-ghost" (click)="cancelEditProfile()">Anulează</button>
               </div>
               <div class="flex items-center">
                 <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
@@ -31,8 +31,8 @@
                 </div>
                 <div>
                   <p class="text-sm text-gray-500">Email</p>
-                  <p *ngIf="!isEditing" class="font-medium">{{ userinfo?.email }}</p>
-                  <input *ngIf="isEditing" formControlName="email" type="email"
+                  <p *ngIf="!isEditingProfile" class="font-medium">{{ userinfo?.email }}</p>
+                  <input *ngIf="isEditingProfile" formControlName="email" type="email"
                     class="input w-md px-3 py-2 rounded-lg bg-white text-blue-900 disabled:bg-transparent disabled:border-transparent" />
                 </div>
               </div>
@@ -43,8 +43,8 @@
                 </div>
                 <div>
                   <p class="text-sm text-gray-500">Phone</p>
-                  <p *ngIf="!isEditing" class="font-medium">{{ userinfo?.phone }}</p>
-                  <input *ngIf="isEditing" formControlName="phone" type="text"
+                  <p *ngIf="!isEditingProfile" class="font-medium">{{ userinfo?.phone }}</p>
+                  <input *ngIf="isEditingProfile" formControlName="phone" type="text"
                     class="input w-md px-3 py-2 rounded-lg bg-white text-blue-900 disabled:bg-transparent disabled:border-transparent" />
                 </div>
               </div>
@@ -122,7 +122,7 @@
                   <div class="mb-4">
                     <p class="text-sm text-gray-500 mb-1">Position</p>
                     <app-generic-dropdown *ngIf="isEditingRole" [entityName]="'Positions'" placeholder="Alege o pozitie"
-                      [showClear]="false" [control]="positionControl">
+                      [showClear]="false" [control]="getFormControl('position')">
                     </app-generic-dropdown>
                     <p *ngIf="!isEditingRole" class="font-medium">{{ userRoleinfo?.position }}</p>
                   </div>
@@ -130,8 +130,7 @@
                   <div class="mb-4">
                     <p class="text-sm text-gray-500 mb-1">Department</p>
                     <app-generic-dropdown *ngIf="isEditingRole" [entityName]="'Departments'"
-                      placeholder="Alege un departament" [showClear]="false" [control]="departmentControl"
-                      (selectionChange)="onDepartmentSelectionChange($event)">
+                      placeholder="Alege un departament" [showClear]="false" [control]="getFormControl( 'department')">
                     </app-generic-dropdown>
                     <p *ngIf="!isEditingRole" class="font-medium">{{ userRoleinfo?.department }}</p>
                   </div>
@@ -139,7 +138,7 @@
                   <div class="mb-4">
                     <p class="text-sm text-gray-500 mb-1">Team</p>
                     <app-generic-dropdown *ngIf="isEditingRole" [entityName]="'Teams'" placeholder="Alege o echipa"
-                      [showClear]="false" [control]="teamControl" (selectionChange)="onTeamSelectionChange($event)">
+                      [showClear]="false" [control]="getFormControl('team')">
                     </app-generic-dropdown>
                     <p *ngIf="!isEditingRole" class="font-medium">{{ userRoleinfo?.team }}</p>
                   </div>
@@ -147,8 +146,7 @@
                   <div class="mb-4">
                     <p class="text-sm text-gray-500 mb-1">Manager</p>
                     <app-generic-dropdown *ngIf="isEditingRole" [entityName]="'Users'" placeholder="Alege un manager"
-                      [showClear]="false" [control]="managerControl" methodName="getManagers"
-                      (selectionChange)="onManagerSelectionChange($event)">
+                      [showClear]="false" [control]="getFormControl('manager')" methodName="getManagers">
                     </app-generic-dropdown>
                     <p *ngIf="!isEditingRole" class="font-medium">{{ userRoleinfo?.manager }}</p>
                   </div>
