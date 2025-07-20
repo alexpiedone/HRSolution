@@ -19,13 +19,30 @@ export class UsersService extends ApiService<User> {
   constructor(http: HttpClient, loggingService: LoggingService) {
     super(http, loggingService, `Users`);
   }
+  getAllProjects(): Observable<Project[]> {
+    return this.http.get<UserProject[]>(`${environment.apiUrl}/Users/9/projects`).pipe(
+      map((projects: UserProject[]) => {
+        return projects.map(project => ({
+          id: project.id,
+          name: project.name,
+          status: project.status,
+          position: project.position,
+          dueDate: project.dueDate
+        }));
+      })
+    );
+  }
 
-   updateUserInfo(userId: number , data: { email: string, phone: string }): Observable<any> {
-    const url = `${environment.apiUrl}/Users/${userId}/contact`; 
+  updateUserAssignedProjects(userId: number, projectIds: number[]): Observable<any> {
+    return this.http.put(`${environment.apiUrl}/${userId}/assigned-projects`, projectIds);
+  }
+
+  updateUserInfo(userId: number, data: { email: string, phone: string }): Observable<any> {
+    const url = `${environment.apiUrl}/Users/${userId}/contact`;
     return this.http.patch(url, data);
   }
 
-   updateUserRoleInfo(userId: number, roleDto: UpdateRoleDto): Observable<any> {
+  updateUserRoleInfo(userId: number, roleDto: UpdateRoleDto): Observable<any> {
     return this.http.patch(`${environment.apiUrl}/Users/${userId}/role`, roleDto);
   }
 
@@ -81,11 +98,15 @@ export class UsersService extends ApiService<User> {
       })
     );
   }
+  updateUserResponsibilities(userId: number, responsibilities: Responsibility[]): Observable<any> {
+    return this.http.put(`${environment.apiUrl}/Users/${userId}/responsibilities`, responsibilities);
+  }
 
   getUserProjects(id: number): Observable<UserProject[]> {
     return this.http.get<UserProject[]>(`${environment.apiUrl}/Users/${id}/projects`).pipe(
       map((projects: UserProject[]) => {
         return projects.map(project => ({
+          id: project.id,
           name: project.name,
           status: project.status,
           position: project.position,
@@ -95,10 +116,15 @@ export class UsersService extends ApiService<User> {
     );
   }
 
+  updateUserProjects(userId: number, projects: UserProject[]): Observable<any> {
+    return this.http.put(`${environment.apiUrl}/Users/${userId}/projects`, projects);
+  }
+
   getUserBenefits(id: number): Observable<Benefit[]> {
     return this.http.get<Benefit[]>(`${environment.apiUrl}/Users/${id}/benefits`).pipe(
       map((benefits: Benefit[]) => {
         return benefits.map(benefit => ({
+          id: benefit.id,
           name: benefit.name,
           description: benefit.description,
           icon: benefit.icon,
@@ -106,6 +132,10 @@ export class UsersService extends ApiService<User> {
         }));
       })
     );
+  }
+
+  updateUserBenefits(userId: number, benefits: Benefit[]): Observable<any> {
+    return this.http.put(`${environment.apiUrl}/Users/${userId}/benefits`, benefits);
   }
 
   getUserDocuments(id: number): Observable<Document[]> {
