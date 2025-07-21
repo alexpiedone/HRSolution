@@ -1,0 +1,24 @@
+<p-dialog [(visible)]="visible" [header]="header" [modal]="true" [style]="{width: '50vw'}" (onHide)="onHide()">
+  <form [formGroup]="genericForm" class="p-fluid" *ngIf="genericForm">
+    <div *ngFor="let field of fieldsConfig" class="field mb-4">
+      <label [for]="field.name" class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
+
+      <ng-container [ngSwitch]="field.type">
+        <input *ngSwitchCase="'text'" [id]="field.name" type="text" pInputText [formControlName]="field.name" class="w-full" [placeholder]="field.placeholder || ''">
+        <textarea *ngSwitchCase="'textarea'" [id]="field.name" pInputTextarea [formControlName]="field.name" rows="3" class="w-full" [placeholder]="field.placeholder || ''"></textarea>
+        <p-calendar *ngSwitchCase="'date'" [id]="field.name" [formControlName]="field.name" dateFormat="dd/mm/yy" [showIcon]="true" class="w-full" [placeholder]="field.placeholder || ''"></p-calendar>
+        <p-dropdown *ngSwitchCase="'dropdown'" [id]="field.name" [formControlName]="field.name" [options]="field.options" optionLabel="label" optionValue="value" [placeholder]="field.placeholder || 'Select...'"></p-dropdown>
+        <p-selectButton *ngSwitchCase="'selectButton'" [id]="field.name" [formControlName]="field.name" [options]="field.options" optionLabel="label" optionValue="value" class="w-full"></p-selectButton>
+        <input *ngSwitchCase="'number'" [id]="field.name" type="number" pInputText [formControlName]="field.name" class="w-full" [placeholder]="field.placeholder || ''">
+      </ng-container>
+
+      <small *ngIf="getControl(field.name)?.invalid && getControl(field.name)?.touched" class="p-error">
+        {{ field.label }} este obligatoriu. </small>
+    </div>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <button pButton type="button" label="Anulează" icon="pi pi-times" class="p-button-text" (click)="cancel()"></button>
+    <button pButton type="button" label="Salvează" icon="pi pi-check" [disabled]="genericForm.invalid" (click)="saveData()"></button>
+  </ng-template>
+</p-dialog>

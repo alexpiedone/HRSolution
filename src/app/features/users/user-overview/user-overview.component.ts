@@ -5,7 +5,6 @@ import { UsersService } from '../users.service';
 import { UpdateRoleDto, User, UserProfileUpdateDTO, UserRoleInfo } from '../../../models/user';
 import { AuthService } from '../../auth/auth.service';
 import { NotificationService } from '../../../core/services/notification.service';
-import { GenericDropdownComponent } from '../../../shared/generic-drop-down/generic-drop-down.component';
 import { forkJoin, finalize, take } from 'rxjs';
 import { Project, UserProject } from '../../../models/project';
 import { Benefit } from '../../../models/benefit';
@@ -15,11 +14,12 @@ import { Salary } from '../../../models/salary';
 import { Responsibility } from '../../hr/responsability';
 import { UserProfileComponent } from "../user-profile/user-profile.component";
 import { UserRoleInfoComponent } from "../user-role-info/user-role-info.component";
+import { UserProjectsComponent } from "../user-projects/user-projects.component";
 
 @Component({
   selector: 'app-user-overview',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, GenericDropdownComponent, UserProfileComponent, UserRoleInfoComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, UserProfileComponent, UserRoleInfoComponent, UserProjectsComponent],
   templateUrl: './user-overview.component.html',
   styleUrl: './user-overview.component.css'
 })
@@ -51,11 +51,9 @@ export class UserOverviewComponent implements OnInit {
     private fb: FormBuilder,
     private notificationService: NotificationService
   ) {
-
-
     this.editProjectsForm = this.fb.group({
-      selectedProjectToAdd: [null], 
-      assignedProjects: this.fb.array([]) 
+      selectedProjectToAdd: [null],
+      assignedProjects: this.fb.array([])
     });
 
     this.editResponsibilitiesForm = this.fb.group({
@@ -109,7 +107,6 @@ export class UserOverviewComponent implements OnInit {
   }
 
   private populateForms(): void {
-    this.setAssignedProjectsFormArray(this.projects);
     this.setResponsibilitiesFormArray(this.responsibilities);
     this.setBenefitsFormArray(this.benefits);
   }
@@ -122,79 +119,6 @@ export class UserOverviewComponent implements OnInit {
     }
     throw new Error(`Control '${controlName}' not found or is not a FormControl in the provided FormGroup.`);
   }
-
-  //#region Proiecte
-  get assignedProjectsArray(): FormArray {
-    return this.editProjectsForm.get('assignedProjects') as FormArray;
-  }
-
-  private createAssignedProjectFormControl(projectId: number): FormControl {
-    return this.fb.control(projectId, Validators.required);
-  }
-
-  private setAssignedProjectsFormArray(projects: UserProject[]): void {
-    this.assignedProjectsArray.clear();
-    projects.forEach(project => this.assignedProjectsArray.push(this.createAssignedProjectFormControl(project.id)));
-  }
-
-  enterEditModeProjects(): void {
-    this.isEditingProjects = true;
-    this.setAssignedProjectsFormArray(this.projects); // Reîncarcă ID-urile proiectelor curente
-    this.editProjectsForm.get('selectedProjectToAdd')?.reset(); // Resetează dropdown-ul de selecție
-  }
-
-  addProjectFromDropdown(): void {
-    const selectedProjectId = this.editProjectsForm.get('selectedProjectToAdd')?.value;
-    if (selectedProjectId && !this.assignedProjectsArray.controls.some(control => control.value === selectedProjectId)) {
-      this.assignedProjectsArray.push(this.createAssignedProjectFormControl(selectedProjectId));
-      this.editProjectsForm.get('selectedProjectToAdd')?.reset(); // Resetează după adăugare
-      this.notificationService.showSuccess('Proiect adăugat în lista de editare! Salvează pentru a aplica.');
-    } else if (selectedProjectId) {
-      this.notificationService.showInfo('Acest proiect este deja asignat.');
-    } else {
-      this.notificationService.showError('Vă rugăm să selectați un proiect.');
-    }
-  }
-
-  removeProject(index: number): void {
-    this.assignedProjectsArray.removeAt(index);
-    this.notificationService.showInfo('Proiect eliminat din lista de editare. Salvează pentru a aplica.');
-  }
-
-  cancelEditProjects(): void {
-    this.isEditingProjects = false;
-    this.setAssignedProjectsFormArray(this.projects); // Resetează la valorile originale
-    this.editProjectsForm.get('selectedProjectToAdd')?.reset();
-  }
-
-  saveProjectsChanges(): void {
-    if (this.assignedProjectsArray.valid) { // Validăm doar FormArray-ul de proiecte asignate
-      const updatedProjectIds: number[] = this.assignedProjectsArray.value;
-      const userId = this.authService.getCurrentUserId();
-
-      if (userId) {
-        // Aici trimitem doar lista de ID-uri de proiecte
-        this.userService.updateUserAssignedProjects(userId, updatedProjectIds).subscribe({
-          next: () => {
-            this.notificationService.showSuccess('Proiecte asignate actualizate cu succes! 🚀');
-            // Reîmprospătăm lista de proiecte a utilizatorului apelând din nou API-ul sau construind-o local
-            // Este mai sigur să reîncarci de la server dacă vrei detalii complete
-            this.loadUserData(); // Reîncarcă toate datele, inclusiv proiectele cu detalii complete
-            this.isEditingProjects = false;
-          },
-          error: (error) => {
-            this.notificationService.showError('Eroare la actualizarea proiectelor asignate!');
-            console.error('Error updating user assigned projects:', error);
-          }
-        });
-      }
-    } else {
-      this.notificationService.showError('Vă rugăm să completați toate câmpurile obligatorii pentru proiecte asignate!');
-      this.editProjectsForm.markAllAsTouched();
-    }
-  }
-
-  //#endregion
 
   //#region Responsabilități
 
@@ -256,7 +180,7 @@ export class UserOverviewComponent implements OnInit {
     }
   }
   //#endregion
-  
+
   //#region Beneficii
   get benefitsArray(): FormArray {
     return this.editBenefitsForm.get('benefitsArray') as FormArray;
@@ -319,7 +243,7 @@ export class UserOverviewComponent implements OnInit {
     }
   }
   //#endregion
-  
+
 
   onProfileUpdated(updatedProfile: UserProfileUpdateDTO): void {
     const userId = this.authService.getCurrentUserId();
@@ -328,7 +252,7 @@ export class UserOverviewComponent implements OnInit {
       this.userService.updateUserInfo(userId, updatedProfile).subscribe({
         next: () => {
           this.notificationService.showSuccess('Profil actualizat cu succes! 🥳');
-          this.userinfo = { ...this.userinfo, ...updatedProfile } as User; 
+          this.userinfo = { ...this.userinfo, ...updatedProfile } as User;
         },
         error: (error) => {
           this.notificationService.showError('Eroare la actualizarea profilului!');
@@ -357,6 +281,25 @@ export class UserOverviewComponent implements OnInit {
     } else {
       this.notificationService.showError('ID utilizator invalid. Nu se poate actualiza rolul.');
     }
+  }
+
+  onProjectsUpdated(updatedProjectIds: number[]): void {
+    const userId = this.authService.getCurrentUserId();
+
+    // if (userId) {
+    //   this.userService.updateUserProjects(userId, updatedProjectIds).subscribe({
+    //     next: () => {
+    //       this.notificationService.showSuccess('Proiectele au fost actualizate cu succes! 🎉');
+    //       this.loadUserData();
+    //     },
+    //     error: (error) => {
+    //       this.notificationService.showError('Eroare la actualizarea proiectelor!');
+    //       console.error('Error updating user projects:', error);
+    //     }
+    //   });
+    // } else {
+    //   this.notificationService.showError('ID utilizator invalid. Nu se pot actualiza proiectele.');
+    // }
   }
 
   changeTab(tabId: string): void {

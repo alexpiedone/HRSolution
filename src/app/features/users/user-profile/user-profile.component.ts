@@ -2,10 +2,12 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { User, UserProfileUpdateDTO, UserRoleInfo } from '../../../models/user';
 import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+
 
 @Component({
   selector: 'app-user-profile',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ButtonModule],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
 })export class UserProfileComponent implements OnInit, OnChanges {

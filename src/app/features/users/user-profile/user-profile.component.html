@@ -2,8 +2,10 @@
   <div class="p-6">
     <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
       <div class="flex flex-col items-center">
-        <img src="fearless-tab-shadow.png" alt="Profile Picture" class="w-24 h-24 rounded-full object-cover border-4 border-white ring-2 ring-blue-500 mb-2">
-        <span class="badge badge-primary mt-2 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Active</span>
+        <img src="fearless-tab-shadow.png" alt="Profile Picture"
+          class="w-24 h-24 rounded-full object-cover border-4 border-white ring-2 ring-blue-500 mb-2">
+        <span
+          class="badge badge-primary mt-2 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Active</span>
       </div>
 
       <div class="flex-1 text-center md:text-left">
@@ -14,16 +16,14 @@
               <p class="text-lg text-gray-600 mb-4">{{ userRoleinfo?.position }} • {{ userRoleinfo?.department }}</p>
             </div>
 
-            <i *ngIf="!isEditingProfile"
-               class="pi pi-pencil text-blue-400 cursor-pointer text-lg md:text-right"
-               (click)="enterEditModeProfile()"></i>
+            <i *ngIf="!isEditingProfile" class="pi pi-pencil text-blue-400 cursor-pointer text-lg md:text-right"
+              (click)="enterEditModeProfile()"></i>
 
             <div *ngIf="isEditingProfile" class="flex items-center gap-3 md:justify-end">
-              <button class="btn btn-sm btn-primary bg-blue-600 text-white hover:bg-blue-700 rounded-lg px-3 py-1 text-sm font-medium transition-colors duration-200"
-                      (click)="saveProfileChanges()"
-                      [disabled]="editProfileForm.invalid">Salvează</button>
-              <button class="btn btn-sm btn-ghost bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-lg px-3 py-1 text-sm font-medium transition-colors duration-200"
-                      (click)="cancelEditProfile()">Anulează</button>
+              <button pButton type="button" label="Salvează" icon="pi pi-check" class="p-button-sm p-button-success"
+                (click)="saveProfileChanges()" [disabled]="editProfileForm.invalid"></button>
+              <button pButton type="button" label="Anulează" icon="pi pi-times"
+                class="p-button-sm p-button-secondary p-button-text" (click)="cancelEditProfile()"></button>
             </div>
 
             <div class="flex items-center">
@@ -34,7 +34,7 @@
                 <p class="text-sm text-gray-500">Email</p>
                 <p *ngIf="!isEditingProfile" class="font-medium text-gray-900">{{ userinfo?.email }}</p>
                 <input *ngIf="isEditingProfile" formControlName="email" type="email"
-                       class="input w-full px-3 py-2 rounded-lg bg-white text-gray-900 border border-gray-300 focus:ring focus:ring-blue-200 focus:border-blue-500 disabled:bg-transparent disabled:border-transparent" />
+                  class="input w-full px-3 py-2 rounded-lg bg-white text-gray-900 border border-gray-300 focus:ring focus:ring-blue-200 focus:border-blue-500 disabled:bg-transparent disabled:border-transparent" />
               </div>
             </div>
 
@@ -46,7 +46,7 @@
                 <p class="text-sm text-gray-500">Phone</p>
                 <p *ngIf="!isEditingProfile" class="font-medium text-gray-900">{{ userinfo?.phone }}</p>
                 <input *ngIf="isEditingProfile" formControlName="phone" type="text"
-                       class="input w-full px-3 py-2 rounded-lg bg-white text-gray-900 border border-gray-300 focus:ring focus:ring-blue-200 focus:border-blue-500 disabled:bg-transparent disabled:border-transparent" />
+                  class="input w-full px-3 py-2 rounded-lg bg-white text-gray-900 border border-gray-300 focus:ring focus:ring-blue-200 focus:border-blue-500 disabled:bg-transparent disabled:border-transparent" />
               </div>
             </div>
 

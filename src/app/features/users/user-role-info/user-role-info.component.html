@@ -6,9 +6,10 @@
                 (click)="enterEditModeRole()"></i>
 
             <div *ngIf="isEditingRole" class="flex items-center gap-3">
-                <button class="btn btn-sm btn-primary bg-blue-600 text-white hover:bg-blue-700 rounded-lg px-3 py-1 text-sm font-medium transition-colors duration-200" (click)="saveRoleChanges()"
-                    [disabled]="editRoleForm.invalid">Salvează</button>
-                <button class="btn btn-sm btn-ghost bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-lg px-3 py-1 text-sm font-medium transition-colors duration-200" (click)="cancelEditRole()">Anulează</button>
+                <button pButton type="button" label="Salvează" icon="pi pi-check" class="p-button-sm p-button-success"
+                    (click)="saveRoleChanges()" [disabled]="editRoleForm.invalid"></button>
+                <button pButton type="button" label="Anulează" icon="pi pi-times"
+                    class="p-button-sm p-button-secondary p-button-text" (click)="cancelEditRole()"></button>
             </div>
         </div>
     </div>

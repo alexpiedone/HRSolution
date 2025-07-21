@@ -3,11 +3,12 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } 
 import { CommonModule } from '@angular/common';
 import { UserRoleInfo, UpdateRoleDto } from '../../../models/user'; // Asigură-te că path-ul este corect!
 import { GenericDropdownComponent } from '../../../shared/generic-drop-down/generic-drop-down.component'; // Asigură-te că path-ul este corect!
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-user-role-info',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, GenericDropdownComponent],
+  imports: [CommonModule, ReactiveFormsModule, GenericDropdownComponent, ButtonModule],
   templateUrl: './user-role-info.component.html',
   styleUrl: './user-role-info.component.css'
 })
