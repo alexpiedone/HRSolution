@@ -31,7 +31,7 @@
             <!-- Role & Department -->
             <app-user-role-info [userRoleinfo]="userRoleinfo" (roleUpdated)="onRoleInfoUpdated($event)" />
             <!-- Current Projects -->
-            <app-user-projects [projects]="projects" [allAvailableProjects]="allAvailableProjects"
+            <app-user-projects [userProjects]="projects" [allAvailableProjects]="allAvailableProjects"
               (projectsUpdated)="onProjectsUpdated($event)" />
           </div>
           <div>

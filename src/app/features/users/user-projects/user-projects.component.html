@@ -6,7 +6,7 @@
             </div>
             <span *ngIf="!isEditingProjects"
                 class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-blue-500">
-                {{ projects.length }} Active
+                {{ userProjects.length }} Active
             </span>
             <i *ngIf="!isEditingProjects" class="pi pi-pencil text-blue-400 cursor-pointer text-lg"
                 (click)="enterEditModeProjects()"></i>
@@ -24,8 +24,7 @@
         <div class="space-y-4">
             <form [formGroup]="editProjectsForm" *ngIf="isEditingProjects">
                 <div class="mb-4">
-                    <label for="addProjectDropdown" class="block text-sm font-medium text-gray-700 mb-1">Adaugă Proiect
-                        Existent</label>
+                    <label for="addProjectDropdown" class="block text-sm font-medium text-gray-700 mb-1">Adaugă proiect existent</label>
                     <div class="flex gap-2 items-end">
                         <p-dropdown [options]="allAvailableProjects" formControlName="selectedProjectToAdd"
                             optionLabel="name" placeholder="Selectează un proiect" [filter]="true" class="flex-grow">
@@ -51,8 +50,7 @@
 
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-2">Proiecte Asignate:</label>
-                    <div *ngIf="assignedProjectsArray.length === 0" class="text-gray-500 text-sm">Niciun proiect
-                        asignat.</div>
+                    <div *ngIf="assignedProjectsArray.length === 0" class="text-gray-500 text-sm">Niciun proiect asignat.</div>
                     <div *ngFor="let projectIdControl of assignedProjectsArray.controls; let i = index"
                         class="assigned-project-item bg-gray-50 p-3 rounded-lg mb-2 flex items-center justify-between">
                         <span class="font-medium text-gray-900">{{ getProjectNameById(projectIdControl.value) }}</span>
@@ -69,9 +67,9 @@
             </form>
 
             <div *ngIf="!isEditingProjects">
-                <div *ngIf="projects.length === 0" class="text-gray-500 text-sm">Niciun proiect curent.</div>
-                <div *ngFor="let project of projects">
-                    <div class="project-card bg-gray-50 p-4 rounded-lg mb-4">
+                <div *ngIf="userProjects.length === 0" class="text-gray-500 text-sm">Niciun proiect curent.</div>
+                <div *ngFor="let project of userProjects">
+                    <div class="project-card bg-blue-50 p-4 rounded-lg mb-4 ">
                         <div class="flex justify-between items-start">
                             <div>
                                 <h4 class="text-base font-semibold text-gray-900">{{project.name}}</h4>
@@ -82,7 +80,8 @@
                                 [ngClass]="{
                                     'bg-green-100 text-green-800': project.status === 'Completed',
                                     'bg-yellow-100 text-yellow-800': project.status === 'Pending',
-                                    'bg-blue-100 text-blue-800': project.status === 'Active',
+                                    'bg-blue-100 text-blue-800': project.status === 'On Track',
+                                    'bg-blue-100 text-blue-900': project.status === 'In Progress',
                                     'bg-gray-100 text-gray-800': project.status === 'Archived'
                                     }">
                                 {{project.status}}
@@ -96,7 +95,7 @@
     </div>
 </div>
 
-<app-generic-add-edit-modal [visible]="showNewProjectModal" [header]="'Creează Proiect Nou'"
+<app-generic-add-edit-modal [visible]="showNewProjectModal" [header]="'Creeaza proiect nou'"
     [fieldsConfig]="newProjectFormConfig" (dataSaved)="onNewProjectDataSaved($event)"
     (modalClosed)="onNewProjectModalClosed()">
 </app-generic-add-edit-modal>

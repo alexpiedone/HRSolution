@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 
-import { Project, UserProject } from '../../../models/project'; // Verifică path-ul și structura modelelor!
+import { Project, UserProject } from '../../../models/project'; 
 import { FormFieldConfig, GenericAddEditModalComponent } from '../../../shared/generic-add-edit-modal/generic-add-edit-modal.component';
 
 @Component({
@@ -22,23 +22,23 @@ import { FormFieldConfig, GenericAddEditModalComponent } from '../../../shared/g
   styleUrl: './user-projects.component.css'
 })
 export class UserProjectsComponent implements OnInit, OnChanges {
-  @Input() projects: UserProject[] = [];
+  @Input() userProjects: UserProject[] = [];
   @Input() allAvailableProjects: Project[] = [];
 
   @Output() projectsUpdated = new EventEmitter<number[]>();
-  @Output() newProjectAdded = new EventEmitter<Project>(); // Emitem un eveniment când un proiect nou e creat
+  @Output() newProjectAdded = new EventEmitter<Project>(); 
 
   editProjectsForm!: FormGroup;
   isEditingProjects = false;
 
-  showNewProjectModal = false; // Stare pentru vizibilitatea modalului generic
-  newProjectFormConfig: FormFieldConfig[] = []; // Configurația câmpurilor pentru proiectul nou
+  showNewProjectModal = false;
+  newProjectFormConfig: FormFieldConfig[] = [];
 
   constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.initProjectsForm();
-    this.setupNewProjectFormConfig(); // Setează configurația pentru modalul de proiecte
+    this.setupNewProjectFormConfig();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -48,7 +48,7 @@ export class UserProjectsComponent implements OnInit, OnChanges {
   }
 
   initProjectsForm(): void {
-    const assignedProjectIds = this.projects.map(p => p.id);
+    const assignedProjectIds = this.userProjects.map(p => p.id);
     
     this.editProjectsForm = this.fb.group({
       selectedProjectToAdd: [null],
@@ -98,14 +98,14 @@ export class UserProjectsComponent implements OnInit, OnChanges {
   }
 
   getProjectNameById(projectId: number): string {
+    console.log('All available projects:', this.allAvailableProjects);
     return this.allAvailableProjects.find(p => p.id === projectId)?.name || 'Proiect necunoscut';
   }
 
-  // --- Logica pentru modalul generic de adăugare proiect nou ---
 
   setupNewProjectFormConfig(): void {
     this.newProjectFormConfig = [
-      { name: 'name', label: 'Nume Proiect', type: 'text', validators: [Validators.required], placeholder: 'Ex: Proiect Beta' },
+      { name: 'name', label: 'Nume proiect', type: 'text', validators: [Validators.required], placeholder: 'Ex: Proiect Beta' },
       { name: 'description', label: 'Descriere', type: 'textarea', placeholder: 'Detalii despre proiect...' },
       {
         name: 'status', label: 'Status', type: 'selectButton', validators: [Validators.required],
@@ -115,11 +115,7 @@ export class UserProjectsComponent implements OnInit, OnChanges {
         ],
         defaultValue: 'Active'
       },
-      { name: 'dueDate', label: 'Data Scadenței', type: 'date', validators: [Validators.required], placeholder: 'DD/MM/YYYY' },
-      // Poți adăuga aici câmpuri pentru managerId, teamId, etc.,
-      // dar pentru moment ne limităm la cele de bază.
-      // Dacă vrei dropdown-uri pentru manager/departament,
-      // GenericAddEditModal ar trebui să poată prelua entități, sau le poți pasa tu ca 'options'
+      { name: 'dueDate', label: 'Data scadentei', type: 'date', validators: [Validators.required], placeholder: 'DD/MM/YYYY' },
     ];
   }
 
@@ -129,14 +125,14 @@ export class UserProjectsComponent implements OnInit, OnChanges {
 
   onNewProjectDataSaved(formData: any): void {
     const newProject: Project = {
-      id: Math.floor(Math.random() * 1000000), // Ex: temporar client-side
+      id: Math.floor(Math.random() * 1000000), 
       name: formData.name,
       description: formData.description,
       status: formData.status,
       dueDate: formData.dueDate instanceof Date ? formData.dueDate : new Date(formData.dueDate),
     };
-    this.newProjectAdded.emit(newProject); // Emite către părinte (UserOverviewComponent)
-    this.showNewProjectModal = false; // Închide modalul
+    this.newProjectAdded.emit(newProject);
+    this.showNewProjectModal = false;
   }
 
   onNewProjectModalClosed(): void {
