@@ -1,7 +1,7 @@
 import { ApiService } from '../../core/services/api.service';
 import { HttpClient } from '@angular/common/http';
 import { LoggingService } from '../../core/services/logging.service';
-import { UpdateRoleDto, User, UserRoleInfo } from '../../models/user';
+import { UpdateRoleDto, User, UserProfileUpdateDTO, UserRoleInfo } from '../../models/user';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../environment/environment';
 import { Injectable } from '@angular/core';
@@ -37,7 +37,7 @@ export class UsersService extends ApiService<User> {
     return this.http.put(`${environment.apiUrl}/${userId}/assigned-projects`, projectIds);
   }
 
-  updateUserInfo(userId: number, data: { email: string, phone: string }): Observable<any> {
+  updateUserInfo(userId: number, data: UserProfileUpdateDTO): Observable<any> {
     const url = `${environment.apiUrl}/Users/${userId}/contact`;
     return this.http.patch(url, data);
   }

@@ -1,12 +1,21 @@
 
 export interface User {
-    id: string;
+    id: number;
     fullName: string;
     email: string;
     phone: string;
     avatarUrl?: string;
     dateJoined?: Date;
   }
+
+  export interface UserProfileUpdateDTO {
+  id: number; 
+  email?: string; 
+  phone?: string;
+  // firstName?: string;
+  // lastName?: string;
+}
+
 
   export interface UserRoleInfo{
     position: string;

@@ -1,0 +1,51 @@
+<div class="bg-white shadow rounded-lg">
+    <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+        <div class="flex justify-between items-center">
+            <div class="font-medium">🔷 Role & Department</div>
+            <i *ngIf="!isEditingRole" class="pi pi-pencil text-blue-400 cursor-pointer text-lg"
+                (click)="enterEditModeRole()"></i>
+
+            <div *ngIf="isEditingRole" class="flex items-center gap-3">
+                <button class="btn btn-sm btn-primary bg-blue-600 text-white hover:bg-blue-700 rounded-lg px-3 py-1 text-sm font-medium transition-colors duration-200" (click)="saveRoleChanges()"
+                    [disabled]="editRoleForm.invalid">Salvează</button>
+                <button class="btn btn-sm btn-ghost bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-lg px-3 py-1 text-sm font-medium transition-colors duration-200" (click)="cancelEditRole()">Anulează</button>
+            </div>
+        </div>
+    </div>
+    <div class="px-4 py-5 sm:p-6">
+        <form [formGroup]="editRoleForm">
+            <div class="mb-4">
+                <p class="text-sm text-gray-500 mb-1">Position</p>
+                <app-generic-dropdown *ngIf="isEditingRole" [entityName]="'Positions'" placeholder="Alege o pozitie"
+                    [showClear]="false" [control]="getFormControl(editRoleForm, 'position')">
+                </app-generic-dropdown>
+                <p *ngIf="!isEditingRole" class="font-medium">{{ userRoleinfo?.position }}</p>
+            </div>
+
+            <div class="mb-4">
+                <p class="text-sm text-gray-500 mb-1">Department</p>
+                <app-generic-dropdown *ngIf="isEditingRole" [entityName]="'Departments'"
+                    placeholder="Alege un departament" [showClear]="false"
+                    [control]="getFormControl(editRoleForm, 'department')">
+                </app-generic-dropdown>
+                <p *ngIf="!isEditingRole" class="font-medium">{{ userRoleinfo?.department }}</p>
+            </div>
+
+            <div class="mb-4">
+                <p class="text-sm text-gray-500 mb-1">Team</p>
+                <app-generic-dropdown *ngIf="isEditingRole" [entityName]="'Teams'" placeholder="Alege o echipa"
+                    [showClear]="false" [control]="getFormControl(editRoleForm, 'team')">
+                </app-generic-dropdown>
+                <p *ngIf="!isEditingRole" class="font-medium">{{ userRoleinfo?.team }}</p>
+            </div>
+
+            <div class="mb-4">
+                <p class="text-sm text-gray-500 mb-1">Manager</p>
+                <app-generic-dropdown *ngIf="isEditingRole" [entityName]="'Users'" placeholder="Alege un manager"
+                    [showClear]="false" [control]="getFormControl(editRoleForm, 'manager')" methodName="getManagers">
+                </app-generic-dropdown>
+                <p *ngIf="!isEditingRole" class="font-medium">{{ userRoleinfo?.manager }}</p>
+            </div>
+        </form>
+    </div>
+</div>

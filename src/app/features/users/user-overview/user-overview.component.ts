@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UsersService } from '../users.service';
-import { UpdateRoleDto, User, UserRoleInfo } from '../../../models/user';
+import { UpdateRoleDto, User, UserProfileUpdateDTO, UserRoleInfo } from '../../../models/user';
 import { AuthService } from '../../auth/auth.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { GenericDropdownComponent } from '../../../shared/generic-drop-down/generic-drop-down.component';
@@ -13,31 +13,29 @@ import { Document } from '../../../models/document';
 import { Role } from '../../../models/role';
 import { Salary } from '../../../models/salary';
 import { Responsibility } from '../../hr/responsability';
+import { UserProfileComponent } from "../user-profile/user-profile.component";
+import { UserRoleInfoComponent } from "../user-role-info/user-role-info.component";
 
 @Component({
   selector: 'app-user-overview',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, GenericDropdownComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, GenericDropdownComponent, UserProfileComponent, UserRoleInfoComponent],
   templateUrl: './user-overview.component.html',
   styleUrl: './user-overview.component.css'
 })
 export class UserOverviewComponent implements OnInit {
 
   activeTab: string = 'personal-info';
-  userinfo: User | null = null;
-  userRoleinfo: UserRoleInfo | null = null;
+  userinfo: User | undefined = undefined;
+  userRoleinfo: UserRoleInfo | undefined = undefined;
 
-  isEditingProfile = false;
-  isEditingRole = false;
-  isEditingProjects = false; // Nou: stare de editare pentru proiecte
-  isEditingResponsibilities = false; // Nou: stare de editare pentru responsabilitati
-  isEditingBenefits = false; // Nou: stare de editare pentru beneficii
+  isEditingProjects = false;
+  isEditingResponsibilities = false;
+  isEditingBenefits = false;
 
-  editProfileForm: FormGroup;
-  editRoleForm: FormGroup;
-  editProjectsForm: FormGroup; // Nou: Formular pentru proiecte
-  editResponsibilitiesForm: FormGroup; // Nou: Formular pentru responsabilitati
-  editBenefitsForm: FormGroup; // Nou: Formular pentru beneficii
+  editProjectsForm: FormGroup;
+  editResponsibilitiesForm: FormGroup;
+  editBenefitsForm: FormGroup;
 
   allAvailableProjects: Project[] = [];
   projects: UserProject[] = [];
@@ -53,29 +51,19 @@ export class UserOverviewComponent implements OnInit {
     private fb: FormBuilder,
     private notificationService: NotificationService
   ) {
-    this.editProfileForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.required]
-    });
 
-    this.editRoleForm = this.fb.group({
-      position: [null, Validators.required],
-      department: [null, Validators.required],
-      team: [null],
-      manager: [null]
-    });
 
     this.editProjectsForm = this.fb.group({
-      selectedProjectToAdd: [null], // Pentru dropdown-ul de adăugare proiect
-      assignedProjects: this.fb.array([]) // Array de FormControls pentru ID-urile proiectelor asignate
+      selectedProjectToAdd: [null], 
+      assignedProjects: this.fb.array([]) 
     });
 
     this.editResponsibilitiesForm = this.fb.group({
-      responsibilitiesArray: this.fb.array([]) // Array de FormGroups pentru responsabilitati
+      responsibilitiesArray: this.fb.array([])
     });
 
     this.editBenefitsForm = this.fb.group({
-      benefitsArray: this.fb.array([]) // Array de FormGroups pentru beneficii
+      benefitsArray: this.fb.array([])
     });
   }
 
@@ -108,7 +96,7 @@ export class UserOverviewComponent implements OnInit {
           this.benefits = userBenefits;
           this.documents = userDocuments;
           this.currentSalary = userCurrentSalary;
-          this.allAvailableProjects = allProjects; 
+          this.allAvailableProjects = allProjects;
 
           this.populateForms();
         },
@@ -121,22 +109,6 @@ export class UserOverviewComponent implements OnInit {
   }
 
   private populateForms(): void {
-    if (this.userinfo) {
-      this.editProfileForm.patchValue({
-        email: this.userinfo.email,
-        phone: this.userinfo.phone
-      });
-    }
-
-    if (this.userRoleinfo) {
-      this.editRoleForm.patchValue({
-        position: this.userRoleinfo.positionId,
-        department: this.userRoleinfo.departmentId,
-        team: this.userRoleinfo.teamId,
-        manager: this.userRoleinfo.managerId
-      });
-    }
-
     this.setAssignedProjectsFormArray(this.projects);
     this.setResponsibilitiesFormArray(this.responsibilities);
     this.setBenefitsFormArray(this.benefits);
@@ -151,12 +123,11 @@ export class UserOverviewComponent implements OnInit {
     throw new Error(`Control '${controlName}' not found or is not a FormControl in the provided FormGroup.`);
   }
 
-  // --- Secțiunea Proiecte ---
+  //#region Proiecte
   get assignedProjectsArray(): FormArray {
     return this.editProjectsForm.get('assignedProjects') as FormArray;
   }
 
-  // Creează un FormControl pentru ID-ul proiectului
   private createAssignedProjectFormControl(projectId: number): FormControl {
     return this.fb.control(projectId, Validators.required);
   }
@@ -223,7 +194,10 @@ export class UserOverviewComponent implements OnInit {
     }
   }
 
-  // --- Secțiunea Responsabilități ---
+  //#endregion
+
+  //#region Responsabilități
+
   get responsibilitiesArray(): FormArray {
     return this.editResponsibilitiesForm.get('responsibilitiesArray') as FormArray;
   }
@@ -281,8 +255,9 @@ export class UserOverviewComponent implements OnInit {
       this.editResponsibilitiesForm.markAllAsTouched();
     }
   }
-
-  // --- Secțiunea Beneficii ---
+  //#endregion
+  
+  //#region Beneficii
   get benefitsArray(): FormArray {
     return this.editBenefitsForm.get('benefitsArray') as FormArray;
   }
@@ -343,97 +318,45 @@ export class UserOverviewComponent implements OnInit {
       this.editBenefitsForm.markAllAsTouched();
     }
   }
+  //#endregion
+  
 
+  onProfileUpdated(updatedProfile: UserProfileUpdateDTO): void {
+    const userId = this.authService.getCurrentUserId();
 
-  enterEditModeProfile(): void {
-    this.isEditingProfile = true;
-    this.populateForms();
-  }
-
-  cancelEditProfile(): void {
-    this.isEditingProfile = false;
-    this.populateForms();
-  }
-
-  saveProfileChanges(): void {
-    if (this.editProfileForm.valid) {
-      const updatedData = this.editProfileForm.value;
-      const userId = this.authService.getCurrentUserId();
-
-      if (userId) {
-        this.userService.updateUserInfo(userId, updatedData).subscribe({
-          next: () => {
-            this.notificationService.showSuccess('Profil actualizat cu succes! 🥳');
-            this.userinfo = { ...this.userinfo, ...updatedData } as User;
-            this.isEditingProfile = false;
-          },
-          error: (error) => {
-            this.notificationService.showError('Eroare la actualizarea profilului!');
-            console.error('Error updating user info:', error);
-          }
-        });
-      }
-    }
-  }
-
-  enterEditModeRole(): void {
-    this.isEditingRole = true;
-    this.populateForms();
-  }
-
-  cancelEditRole(): void {
-    this.isEditingRole = false;
-    this.populateForms();
-  }
-
-  saveRoleChanges(): void {
-    if (this.editRoleForm.valid) {
-      const updatedData: UpdateRoleDto = {
-        positionId: this.editRoleForm.get('position')?.value,
-        departmentId: this.editRoleForm.get('department')?.value,
-        teamId: this.editRoleForm.get('team')?.value,
-        managerId: this.editRoleForm.get('manager')?.value
-      };
-      const userId = this.authService.getCurrentUserId();
-
-      if (userId) {
-        this.userService.updateUserRoleInfo(userId, updatedData).subscribe({
-          next: () => {
-            this.notificationService.showSuccess('Informațiile rolului au fost actualizate cu succes! 🎉');
-            if (this.userRoleinfo) {
-              this.userRoleinfo.positionId = updatedData.positionId ?? 0;
-              this.userRoleinfo.departmentId = updatedData.departmentId ?? 0;
-              this.userRoleinfo.teamId = updatedData.teamId ?? null;
-              this.userRoleinfo.managerId = updatedData.managerId ?? null;
-            }
-            this.isEditingRole = false;
-          },
-          error: (error) => {
-            this.notificationService.showError('Eroare la actualizarea informațiilor rolului!');
-            console.error('Error updating user role info:', error);
-          }
-        });
-      }
+    if (userId) {
+      this.userService.updateUserInfo(userId, updatedProfile).subscribe({
+        next: () => {
+          this.notificationService.showSuccess('Profil actualizat cu succes! 🥳');
+          this.userinfo = { ...this.userinfo, ...updatedProfile } as User; 
+        },
+        error: (error) => {
+          this.notificationService.showError('Eroare la actualizarea profilului!');
+          console.error('Error updating user info:', error);
+        }
+      });
     } else {
-      this.notificationService.showError('Vă rugăm să completați toate câmpurile obligatorii!');
-      this.editRoleForm.markAllAsTouched();
+      this.notificationService.showError('ID utilizator invalid. Nu se poate actualiza profilul.');
     }
   }
 
-  onPositionSelectionChange(value: number | string | null): void {
-    console.log('New position selected:', value);
-  }
+  onRoleInfoUpdated(updatedRole: UpdateRoleDto): void {
+    const userId = this.authService.getCurrentUserId();
 
-  onDepartmentSelectionChange(value: number | string | null): void {
-    console.log('New department selected:', value);
-  }
-
-  onTeamSelectionChange(value: number | string | null): void {
-    console.log('New team selected:', value);
-  }
-
-  onManagerSelectionChange(value: number | string | null): void {
-    console.log('New manager selected:', value);
+    if (userId) {
+      this.userService.updateUserRoleInfo(userId, updatedRole).subscribe({
+        next: () => {
+          this.notificationService.showSuccess('Informațiile rolului au fost actualizate cu succes! 🎉');
+          this.loadUserData();
+        },
+        error: (error) => {
+          this.notificationService.showError('Eroare la actualizarea informațiilor rolului!');
+          console.error('Error updating user role info:', error);
+        }
+      });
+    } else {
+      this.notificationService.showError('ID utilizator invalid. Nu se poate actualiza rolul.');
+    }
   }
 
   changeTab(tabId: string): void {

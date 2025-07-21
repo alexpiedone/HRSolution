@@ -1,80 +1,6 @@
 <div class=" mx-auto">
   <!-- Profile Header -->
-  <div class="card mb-6">
-    <div class="p-6">
-      <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
-        <div class="flex flex-col items-center">
-          <img src="fearless-tab-shadow.png" alt="Profile Picture" class="avatar mb-2">
-          <span class="badge badge-primary mt-2">Active</span>
-        </div>
-
-        <div class="flex-1 text-center md:text-left">
-          <form [formGroup]="editProfileForm">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-blue-50 p-4  shadow">
-              <div>
-                <h1 class="text-2xl font-bold text-gray-900">{{ userinfo?.fullName }}</h1>
-                <p class="text-lg text-gray-600 mb-4">{{ userRoleinfo?.position }} • {{ userRoleinfo?.department }}
-                </p>
-              </div>
-
-              <i *ngIf="!isEditingProfile" class="pi pi-pencil text-blue-400 cursor-pointer text-lg"
-                (click)="enterEditModeProfile()"></i>
-
-              <div *ngIf="isEditingProfile" class="flex items-center gap-3">
-                <button class="btn btn-sm btn-primary" (click)="saveProfileChanges()"
-                  [disabled]="editProfileForm.invalid">Salvează</button>
-                <button class="btn btn-sm btn-ghost" (click)="cancelEditProfile()">Anulează</button>
-              </div>
-              <div class="flex items-center">
-                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
-                  <i class="pi pi-envelope text-primary-color"></i>
-                </div>
-                <div>
-                  <p class="text-sm text-gray-500">Email</p>
-                  <p *ngIf="!isEditingProfile" class="font-medium">{{ userinfo?.email }}</p>
-                  <input *ngIf="isEditingProfile" formControlName="email" type="email"
-                    class="input w-md px-3 py-2 rounded-lg bg-white text-blue-900 disabled:bg-transparent disabled:border-transparent" />
-                </div>
-              </div>
-
-              <div class="flex items-center">
-                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
-                  <i class="pi pi-phone text-primary-color"></i>
-                </div>
-                <div>
-                  <p class="text-sm text-gray-500">Phone</p>
-                  <p *ngIf="!isEditingProfile" class="font-medium">{{ userinfo?.phone }}</p>
-                  <input *ngIf="isEditingProfile" formControlName="phone" type="text"
-                    class="input w-md px-3 py-2 rounded-lg bg-white text-blue-900 disabled:bg-transparent disabled:border-transparent" />
-                </div>
-              </div>
-
-              <div class="flex items-center">
-                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
-                  <i class="pi pi-calendar text-primary-color"></i>
-                </div>
-                <div>
-                  <p class="text-sm text-gray-500">Joined</p>
-                  <p class="font-medium">{{ userinfo?.dateJoined | date }}</p>
-                </div>
-              </div>
-
-              <div class="flex items-center">
-                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
-                  <i class="pi pi-id-card text-primary-color"></i>
-                </div>
-                <div>
-                  <p class="text-sm text-gray-500">Employee ID</p>
-                  <p class="font-medium">{{ userinfo?.id }}</p>
-                </div>
-              </div>
-
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
+  <app-user-profile [userinfo]="userinfo" [userRoleinfo]="userRoleinfo" />
 
   <!-- Tabbed Content -->
   <div class="card">
@@ -103,57 +29,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
             <!-- Role & Department -->
-            <div class="bg-white shadow rounded-lg">
-              <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-                <div class="flex justify-between items-center">
-                  <div class="font-medium">🔷 Role & Department</div>
-                  <i *ngIf="!isEditingRole" class="pi pi-pencil text-blue-400 cursor-pointer text-lg"
-                    (click)="enterEditModeRole()"></i>
-
-                  <div *ngIf="isEditingRole" class="flex items-center gap-3">
-                    <button class="btn btn-sm bg-blue-200" (click)="saveRoleChanges()"
-                      [disabled]="editRoleForm.invalid">Salvează</button>
-                    <button class="btn btn-sm btn-ghost" (click)="cancelEditRole()">Anulează</button>
-                  </div>
-                </div>
-              </div>
-              <div class="px-4 py-5 sm:p-6">
-                <form [formGroup]="editRoleForm">
-                  <div class="mb-4">
-                    <p class="text-sm text-gray-500 mb-1">Position</p>
-                    <app-generic-dropdown *ngIf="isEditingRole" [entityName]="'Positions'" placeholder="Alege o pozitie"
-                      [showClear]="false" [control]="getFormControl(editRoleForm, 'position')">
-                    </app-generic-dropdown>
-                    <p *ngIf="!isEditingRole" class="font-medium">{{ userRoleinfo?.position }}</p>
-                  </div>
-
-                  <div class="mb-4">
-                    <p class="text-sm text-gray-500 mb-1">Department</p>
-                    <app-generic-dropdown *ngIf="isEditingRole" [entityName]="'Departments'"
-                      placeholder="Alege un departament" [showClear]="false"
-                      [control]="getFormControl(editRoleForm, 'department')">
-                    </app-generic-dropdown>
-                    <p *ngIf="!isEditingRole" class="font-medium">{{ userRoleinfo?.department }}</p>
-                  </div>
-
-                  <div class="mb-4">
-                    <p class="text-sm text-gray-500 mb-1">Team</p>
-                    <app-generic-dropdown *ngIf="isEditingRole" [entityName]="'Teams'" placeholder="Alege o echipa"
-                      [showClear]="false" [control]="getFormControl(editRoleForm, 'team')">
-                    </app-generic-dropdown>
-                    <p *ngIf="!isEditingRole" class="font-medium">{{ userRoleinfo?.team }}</p>
-                  </div>
-
-                  <div class="mb-4">
-                    <p class="text-sm text-gray-500 mb-1">Manager</p>
-                    <app-generic-dropdown *ngIf="isEditingRole" [entityName]="'Users'" placeholder="Alege un manager"
-                      [showClear]="false" [control]="getFormControl(editRoleForm, 'manager')" methodName="getManagers">
-                    </app-generic-dropdown>
-                    <p *ngIf="!isEditingRole" class="font-medium">{{ userRoleinfo?.manager }}</p>
-                  </div>
-                </form>
-              </div>
-            </div>
+            <app-user-role-info [userRoleinfo]="userRoleinfo" (roleUpdated)="onRoleInfoUpdated($event)"/>
             <!-- Current Projects -->
             <div class="bg-white overflow-hidden shadow rounded-lg mt-6">
               <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
@@ -243,7 +119,7 @@
           </div>
           <div>
             <!-- Responsibilities -->
-            <div class="bg-white overflow-hidden shadow rounded-lg px-1 mt-6">
+            <div class="bg-white overflow-hidden shadow rounded-lg mt-6">
               <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
                 <div class="flex justify-between items-center">
                   <h3 class="text-lg leading-6 font-medium text-gray-900 flex items-center">
