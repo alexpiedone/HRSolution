@@ -29,11 +29,9 @@ export class UserOverviewComponent implements OnInit {
   userinfo: User | undefined = undefined;
   userRoleinfo: UserRoleInfo | undefined = undefined;
 
-  isEditingProjects = false;
   isEditingResponsibilities = false;
   isEditingBenefits = false;
 
-  editProjectsForm: FormGroup;
   editResponsibilitiesForm: FormGroup;
   editBenefitsForm: FormGroup;
 
@@ -51,10 +49,6 @@ export class UserOverviewComponent implements OnInit {
     private fb: FormBuilder,
     private notificationService: NotificationService
   ) {
-    this.editProjectsForm = this.fb.group({
-      selectedProjectToAdd: [null],
-      assignedProjects: this.fb.array([])
-    });
 
     this.editResponsibilitiesForm = this.fb.group({
       responsibilitiesArray: this.fb.array([])
@@ -100,7 +94,6 @@ export class UserOverviewComponent implements OnInit {
         },
         error: (error) => {
           this.notificationService.showError('Eroare la încărcarea datelor utilizatorului!');
-          console.error('Error loading user data:', error);
         }
       });
     }
@@ -286,20 +279,20 @@ export class UserOverviewComponent implements OnInit {
   onProjectsUpdated(updatedProjectIds: number[]): void {
     const userId = this.authService.getCurrentUserId();
 
-    // if (userId) {
-    //   this.userService.updateUserProjects(userId, updatedProjectIds).subscribe({
-    //     next: () => {
-    //       this.notificationService.showSuccess('Proiectele au fost actualizate cu succes! 🎉');
-    //       this.loadUserData();
-    //     },
-    //     error: (error) => {
-    //       this.notificationService.showError('Eroare la actualizarea proiectelor!');
-    //       console.error('Error updating user projects:', error);
-    //     }
-    //   });
-    // } else {
-    //   this.notificationService.showError('ID utilizator invalid. Nu se pot actualiza proiectele.');
-    // }
+    if (userId) {
+      this.userService.updateUserProjects(userId, updatedProjectIds).subscribe({
+        next: () => {
+          this.notificationService.showSuccess('Proiectele au fost actualizate cu succes! 🎉');
+          this.loadUserData();
+        },
+        error: (error) => {
+          this.notificationService.showError('Eroare la actualizarea proiectelor!');
+          console.error('Error updating user projects:', error);
+        }
+      });
+    } else {
+      this.notificationService.showError('ID utilizator invalid. Nu se pot actualiza proiectele.');
+    }
   }
 
   changeTab(tabId: string): void {

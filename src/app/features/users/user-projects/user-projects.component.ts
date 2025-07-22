@@ -1,13 +1,15 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
 import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
-
-import { Project, UserProject } from '../../../models/project'; 
+import { Project, UserProject } from '../../../models/project';
 import { FormFieldConfig, GenericAddEditModalComponent } from '../../../shared/generic-add-edit-modal/generic-add-edit-modal.component';
-
+export const INPUT_NAMES = {
+  USER_PROJECTS: 'userProjects',
+  ALL_AVAILABLE_PROJECTS: 'allAvailableProjects',
+  SELECTED_PROJECT_TO_ADD: 'selectedProjectToAdd'
+};
 @Component({
   selector: 'app-user-projects',
   standalone: true,
@@ -17,7 +19,7 @@ import { FormFieldConfig, GenericAddEditModalComponent } from '../../../shared/g
     DropdownModule,
     ButtonModule,
     GenericAddEditModalComponent
-],
+  ],
   templateUrl: './user-projects.component.html',
   styleUrl: './user-projects.component.css'
 })
@@ -26,7 +28,7 @@ export class UserProjectsComponent implements OnInit, OnChanges {
   @Input() allAvailableProjects: Project[] = [];
 
   @Output() projectsUpdated = new EventEmitter<number[]>();
-  @Output() newProjectAdded = new EventEmitter<Project>(); 
+  @Output() newProjectAdded = new EventEmitter<Project>();
 
   editProjectsForm!: FormGroup;
   isEditingProjects = false;
@@ -37,19 +39,17 @@ export class UserProjectsComponent implements OnInit, OnChanges {
   constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.initProjectsForm();
     this.setupNewProjectFormConfig();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['projects'] || changes['allAvailableProjects']) {
+    if (changes[INPUT_NAMES.USER_PROJECTS] || changes[INPUT_NAMES.ALL_AVAILABLE_PROJECTS]) {
       this.initProjectsForm();
     }
   }
 
   initProjectsForm(): void {
     const assignedProjectIds = this.userProjects.map(p => p.id);
-    
     this.editProjectsForm = this.fb.group({
       selectedProjectToAdd: [null],
       assignedProjects: this.fb.array(assignedProjectIds.map(id => this.fb.control(id)))
@@ -66,11 +66,10 @@ export class UserProjectsComponent implements OnInit, OnChanges {
   }
 
   addProjectFromDropdown(): void {
-    const selectedProject: Project = this.editProjectsForm.get('selectedProjectToAdd')?.value;
-
+    const selectedProject: Project = this.editProjectsForm.get(INPUT_NAMES.SELECTED_PROJECT_TO_ADD)?.value;
     if (selectedProject && !this.assignedProjectsArray.controls.some(control => control.value === selectedProject.id)) {
       this.assignedProjectsArray.push(this.fb.control(selectedProject.id));
-      this.editProjectsForm.get('selectedProjectToAdd')?.reset();
+      this.editProjectsForm.get(INPUT_NAMES.SELECTED_PROJECT_TO_ADD)?.reset();
     }
   }
 
@@ -98,10 +97,11 @@ export class UserProjectsComponent implements OnInit, OnChanges {
   }
 
   getProjectNameById(projectId: number): string {
-    console.log('All available projects:', this.allAvailableProjects);
     return this.allAvailableProjects.find(p => p.id === projectId)?.name || 'Proiect necunoscut';
   }
-
+  logValue(label: string, value: any): void {
+    console.log(label, value, 'Type:', typeof value);
+  }
 
   setupNewProjectFormConfig(): void {
     this.newProjectFormConfig = [
@@ -125,7 +125,7 @@ export class UserProjectsComponent implements OnInit, OnChanges {
 
   onNewProjectDataSaved(formData: any): void {
     const newProject: Project = {
-      id: Math.floor(Math.random() * 1000000), 
+      id: Math.floor(Math.random() * 1000000),
       name: formData.name,
       description: formData.description,
       status: formData.status,

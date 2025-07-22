@@ -19,14 +19,13 @@ export class UsersService extends ApiService<User> {
   constructor(http: HttpClient, loggingService: LoggingService) {
     super(http, loggingService, `Users`);
   }
-  getAllProjects(): Observable<UserProject[]> {
-    return this.http.get<UserProject[]>(`${environment.apiUrl}/Users/9/projects`).pipe(
-      map((projects: UserProject[]) => {
+  getAllProjects(): Observable<Project[]> {
+    return this.http.get<Project[]>(`${environment.apiUrl}/Projects/GetAll`).pipe(
+      map((projects: Project[]) => {
         return projects.map(project => ({
           id: project.id,
           name: project.name,
           status: project.status,
-          position: project.position,
           dueDate: project.dueDate
         }));
       })
@@ -116,7 +115,7 @@ export class UsersService extends ApiService<User> {
     );
   }
 
-  updateUserProjects(userId: number, projects: UserProject[]): Observable<any> {
+  updateUserProjects(userId: number, projects: number[]): Observable<any> {
     return this.http.put(`${environment.apiUrl}/Users/${userId}/projects`, projects);
   }
 
