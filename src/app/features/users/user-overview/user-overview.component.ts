@@ -15,11 +15,12 @@ import { Responsibility } from '../../hr/responsability';
 import { UserProfileComponent } from "../user-profile/user-profile.component";
 import { UserRoleInfoComponent } from "../user-role-info/user-role-info.component";
 import { UserProjectsComponent } from "../user-projects/user-projects.component";
+import { UserResponsibilitiesComponent } from "../user-responsibilities/user-responsibilities.component";
 
 @Component({
   selector: 'app-user-overview',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, UserProfileComponent, UserRoleInfoComponent, UserProjectsComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, UserProfileComponent, UserRoleInfoComponent, UserProjectsComponent, UserResponsibilitiesComponent],
   templateUrl: './user-overview.component.html',
   styleUrl: './user-overview.component.css'
 })
@@ -29,15 +30,15 @@ export class UserOverviewComponent implements OnInit {
   userinfo: User | undefined = undefined;
   userRoleinfo: UserRoleInfo | undefined = undefined;
 
-  isEditingResponsibilities = false;
+  responsibilities: Responsibility[] = [];
+  allAvailableResponsibilities: Responsibility[] = [];
+
   isEditingBenefits = false;
 
-  editResponsibilitiesForm: FormGroup;
   editBenefitsForm: FormGroup;
 
   allAvailableProjects: Project[] = [];
   projects: UserProject[] = [];
-  responsibilities: Responsibility[] = [];
   currentSalary: Salary | null = null;
   benefits: Benefit[] = [];
   documents: Document[] = [];
@@ -49,10 +50,6 @@ export class UserOverviewComponent implements OnInit {
     private fb: FormBuilder,
     private notificationService: NotificationService
   ) {
-
-    this.editResponsibilitiesForm = this.fb.group({
-      responsibilitiesArray: this.fb.array([])
-    });
 
     this.editBenefitsForm = this.fb.group({
       benefitsArray: this.fb.array([])
@@ -100,7 +97,6 @@ export class UserOverviewComponent implements OnInit {
   }
 
   private populateForms(): void {
-    this.setResponsibilitiesFormArray(this.responsibilities);
     this.setBenefitsFormArray(this.benefits);
   }
 
@@ -112,67 +108,6 @@ export class UserOverviewComponent implements OnInit {
     }
     throw new Error(`Control '${controlName}' not found or is not a FormControl in the provided FormGroup.`);
   }
-
-  //#region Responsabilități
-
-  get responsibilitiesArray(): FormArray {
-    return this.editResponsibilitiesForm.get('responsibilitiesArray') as FormArray;
-  }
-
-  private createResponsibilityFormGroup(responsibility: Responsibility | null = null): FormGroup {
-    return this.fb.group({
-      id: [responsibility?.id || 0],
-      description: [responsibility?.description || '', Validators.required]
-    });
-  }
-
-  private setResponsibilitiesFormArray(responsibilities: Responsibility[]): void {
-    this.responsibilitiesArray.clear();
-    responsibilities.forEach(resp => this.responsibilitiesArray.push(this.createResponsibilityFormGroup(resp)));
-  }
-
-  enterEditModeResponsibilities(): void {
-    this.isEditingResponsibilities = true;
-    this.setResponsibilitiesFormArray(this.responsibilities);
-  }
-
-  addResponsibility(): void {
-    this.responsibilitiesArray.push(this.createResponsibilityFormGroup());
-  }
-
-  removeResponsibility(index: number): void {
-    this.responsibilitiesArray.removeAt(index);
-  }
-
-  cancelEditResponsibilities(): void {
-    this.isEditingResponsibilities = false;
-    this.setResponsibilitiesFormArray(this.responsibilities);
-  }
-
-  saveResponsibilitiesChanges(): void {
-    if (this.editResponsibilitiesForm.valid) {
-      const updatedResponsibilities: Responsibility[] = this.responsibilitiesArray.value;
-      const userId = this.authService.getCurrentUserId();
-
-      if (userId) {
-        this.userService.updateUserResponsibilities(userId, updatedResponsibilities).subscribe({
-          next: () => {
-            this.notificationService.showSuccess('Responsabilități actualizate cu succes! ✅');
-            this.responsibilities = updatedResponsibilities;
-            this.isEditingResponsibilities = false;
-          },
-          error: (error) => {
-            this.notificationService.showError('Eroare la actualizarea responsabilităților!');
-            console.error('Error updating user responsibilities:', error);
-          }
-        });
-      }
-    } else {
-      this.notificationService.showError('Vă rugăm să completați toate câmpurile obligatorii pentru responsabilități!');
-      this.editResponsibilitiesForm.markAllAsTouched();
-    }
-  }
-  //#endregion
 
   //#region Beneficii
   get benefitsArray(): FormArray {
@@ -237,7 +172,6 @@ export class UserOverviewComponent implements OnInit {
   }
   //#endregion
 
-
   onProfileUpdated(updatedProfile: UserProfileUpdateDTO): void {
     const userId = this.authService.getCurrentUserId();
 
@@ -292,6 +226,22 @@ export class UserOverviewComponent implements OnInit {
       });
     } else {
       this.notificationService.showError('ID utilizator invalid. Nu se pot actualiza proiectele.');
+    }
+  }
+
+  onResponsibilitiesAssignedUpdated(updatedResponsibilityIds: number[]): void {
+    const userId = this.authService.getCurrentUserId();
+    if (userId !== null) {
+      this.userService.updateUserResponsibilities(userId, updatedResponsibilityIds).subscribe({
+        next: () => {
+          this.notificationService.showSuccess('Responsabilitățile utilizatorului au fost actualizate cu succes!');
+          this.loadUserData(); // Re-încarcă datele pentru a reflecta schimbările
+        },
+        error: (error) => {
+          this.notificationService.showError('Eroare la actualizarea responsabilităților utilizatorului!');
+          console.error('Error updating user responsibilities:', error);
+        }
+      });
     }
   }
 

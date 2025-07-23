@@ -97,8 +97,8 @@ export class UsersService extends ApiService<User> {
       })
     );
   }
-  updateUserResponsibilities(userId: number, responsibilities: Responsibility[]): Observable<any> {
-    return this.http.put(`${environment.apiUrl}/Users/${userId}/responsibilities`, responsibilities);
+  updateUserResponsibilities(userId: number, responsibilitiesIDs: number[]): Observable<any> {
+    return this.http.put(`${environment.apiUrl}/Users/${userId}/responsibilities`, responsibilitiesIDs);
   }
 
   getUserProjects(id: number): Observable<UserProject[]> {
@@ -116,7 +116,7 @@ export class UsersService extends ApiService<User> {
   }
 
   updateUserProjects(userId: number, projects: number[]): Observable<any> {
-    return this.http.put(`${environment.apiUrl}/Users/${userId}/projects`, projects);
+    return this.http.put(`${environment.apiUrl}/Users/${userId}/update-projects`, projects);
   }
 
   getUserBenefits(id: number): Observable<Benefit[]> {
