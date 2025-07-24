@@ -1,0 +1,8 @@
+.sensitive-data {
+    filter: blur(4px);
+    transition: filter 0.3s ease;
+}
+
+.sensitive-data:hover {
+    filter: blur(0);
+}

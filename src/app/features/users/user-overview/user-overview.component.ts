@@ -15,12 +15,13 @@ import { Responsibility } from '../../hr/responsability';
 import { UserProfileComponent } from "../user-profile/user-profile.component";
 import { UserRoleInfoComponent } from "../user-role-info/user-role-info.component";
 import { UserProjectsComponent } from "../user-projects/user-projects.component";
+import { CompensationComponent } from "../../compensation/compensation.component";
 import { UserResponsibilitiesComponent } from "../user-responsibilities/user-responsibilities.component";
 
 @Component({
   selector: 'app-user-overview',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, UserProfileComponent, UserRoleInfoComponent, UserProjectsComponent, UserResponsibilitiesComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, UserProfileComponent, UserRoleInfoComponent, UserProjectsComponent, CompensationComponent, UserResponsibilitiesComponent],
   templateUrl: './user-overview.component.html',
   styleUrl: './user-overview.component.css'
 })
@@ -240,6 +241,22 @@ export class UserOverviewComponent implements OnInit {
         error: (error) => {
           this.notificationService.showError('Eroare la actualizarea responsabilităților utilizatorului!');
           console.error('Error updating user responsibilities:', error);
+        }
+      });
+    }
+  }
+
+  onBenefitsUpdated(updatedBenefits: Benefit[]): void {
+    const userId = this.authService.getCurrentUserId();
+    if (userId !== null) {
+      this.userService.updateUserBenefits(userId, updatedBenefits).subscribe({
+        next: () => {
+          this.notificationService.showSuccess('Beneficiile utilizatorului au fost actualizate cu succes!');
+          this.loadUserData();
+        },
+        error: (error) => {
+          this.notificationService.showError('Eroare la actualizarea beneficiilor utilizatorului!');
+          console.error('Error updating user benefits:', error);
         }
       });
     }
