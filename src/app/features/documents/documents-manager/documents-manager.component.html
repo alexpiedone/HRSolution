@@ -1,0 +1,223 @@
+<div class="p-6 bg-white rounded-lg shadow-sm">
+  <div class="p-card">
+    <div class="p-card-body">
+      <p-tabView [(activeIndex)]="activeTabIndex">
+        <p-tabPanel header="View Documents" leftIcon="pi pi-list">
+          <ng-template pTemplate="header">
+            <i class="pi pi-list mr-2"></i>
+            <span>View Documents</span>
+          </ng-template>
+          <ng-template pTemplate="content">
+            <div class="flex justify-between items-center mb-4">
+              <div class="flex items-center space-x-2">
+                <div class="relative">
+                  <input type="text" pInputText placeholder="Search documents..."
+                    [(ngModel)]="searchQuery" (input)="applyFilters()"
+                    class="p-inputtext pl-10 pr-4 py-2 w-64">
+                  <i class="pi pi-search absolute left-3 top-2.5 text-gray-400"></i>
+                </div>
+                <div class="w-48">
+                  <p-dropdown [options]="allowedFileExtensions" [(ngModel)]="filterType"
+                    placeholder="All Types" (onChange)="applyFilters()" [showClear]="true"
+                    class="w-full">
+                  </p-dropdown>
+                </div>
+                <div class="w-48">
+                  <p-dropdown [options]="allowedDocumentCategories" [(ngModel)]="filterCategory"
+                    placeholder="All Categories" (onChange)="applyFilters()" [showClear]="true"
+                    class="w-full">
+                  </p-dropdown>
+                </div>
+              </div>
+              <button pButton icon="pi pi-plus" label="Add New Document"
+                (click)="openAddDocumentTab()"
+                class="p-button-primary"></button>
+            </div>
+
+            <p-table [value]="filteredDocuments" [paginator]="true" [rows]="10"
+              [showCurrentPageReport]="true"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [rowsPerPageOptions]="[10, 25, 50]" [tableStyle]="{'min-width': '50rem'}">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+                  <th pSortableColumn="fileExtension">Type <p-sortIcon field="fileExtension"></p-sortIcon></th>
+                  <th pSortableColumn="category">Category <p-sortIcon field="category"></p-sortIcon></th>
+                  <th pSortableColumn="insertDate">Date Added <p-sortIcon field="insertDate"></p-sortIcon></th>
+                  <th>Size</th>
+                  <th class="text-center">Actions</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-doc>
+                <tr>
+                  <td>{{ doc.name }}</td>
+                  <td>
+                    <span
+                      [class]="'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' + getFileExtensionColor(doc.fileExtension)">
+                      {{ doc.fileExtension }}
+                    </span>
+                  </td>
+                  <td>{{ doc.category }}</td>
+                  <td>{{ doc.insertDate | date: 'dd-MMM-yyyy' }}</td>
+                  <td>{{ doc.size }}</td>
+                  <td class="text-center">
+                    <div class="flex justify-center space-x-2">
+                      <button pButton icon="pi pi-download" class="p-button-warning p-button-sm"
+                        (click)="onDownload(doc.fileUrl, doc.name)"></button>
+                      <button pButton icon="pi pi-pencil" class="p-button-primary p-button-sm"
+                        (click)="openEditDocumentTab(doc)"></button>
+                      <button pButton icon="pi pi-trash" class="p-button-danger p-button-sm"
+                        (click)="confirmDelete(doc)"></button>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="empty">
+                <tr>
+                  <td colspan="6" class="text-center text-gray-500 italic py-8">No documents found.</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </ng-template>
+        </p-tabPanel>
+
+        <p-tabPanel header="Add Document" leftIcon="pi pi-plus" [disabled]="!isAddTabActive">
+          <ng-template pTemplate="header">
+            <i class="pi pi-plus mr-2"></i>
+            <span>Add Document</span>
+          </ng-template>
+          <ng-template pTemplate="content">
+            <h2 class="text-xl font-semibold mb-4">Add New Document</h2>
+            <form [formGroup]="uploadForm" (ngSubmit)="uploadDocument()" class="space-y-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label for="newDocumentName" class="block text-sm font-medium text-gray-700 mb-1">Document Name</label>
+                  <input id="newDocumentName" type="text" pInputText formControlName="documentName">
+                  <div *ngIf="uploadForm.get('documentName')?.invalid && uploadForm.get('documentName')?.touched"
+                    class="text-red-500 text-xs mt-1">
+                    Document name is required.
+                  </div>
+                </div>
+                <div>
+                  <label for="newDocumentType" class="block text-sm font-medium text-gray-700 mb-1">Document Type</label>
+                  <p-dropdown id="newDocumentType" [options]="allowedDocumentCategories" formControlName="documentType"
+                    placeholder="Select a type" [showClear]="true" class="w-full">
+                  </p-dropdown>
+                  <div *ngIf="uploadForm.get('documentType')?.invalid && uploadForm.get('documentType')?.touched"
+                    class="text-red-500 text-xs mt-1">
+                    Document type is required.
+                  </div>
+                </div>
+                <div>
+                  <label for="documentFile" class="block text-sm font-medium text-gray-700 mb-1">Select File</label>
+                  <div class="flex items-center">
+                    <p-fileUpload mode="basic" chooseLabel="Choose File" accept=".pdf,.doc,.docx,.xlsx,.txt"
+                      (onSelect)="onFileSelected($event)" [auto]="false" [customUpload]="true"
+                      [showUploadButton]="false" [showCancelButton]="false">
+                    </p-fileUpload>
+                    <span class="ml-3 text-sm text-gray-500" *ngIf="selectedFile">{{ selectedFile.name }}</span>
+                    <span class="ml-3 text-sm text-gray-500" *ngIf="!selectedFile">No file chosen</span>
+                  </div>
+                  <div *ngIf="uploadForm.get('documentFile')?.invalid && uploadForm.get('documentFile')?.touched"
+                    class="text-red-500 text-xs mt-1">
+                    File is required.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label for="newDocumentDescription" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea id="newDocumentDescription" pInputTextarea formControlName="documentDescription" rows="4"
+                  class="w-full"></textarea>
+              </div>
+
+              <div *ngIf="currentlyUploading || uploadStatus" class="mt-4">
+                <div class="text-sm font-medium text-blue-700 mb-1">
+                  {{ uploadStatus === 'uploading' ? 'Uploading...' : 'Processing...' }} ({{ uploadProgress }}%)
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                  <div class="bg-blue-600 h-2.5 rounded-full" [style.width]="uploadProgress + '%'"></div>
+                </div>
+              </div>
+
+              <div class="flex justify-end space-x-3 mt-6">
+                <button type="button" pButton pRipple label="Cancel" icon="pi pi-times"
+                  class="p-button-outlined" (click)="cancelUpload()"></button>
+                <button type="submit" pButton pRipple label="Upload Document" icon="pi pi-upload"
+                  class="p-button-primary" [disabled]="uploadForm.invalid || currentlyUploading"></button>
+              </div>
+            </form>
+          </ng-template>
+        </p-tabPanel>
+
+        <p-tabPanel header="Edit Document" leftIcon="pi pi-pencil" [disabled]="!isEditTabActive">
+          <ng-template pTemplate="header">
+            <i class="pi pi-pencil mr-2"></i>
+            <span>Edit Document</span>
+          </ng-template>
+          <ng-template pTemplate="content">
+            <div *ngIf="selectedDocument">
+              <h2 class="text-xl font-semibold mb-4">Edit Document: {{ selectedDocument.name }}</h2>
+              <form [formGroup]="editForm" (ngSubmit)="updateDocument()" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label for="editDocumentName" class="block text-sm font-medium text-gray-700 mb-1">Document Name</label>
+                    <input id="editDocumentName" type="text" pInputText formControlName="documentName">
+                    <div *ngIf="editForm.get('documentName')?.invalid && editForm.get('documentName')?.touched"
+                      class="text-red-500 text-xs mt-1">
+                      Document name is required.
+                    </div>
+                  </div>
+                  <div>
+                    <label for="editDocumentType" class="block text-sm font-medium text-gray-700 mb-1">Document Type</label>
+                    <p-dropdown id="editDocumentType" [options]="allowedDocumentCategories" formControlName="documentType"
+                      placeholder="Select a type" [showClear]="true" class="w-full">
+                    </p-dropdown>
+                    <div *ngIf="editForm.get('documentType')?.invalid && editForm.get('documentType')?.touched"
+                      class="text-red-500 text-xs mt-1">
+                      Document type is required.
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Current File</label>
+                    <div class="flex items-center">
+                      <span class="text-sm text-gray-500">{{ selectedDocument.name }}</span>
+                      <button pButton icon="pi pi-download" label="Download"
+                        class="p-button-warning p-button-sm ml-3"
+                        (click)="onDownload(selectedDocument.fileUrl, selectedDocument.name)"></button>
+                    </div>
+                    <div class="mt-2">
+                      <p-fileUpload mode="basic" chooseLabel="Replace File" accept=".pdf,.doc,.docx,.xlsx,.txt"
+                        (onSelect)="onFileSelectedForEdit($event)" [auto]="false" [customUpload]="true"
+                        [showUploadButton]="false" [showCancelButton]="false">
+                      </p-fileUpload>
+                      <span class="ml-3 text-sm text-gray-500" *ngIf="selectedFileForEdit">{{ selectedFileForEdit.name }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <label for="editDocumentDescription" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                  <textarea id="editDocumentDescription" pInputTextarea formControlName="documentDescription" rows="4"
+                    class="w-full"></textarea>
+                </div>
+
+                <div class="flex justify-end space-x-3 mt-6">
+                  <button type="button" pButton pRipple label="Cancel" icon="pi pi-times"
+                    class="p-button-outlined" (click)="cancelEdit()"></button>
+                  <button type="submit" pButton pRipple label="Update Document" icon="pi pi-save"
+                    class="p-button-primary" [disabled]="editForm.invalid"></button>
+                </div>
+              </form>
+            </div>
+            <div *ngIf="!selectedDocument" class="text-center text-gray-500 italic py-8">
+              Select a document from "View Documents" tab to edit.
+            </div>
+          </ng-template>
+        </p-tabPanel>
+      </p-tabView>
+    </div>
+  </div>
+</div>
+
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="1000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+
+<p-toast></p-toast>

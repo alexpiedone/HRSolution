@@ -31,11 +31,12 @@
             <!-- Role & Department -->
             <app-user-role-info [userRoleinfo]="userRoleinfo" (roleUpdated)="onRoleInfoUpdated($event)" />
 
-             <app-user-projects [userProjects]="projects" [allAvailableProjects]="allAvailableProjects"
+            <app-user-projects [userProjects]="projects" [allAvailableProjects]="allAvailableProjects"
               (projectsUpdated)="onProjectsUpdated($event)" />
           </div>
           <div>
-            <app-user-responsibilities [assignedResponsibilities]="responsibilities"  [allAvailableResponsibilities]="allAvailableResponsibilities"
+            <app-user-responsibilities [assignedResponsibilities]="responsibilities"
+              [allAvailableResponsibilities]="allAvailableResponsibilities"
               (responsibilitiesUpdated)="onResponsibilitiesAssignedUpdated($event)" />
           </div>
         </div>
@@ -43,34 +44,18 @@
 
       <!-- Documents Tab -->
       <div id="documents" class="tab-content" [class.active]="activeTab === 'documents'">
-        <div class="mb-8">
-          <div class="grid gap-4">
-            <div *ngFor="let doc of documents"
-              class="flex items-center gap-4 p-4 bg-white rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition">
-              <div class="text-blue-500 text-xl">
-                <i class="pi pi-file-o"></i>
-              </div>
-
-              <div class="flex-1">
-                <h4 class="font-medium text-gray-900">{{ doc.name }}</h4>
-                <p class="text-sm text-gray-500">{{ doc.date | date: 'dd-MMM-yyyy' }}</p>
-              </div>
-
-              <button
-                class="inline-flex items-center px-3 py-1.5 border border-primary-500 text-primary-500 rounded-md text-sm hover:bg-primary-50 transition"
-                (click)="downloadDocument(doc.name)">
-                <i class="pi pi-download mr-2"></i>
-                Download
-              </button>
-            </div>
-          </div>
+        <app-documents-manager *ngIf="currentUserId !== null" [documents]="documents" [entityId]="currentUserId"
+          entityType="user" [canUpload]="true" [canDelete]="true" (documentsRefreshed)="onDocumentsRefreshed()">
+        </app-documents-manager>
+        <div *ngIf="currentUserId === null" class="text-center text-gray-500 py-8">
+          Loading user information...
         </div>
       </div>
 
       <!-- Salary Tab -->
       <div id="salary" class="tab-content" [class.active]="activeTab === 'salary'">
         <app-compensation [currentSalary]="currentSalary" [benefits]="benefits"
-          (benefitsUpdated)="onBenefitsUpdated($event)" >
+          (benefitsUpdated)="onBenefitsUpdated($event)">
         </app-compensation>
       </div>
 

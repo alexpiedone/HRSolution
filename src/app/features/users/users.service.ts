@@ -141,10 +141,13 @@ export class UsersService extends ApiService<User> {
     return this.http.get<Document[]>(`${environment.apiUrl}/Users/${id}/documents`).pipe(
       map((documents: Document[]) => {
         return documents.map(document => ({
+          id: document.id,
           name: document.name,
           category: document.category,
-          type: document.type,
-          date: document.date
+          fileExtension: document.fileExtension,
+          insertDate: document.insertDate,
+          fileUrl: document.fileUrl,
+          status: document.status
         }));
       })
     );

@@ -17,11 +17,12 @@ import { UserRoleInfoComponent } from "../user-role-info/user-role-info.componen
 import { UserProjectsComponent } from "../user-projects/user-projects.component";
 import { CompensationComponent } from "../../compensation/compensation.component";
 import { UserResponsibilitiesComponent } from "../user-responsibilities/user-responsibilities.component";
+import { DocumentManagerComponent } from "../../documents/documents-manager/documents-manager.component";
 
 @Component({
   selector: 'app-user-overview',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, UserProfileComponent, UserRoleInfoComponent, UserProjectsComponent, CompensationComponent, UserResponsibilitiesComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, UserProfileComponent, UserRoleInfoComponent, UserProjectsComponent, CompensationComponent, UserResponsibilitiesComponent, DocumentManagerComponent],
   templateUrl: './user-overview.component.html',
   styleUrl: './user-overview.component.css'
 })
@@ -33,10 +34,7 @@ export class UserOverviewComponent implements OnInit {
 
   responsibilities: Responsibility[] = [];
   allAvailableResponsibilities: Responsibility[] = [];
-
-  isEditingBenefits = false;
-
-  editBenefitsForm: FormGroup;
+  currentUserId: number | null = null;
 
   allAvailableProjects: Project[] = [];
   projects: UserProject[] = [];
@@ -51,10 +49,10 @@ export class UserOverviewComponent implements OnInit {
     private fb: FormBuilder,
     private notificationService: NotificationService
   ) {
-
-    this.editBenefitsForm = this.fb.group({
-      benefitsArray: this.fb.array([])
-    });
+    this.currentUserId = this.authService.getCurrentUserId();
+    if (this.currentUserId === null) {
+      this.notificationService.showError('Nu s-a putut obține ID-ul utilizatorului curent.');
+    }
   }
 
   ngOnInit(): void {
@@ -88,7 +86,6 @@ export class UserOverviewComponent implements OnInit {
           this.currentSalary = userCurrentSalary;
           this.allAvailableProjects = allProjects;
 
-          this.populateForms();
         },
         error: (error) => {
           this.notificationService.showError('Eroare la încărcarea datelor utilizatorului!');
@@ -96,11 +93,6 @@ export class UserOverviewComponent implements OnInit {
       });
     }
   }
-
-  private populateForms(): void {
-    this.setBenefitsFormArray(this.benefits);
-  }
-
 
   getFormControl(formGroup: FormGroup, controlName: string): FormControl {
     const control = formGroup.get(controlName);
@@ -110,68 +102,6 @@ export class UserOverviewComponent implements OnInit {
     throw new Error(`Control '${controlName}' not found or is not a FormControl in the provided FormGroup.`);
   }
 
-  //#region Beneficii
-  get benefitsArray(): FormArray {
-    return this.editBenefitsForm.get('benefitsArray') as FormArray;
-  }
-
-  private createBenefitFormGroup(benefit: Benefit | null = null): FormGroup {
-    return this.fb.group({
-      id: [benefit?.id || 0],
-      name: [benefit?.name || '', Validators.required],
-      description: [benefit?.description || '', Validators.required],
-      icon: [benefit?.icon || 'circle'], // Icon implicit
-      color: [benefit?.color || 'blue'] // Culoare implicită
-    });
-  }
-
-  private setBenefitsFormArray(benefits: Benefit[]): void {
-    this.benefitsArray.clear();
-    benefits.forEach(benefit => this.benefitsArray.push(this.createBenefitFormGroup(benefit)));
-  }
-
-  enterEditModeBenefits(): void {
-    this.isEditingBenefits = true;
-    this.setBenefitsFormArray(this.benefits);
-  }
-
-  addBenefit(): void {
-    this.benefitsArray.push(this.createBenefitFormGroup());
-  }
-
-  removeBenefit(index: number): void {
-    this.benefitsArray.removeAt(index);
-  }
-
-  cancelEditBenefits(): void {
-    this.isEditingBenefits = false;
-    this.setBenefitsFormArray(this.benefits);
-  }
-
-  saveBenefitsChanges(): void {
-    if (this.editBenefitsForm.valid) {
-      const updatedBenefits: Benefit[] = this.benefitsArray.value;
-      const userId = this.authService.getCurrentUserId();
-
-      if (userId) {
-        this.userService.updateUserBenefits(userId, updatedBenefits).subscribe({
-          next: () => {
-            this.notificationService.showSuccess('Beneficii actualizate cu succes! 🎁');
-            this.benefits = updatedBenefits;
-            this.isEditingBenefits = false;
-          },
-          error: (error) => {
-            this.notificationService.showError('Eroare la actualizarea beneficiilor!');
-            console.error('Error updating user benefits:', error);
-          }
-        });
-      }
-    } else {
-      this.notificationService.showError('Vă rugăm să completați toate câmpurile obligatorii pentru beneficii!');
-      this.editBenefitsForm.markAllAsTouched();
-    }
-  }
-  //#endregion
 
   onProfileUpdated(updatedProfile: UserProfileUpdateDTO): void {
     const userId = this.authService.getCurrentUserId();
@@ -265,27 +195,8 @@ export class UserOverviewComponent implements OnInit {
   changeTab(tabId: string): void {
     this.activeTab = tabId;
   }
-
-  downloadDocument(documentName: string): void {
-    console.log(`Downloading ${documentName}`);
-  }
-
-  getStyles(color?: string): { bg: string; iconBg: string; text: string } {
-    const c = color ?? 'blue';
-    return {
-      bg: `bg-${c}-50`,
-      iconBg: `bg-${c}-200`,
-      text: `text-${c}-400`
-    };
-  }
-
-  getProjectNameById(projectId: number): string {
-    const project = this.allAvailableProjects.find(p => p.id === projectId);
-    return project ? project.name : 'Proiect necunoscut';
-  }
-
-  getProjectDetailsById(projectId: number): UserProject | undefined {
-    return this.projects.find(p => p.id === projectId);
+  onDocumentsRefreshed(): void {
+    this.loadUserData();
   }
 
   salaryHistory = [

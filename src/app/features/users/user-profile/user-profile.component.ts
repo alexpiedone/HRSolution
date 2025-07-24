@@ -10,14 +10,16 @@ import { ButtonModule } from 'primeng/button';
   imports: [CommonModule, ReactiveFormsModule, ButtonModule],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
-})export class UserProfileComponent implements OnInit, OnChanges {
+}) export class UserProfileComponent implements OnInit, OnChanges {
   @Input() userinfo: User | undefined;
-  @Input() userRoleinfo: UserRoleInfo | undefined; 
+  @Input() userRoleinfo: UserRoleInfo | undefined;
 
   @Output() profileUpdated = new EventEmitter<UserProfileUpdateDTO>();
 
   editProfileForm!: FormGroup;
   isEditingProfile = false;
+
+  isCollapsed: boolean = false;
 
   constructor(private fb: FormBuilder) { }
 
@@ -34,7 +36,7 @@ import { ButtonModule } from 'primeng/button';
   initProfileForm(): void {
     this.editProfileForm = this.fb.group({
       email: [this.userinfo?.email || '', [Validators.required, Validators.email]],
-      phone: [this.userinfo?.phone || '', [Validators.pattern(/^\+?\d{10,15}$/)]] 
+      phone: [this.userinfo?.phone || '', [Validators.pattern(/^\+?\d{10,15}$/)]]
     });
   }
 
@@ -46,19 +48,23 @@ import { ButtonModule } from 'primeng/button';
   saveProfileChanges(): void {
     if (this.editProfileForm.valid && this.userinfo) {
       const updatedProfileDTO: UserProfileUpdateDTO = {
-        id: this.userinfo.id as number, 
+        id: this.userinfo.id as number,
         email: this.editProfileForm.value.email,
         phone: this.editProfileForm.value.phone
       };
 
       this.profileUpdated.emit(updatedProfileDTO);
 
-      this.isEditingProfile = false; 
+      this.isEditingProfile = false;
     }
   }
 
   cancelEditProfile(): void {
     this.isEditingProfile = false;
     this.initProfileForm();
+  }
+
+  toggleCollapse(): void {
+    this.isCollapsed = !this.isCollapsed;
   }
 }
